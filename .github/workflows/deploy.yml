@@ -10,6 +10,11 @@ permissions:
   pages: write
   id-token: write
 
+# Only one Pages deployment at a time; queue new ones instead of colliding.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
