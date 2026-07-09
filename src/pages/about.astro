@@ -1,0 +1,217 @@
+---
+import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+
+const title = "About — London C.";
+const description =
+  "London C. — builder working across pre-hospital medicine, Windows internals, climbing physics, and security. Rust and Python.";
+---
+
+<Base title={title} description={description}>
+  <Nav active="about" />
+
+  <main class="container about">
+    <header class="about-hero rise">
+      <p class="prompt mono" aria-hidden="true">
+        <span class="user">londopy</span><span class="at">@</span><span class="host">github</span><span class="path">:~$</span>
+        cat about.md
+      </p>
+      <h1>About</h1>
+      <p class="lede">
+        I'm London — a builder who bounces between the surf, the crag, and a
+        terminal full of code. This is the longer version of who's behind the
+        projects.
+      </p>
+    </header>
+
+    <section class="block rise" style="animation-delay: 0.05s">
+      <div class="section-header">
+        <span class="hash" aria-hidden="true">##</span>
+        <h2><span aria-hidden="true">🔧</span> Why I build</h2>
+        <span class="rule" aria-hidden="true"></span>
+      </div>
+      <p>
+        Most of what's on this site started as a question I couldn't stop
+        turning over. How does a climbing rope actually absorb a fall? What's
+        really happening when Windows blanks a protected window during a screen
+        capture? Could I check a weight-based drug dose faster than flipping
+        through a field guide? I build to answer those questions — and once the
+        answer works, I clean it up enough that someone else can use it too.
+      </p>
+      <p>
+        I'm not precious about language or stack. Half of what I ship is a small
+        Python library, half is a GUI someone can actually click, and every so
+        often the interesting part is a Rust core doing the heavy lifting under
+        a friendlier front end. The through-line isn't the tech; it's wanting to
+        know how the thing works underneath.
+      </p>
+    </section>
+
+    <section class="block rise" style="animation-delay: 0.1s">
+      <div class="section-header">
+        <span class="hash" aria-hidden="true">##</span>
+        <h2><span aria-hidden="true">🚑</span> Medicine &amp; the pre-hospital track</h2>
+        <span class="rule" aria-hidden="true"></span>
+      </div>
+      <p>
+        A lot of my work traces back to pre-hospital and emergency medicine.
+        Working weight-based drug math, triage scoring, and point-of-care
+        decisions under time pressure makes you want tools that are fast,
+        correct, and impossible to fumble. That's where
+        <a href="https://github.com/Londopy/drugdose">drugdose</a>,
+        <a href="https://github.com/Londopy/vitalscore">vitalscore</a>, and
+        <a href="https://github.com/Londopy/Clinical_IQ">Clinical_IQ</a> came from,
+        and it's the same instinct behind
+        <a href="https://github.com/Londopy/akribia">akribia</a> — a computational
+        model of how the brain weights evidence across conditions like autism,
+        ADHD, and post-concussion syndrome.
+      </p>
+    </section>
+
+    <section class="block rise" style="animation-delay: 0.15s">
+      <div class="section-header">
+        <span class="hash" aria-hidden="true">##</span>
+        <h2><span aria-hidden="true">🧗</span> Climbing &amp; the outdoors</h2>
+        <span class="rule" aria-hidden="true"></span>
+      </div>
+      <p>
+        When I'm not at a keyboard I'm usually outside — on rock, in the surf, or
+        up in the mountains on skis. Climbing, surfing, and ski mountaineering all
+        have a habit of turning into physics problems, and that's usually where the
+        projects start. <a href="https://github.com/Londopy/ropesim">ropesim</a> is
+        a rope-dynamics engine that grew directly out of wanting to understand fall
+        forces properly. The outdoors keeps seeding the backlog, too: freediving
+        depth math, avalanche and snowpack notes, surf and tide calculators, and
+        other small tools aimed at the places I actually go.
+      </p>
+    </section>
+
+    <section class="block rise" style="animation-delay: 0.2s">
+      <div class="section-header">
+        <span class="hash" aria-hidden="true">##</span>
+        <h2><span aria-hidden="true">🖥️</span> Systems &amp; security</h2>
+        <span class="rule" aria-hidden="true"></span>
+      </div>
+      <p>
+        The other half of my time goes low-level. I like living close to the
+        metal on Windows — DLL injection, tray daemons, clipboard internals, the
+        undocumented corners of the API. <a href="https://github.com/Londopy/capture-bypass">capture-bypass</a>
+        is the flagship there. That systems work points toward where I want to
+        head next: OT / XIoT security, where understanding how a system really
+        behaves is the whole job. When I publish offensive tooling I try to do it
+        the right way — clear, authorized-use framing, like
+        <a href="https://github.com/Londopy/kto">kto</a> — because the point is
+        assessment, not bragging rights.
+      </p>
+    </section>
+
+    <section class="block rise" style="animation-delay: 0.25s">
+      <div class="section-header">
+        <span class="hash" aria-hidden="true">##</span>
+        <h2><span aria-hidden="true">🛰️</span> What's next</h2>
+        <span class="rule" aria-hidden="true"></span>
+      </div>
+      <p>
+        The pipeline is deep. Names are reserved and code is brewing for a batch
+        of tools that map onto everything above — freediving depth math
+        (barodepth), trail and tide utilities, more geospatial/OSINT work, and a
+        handful of low-level Rust libraries. You can see the current shortlist in
+        the <a href="/#games">In progress</a> strip on the projects page; cards
+        show up there the moment something ships.
+      </p>
+      <p>
+        Bigger picture, I'm aiming my systems work toward OT / XIoT security —
+        the world where understanding exactly how a device behaves under the hood
+        is the entire job. Expect the balance here to tilt further toward Rust,
+        hardware, and security tooling over time, without losing the medical and
+        outdoors threads that started it all.
+      </p>
+    </section>
+
+    <section class="block rise" style="animation-delay: 0.3s">
+      <div class="section-header">
+        <span class="hash" aria-hidden="true">##</span>
+        <h2><span aria-hidden="true">📡</span> Get in touch</h2>
+        <span class="rule" aria-hidden="true"></span>
+      </div>
+      <p class="contact">
+        <a href="https://github.com/Londopy">github.com/Londopy</a>
+        <span class="sep" aria-hidden="true">·</span>
+        <span class="discord">discord: <strong>_londo</strong></span>
+        <span class="sep" aria-hidden="true">·</span>
+        <a href="/">back to projects</a>
+      </p>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .about {
+    padding-top: 3.5rem;
+    max-width: 760px;
+  }
+
+  .about-hero {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1rem;
+  }
+
+  .prompt {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .prompt .user { color: var(--accent); }
+  .prompt .at { color: var(--text-faint); }
+  .prompt .host { color: var(--text); }
+  .prompt .path { color: var(--text-faint); margin-right: 0.6em; }
+
+  h1 {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.75rem;
+  }
+
+  .lede {
+    color: var(--text);
+    font-size: 1.1rem;
+    max-width: 60ch;
+  }
+
+  .block {
+    margin-top: 1rem;
+  }
+
+  .block p {
+    color: var(--text-dim);
+    font-size: 0.97rem;
+    line-height: 1.7;
+    max-width: 68ch;
+    margin-bottom: 0.85rem;
+  }
+
+  .contact {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+  }
+
+  .contact .sep {
+    color: var(--text-faint);
+    margin: 0 0.5rem;
+  }
+
+  .contact .discord {
+    color: var(--text-dim);
+  }
+
+  .contact .discord strong {
+    color: var(--accent);
+    font-weight: 500;
+  }
+</style>

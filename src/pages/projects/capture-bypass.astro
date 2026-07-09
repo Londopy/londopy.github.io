@@ -1,0 +1,62 @@
+---
+import ProjectDoc from "../../layouts/ProjectDoc.astro";
+---
+
+<ProjectDoc
+  name="capture-bypass"
+  tagline="A DLL-injection tool that bypasses screen-capture protection on Windows 10 and 11."
+  language="Rust"
+  repo="https://github.com/Londopy/capture-bypass"
+  stars={20}
+>
+  <h2><span class="hash">##</span> What it is</h2>
+  <p>
+    <strong>capture-bypass</strong> is a Windows utility that defeats the
+    screen-capture protection some applications apply to their windows — the
+    flag that makes a window render as a black rectangle in screenshots and
+    screen recordings. It ships as a multi-crate Rust workspace with a native
+    <code>egui</code> GUI and an Inno Setup installer, and it's the
+    most-starred project in the account.
+  </p>
+
+  <h2><span class="hash">##</span> Why I built it</h2>
+  <p>
+    Capture protection is a per-window rendering flag, not real security — but
+    it quietly breaks legitimate things like recording a tutorial, filing a bug
+    report, or archiving your own session. I wanted to understand exactly how the
+    protection is enforced at the window-manager level, and the cleanest way to
+    understand a mechanism is to build the thing that flips it back.
+  </p>
+
+  <h2><span class="hash">##</span> How it works</h2>
+  <p>
+    The tool injects a small payload into the target process and adjusts the
+    window's display-affinity state so the compositor no longer excludes it from
+    capture. The workspace splits cleanly along those lines:
+  </p>
+  <ul>
+    <li>a core crate that handles process targeting and injection,</li>
+    <li>a payload crate that does the in-process work,</li>
+    <li>and a thin <code>egui</code> front end so it's usable without the command line.</li>
+  </ul>
+  <p>
+    Everything is Rust end to end, which keeps the injection path small, fast,
+    and free of a heavyweight runtime.
+  </p>
+
+  <h2><span class="hash">##</span> Install</h2>
+  <p>
+    Grab the latest Inno installer from the
+    <a href="https://github.com/Londopy/capture-bypass/releases">releases page</a>,
+    or build from source with <code>cargo build --release</code>. Full setup and
+    usage notes live in the repo README.
+  </p>
+
+  <h2><span class="hash">##</span> A note on intent</h2>
+  <p>
+    This is a tool for capturing windows you're entitled to capture — your own
+    sessions, software you're testing, content you have the right to record. It
+    isn't a DRM circumvention tool and shouldn't be used to capture protected
+    content you don't own.
+  </p>
+</ProjectDoc>

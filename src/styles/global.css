@@ -1,0 +1,179 @@
+/* londopy.github.io — terminal-adjacent dark theme */
+
+:root {
+  --bg: #0a0e13;
+  --bg-raised: #0f141b;
+  --bg-card: #10161e;
+  --border: #1d2632;
+  --border-bright: #2c3947;
+  --text: #cdd8e3;
+  --text-dim: #8494a6;
+  --text-faint: #56677a;
+  --accent: #45d483;
+  --accent-dim: rgba(69, 212, 131, 0.12);
+  --amber: #e8b444;
+  --mono: "JetBrains Mono Variable", ui-monospace, "Cascadia Code", Consolas, monospace;
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --radius: 6px;
+  --maxw: 1100px;
+
+  /* GitHub language dot colors */
+  --lang-rust: #dea584;
+  --lang-python: #3572a5;
+  --lang-typescript: #3178c6;
+  --lang-cpp: #f34b7d;
+  --lang-bash: #89e051;
+  --lang-javascript: #f1e05a;
+  --lang-asm: #c9a227;
+  --lang-astro: #ff5a03;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 2rem;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  /* faint phosphor grid */
+  background-image:
+    radial-gradient(ellipse 80% 40% at 50% -10%, rgba(69, 212, 131, 0.06), transparent),
+    linear-gradient(rgba(29, 38, 50, 0.35) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(29, 38, 50, 0.35) 1px, transparent 1px);
+  background-size: 100% 100%, 40px 40px, 40px 40px;
+  background-attachment: fixed;
+}
+
+::selection {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+
+.container {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+h1, h2, h3, .mono {
+  font-family: var(--mono);
+}
+
+/* ---------- section headers, shell-comment style ---------- */
+
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin: 3.5rem 0 0.5rem;
+  font-family: var(--mono);
+}
+
+.section-header .hash {
+  color: var(--text-faint);
+  font-weight: 400;
+}
+
+.section-header h2 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.section-header .rule {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border-bright), transparent);
+  align-self: center;
+}
+
+.section-blurb {
+  color: var(--text-dim);
+  font-size: 0.92rem;
+  margin-bottom: 1.4rem;
+  max-width: 60ch;
+}
+
+/* ---------- card grid ---------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 960px) {
+  .grid { grid-template-columns: repeat(3, 1fr); }
+  .grid.grid-featured { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ---------- reveal animation (page load) ---------- */
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.rise {
+  animation: rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise { animation: none; }
+  html { scroll-behavior: auto; }
+}
+
+/* ---------- cross-page transition (CSS-only, no JS) ---------- */
+/* Native cross-document view transitions on same-origin navigations.
+   Supported browsers animate projects ⇄ about; others just navigate. */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: page-out 0.22s cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+::view-transition-new(root) {
+  animation: page-in 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes page-out {
+  to { opacity: 0; transform: translateY(-8px); }
+}
+
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(12px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}

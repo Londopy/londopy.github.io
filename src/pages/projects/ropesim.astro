@@ -1,0 +1,51 @@
+---
+import ProjectDoc from "../../layouts/ProjectDoc.astro";
+---
+
+<ProjectDoc
+  name="ropesim"
+  tagline="A climbing-rope physics engine that models lead-fall dynamics — Rust core, Python API, desktop GUI."
+  language="Rust + Python + C++"
+  repo="https://github.com/Londopy/ropesim"
+  demo="https://pypi.org/project/ropesim/"
+  pip="ropesim"
+>
+  <h2><span class="hash">##</span> What it is</h2>
+  <p>
+    <strong>ropesim</strong> simulates the dynamics of a climbing lead fall. A
+    dynamic rope is essentially a long, heavily damped spring, and ropesim models
+    it as one — integrating the motion numerically to reproduce peak forces, rope
+    stretch, and the way energy dissipates through the system during a fall.
+  </p>
+
+  <h2><span class="hash">##</span> Why I built it</h2>
+  <p>
+    Climbers talk about "soft" and "hard" catches, fall factors, and impact
+    forces, but the numbers behind those words are rarely visible. I wanted a
+    tool that let me actually watch fall factor, belayer behavior, and rope
+    properties change the peak force on the system — starting from the physics
+    rather than rules of thumb.
+  </p>
+
+  <h2><span class="hash">##</span> How it works</h2>
+  <p>
+    The core is written in <strong>Rust</strong>: a damped-spring model advanced
+    with an <strong>RK4</strong> integrator for stable, accurate time-stepping.
+    That core is exposed to <strong>Python</strong> through
+    <code>PyO3</code> / <code>Maturin</code>, so the heavy numerical loop runs at
+    native speed while everything on top stays in Python. On top of the library
+    sit three ways to drive it:
+  </p>
+  <ul>
+    <li>a full <strong>Python API</strong> for scripting and analysis,</li>
+    <li>a five-command <strong>CLI</strong> for quick runs, and</li>
+    <li>a <strong>PySide6</strong> desktop GUI with 3D visualization for exploring scenarios interactively.</li>
+  </ul>
+
+  <h2><span class="hash">##</span> Try it</h2>
+  <p>
+    ropesim is on PyPI, so the fastest way in is <code>pip install ropesim</code>.
+    From there you can call the Python API directly, run the CLI, or launch the
+    GUI — the README walks through all three.
+  </p>
+</ProjectDoc>

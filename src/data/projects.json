@@ -1,0 +1,225 @@
+{
+  "clusters": [
+    { "id": "systems", "emoji": "🖥️", "title": "Systems & Windows internals", "blurb": "Rust tooling that goes under the hood of Windows — injection, hooks, tray daemons." },
+    { "id": "medicine", "emoji": "🚑", "title": "Pre-hospital & clinical medicine", "blurb": "Calculators, decision support, and computational models built from the EMS track." },
+    { "id": "climbing", "emoji": "🧗", "title": "Climbing, outdoors & physics", "blurb": "Physics engines and hardware replicas for rope, rock, and retro aerospace." },
+    { "id": "geospatial", "emoji": "🌍", "title": "Geospatial / OSINT", "blurb": "Rust-accelerated geospatial intelligence tooling." },
+    { "id": "networking", "emoji": "🔌", "title": "Networking & privacy", "blurb": "Daemons and monitors that keep traffic where it belongs." },
+    { "id": "devtools", "emoji": "🛠️", "title": "Dev tooling & libraries", "blurb": "Small, sharp libraries published to PyPI." },
+    { "id": "ai", "emoji": "🤖", "title": "AI & computer vision", "blurb": "Real-time vision pipelines and generative experiments." },
+    { "id": "security", "emoji": "🛡️", "title": "Security tooling", "blurb": "Assessment tools for authorized use, with the framing to match." },
+    { "id": "games", "emoji": "🎮", "title": "Consumer & games", "blurb": "Tools for the games I actually play." }
+  ],
+  "projects": [
+    {
+      "cluster": "systems",
+      "name": "capture-bypass",
+      "tagline": "DLL-injection tool that bypasses screen-capture protection on Windows 10/11. Multi-crate workspace, egui GUI, Inno installer.",
+      "language": "Rust",
+      "tags": ["windows", "dll-injection", "egui"],
+      "repo": "https://github.com/Londopy/capture-bypass",
+      "demo": null,
+      "page": "/projects/capture-bypass/",
+      "featured": true,
+      "stars": 20
+    },
+    {
+      "cluster": "systems",
+      "name": "HideDesktopApps",
+      "tagline": "Tray utility to hide desktop icons, taskbar, and windows via hotkeys — for ricing, Wallpaper Engine, and presentations.",
+      "language": "Rust",
+      "tags": ["windows", "tray", "winget", "scoop"],
+      "repo": "https://github.com/Londopy/HideDesktopApps",
+      "demo": null,
+      "page": null,
+      "featured": false
+    },
+    {
+      "cluster": "systems",
+      "name": "clipvault",
+      "tagline": "Keyboard-first clipboard-manager daemon: system-wide capture, ring buffer, hotkey overlay.",
+      "language": "Rust",
+      "tags": ["daemon", "clipboard", "hotkeys"],
+      "repo": "https://github.com/Londopy/clipvault",
+      "demo": null,
+      "page": null,
+      "featured": false
+    },
+    {
+      "cluster": "systems",
+      "name": "pc-optimizer",
+      "tagline": "\"PC Optimizer Pro\" — Windows tweak, fan-control, RGB, and debloat suite living in the tray.",
+      "language": "Python",
+      "tags": ["windows", "tweaks", "tray"],
+      "repo": "https://github.com/Londopy/pc-optimizer",
+      "demo": null,
+      "page": null,
+      "featured": false
+    },
+    {
+      "cluster": "medicine",
+      "name": "drugdose",
+      "tagline": "EMS & clinical drug-dosing calculator — weight-based dosing, 49-drug database, interaction rules.",
+      "language": "Python",
+      "tags": ["ems", "pypi", "calculator"],
+      "repo": "https://github.com/Londopy/drugdose",
+      "demo": "https://pypi.org/project/drugdose/",
+      "page": "/projects/drugdose/",
+      "featured": true
+    },
+    {
+      "cluster": "medicine",
+      "name": "vitalscore",
+      "tagline": "Clinical scoring calculators — severity and triage scores as a clean Python API.",
+      "language": "Python",
+      "tags": ["clinical", "pypi", "triage"],
+      "repo": "https://github.com/Londopy/vitalscore",
+      "demo": "https://pypi.org/project/vitalscore/",
+      "page": null,
+      "featured": false
+    },
+    {
+      "cluster": "medicine",
+      "name": "Clinical_IQ",
+      "tagline": "Point-of-care decision support for emergency medicine.",
+      "language": "TypeScript",
+      "tags": ["emergency-medicine", "decision-support"],
+      "repo": "https://github.com/Londopy/Clinical_IQ",
+      "demo": "https://londopy.github.io/Clinical_IQ/",
+      "page": null,
+      "featured": false
+    },
+    {
+      "cluster": "medicine",
+      "name": "akribia",
+      "tagline": "Computational model of precision-weighted Bayesian inference across autism, ADHD, and PPCS — with a live in-browser demo.",
+      "language": "Python",
+      "tags": ["bayesian", "neuroscience", "simulation"],
+      "repo": "https://github.com/Londopy/akribia",
+      "demo": "https://londopy.github.io/akribia/",
+      "page": null,
+      "featured": true
+    },
+    {
+      "cluster": "climbing",
+      "name": "ropesim",
+      "tagline": "Models lead-fall dynamics with a damped spring / RK4 integrator in Rust, exposed to Python via PyO3/Maturin. Ships a full Python API, a five-command CLI, and a PySide6 desktop GUI.",
+      "language": "Rust + Python + C++",
+      "tags": ["physics", "pypi", "pyo3", "cli", "gui"],
+      "repo": "https://github.com/Londopy/ropesim",
+      "demo": "https://pypi.org/project/ropesim/",
+      "page": "/projects/ropesim/",
+      "featured": true
+    },
+    {
+      "cluster": "climbing",
+      "name": "apollo-rope-memory",
+      "tagline": "Working replica of Apollo-era core rope memory — ferrite toroids, induction read, comparator front-end.",
+      "language": "C++",
+      "tags": ["arduino", "hardware", "retrocomputing"],
+      "repo": "https://github.com/Londopy/apollo-rope-memory",
+      "demo": null,
+      "page": null,
+      "featured": false
+    },
+    {
+      "cluster": "geospatial",
+      "name": "pygeospy",
+      "tagline": "GEOINT/OSINT library, Rust-accelerated — SAR grids, EXIF, and terrain analysis.",
+      "language": "Python + Rust",
+      "tags": ["geoint", "osint", "sar"],
+      "repo": "https://github.com/Londopy/pygeospy",
+      "demo": null,
+      "page": null,
+      "featured": false
+    },
+    {
+      "cluster": "networking",
+      "name": "qbit-killswitch",
+      "tagline": "VPN killswitch daemon for qBittorrent — pauses torrents the instant your public IP changes. Cross-platform tray app.",
+      "language": "Rust",
+      "tags": ["vpn", "daemon", "privacy"],
+      "repo": "https://github.com/Londopy/qbit-killswitch",
+      "demo": null,
+      "page": null,
+      "featured": false
+    },
+    {
+      "cluster": "networking",
+      "name": "mullvad-wg-monitor",
+      "tagline": "Benchmarks and monitors Mullvad WireGuard endpoints.",
+      "language": "Python",
+      "tags": ["wireguard", "benchmarking"],
+      "repo": "https://github.com/Londopy/mullvad-wg-monitor",
+      "demo": null,
+      "page": null,
+      "featured": false
+    },
+    {
+      "cluster": "devtools",
+      "name": "patchnotes",
+      "tagline": "Parser and tooling for Keep a Changelog changelogs.",
+      "language": "Python",
+      "tags": ["changelog", "pypi", "parser"],
+      "repo": "https://github.com/Londopy/patchnotes",
+      "demo": "https://pypi.org/project/patchnotes/",
+      "page": null,
+      "featured": false
+    },
+    {
+      "cluster": "ai",
+      "name": "Live_Video_Feed_Facial_Recognition",
+      "tagline": "Real-time facial recognition pipeline running on a live webcam or video feed.",
+      "language": "Python",
+      "tags": ["computer-vision", "opencv"],
+      "repo": "https://github.com/Londopy/Live_Video_Feed_Facial_Recognition",
+      "demo": null,
+      "page": null,
+      "featured": false
+    },
+    {
+      "cluster": "ai",
+      "name": "convo-generator",
+      "tagline": "Conversation and dialogue generator.",
+      "language": "Python",
+      "tags": ["nlp", "generation"],
+      "repo": "https://github.com/Londopy/convo-generator",
+      "demo": null,
+      "page": null,
+      "featured": false
+    },
+    {
+      "cluster": "security",
+      "name": "kto",
+      "tagline": "\"Kick Them Out\" v3 — WiFi security-assessment tool with CLI, TUI, and GUI. Authorized use only.",
+      "language": "Rust",
+      "tags": ["wifi", "assessment", "authorized-use"],
+      "repo": "https://github.com/Londopy/kto",
+      "demo": null,
+      "page": null,
+      "featured": false
+    },
+    {
+      "cluster": "games",
+      "name": "ValoTracker",
+      "tagline": "Real-time VALORANT match tracker — 10-player ranks, stats, and encounter history. Reads only 127.0.0.1, no login.",
+      "language": "Rust",
+      "tags": ["valorant", "local-api"],
+      "repo": "https://github.com/Londopy/ValoTracker",
+      "demo": null,
+      "page": null,
+      "featured": false
+    }
+  ],
+  "inProgress": [
+    { "name": "ghostwire", "hint": "networking" },
+    { "name": "timefuzz", "hint": "time ranges" },
+    { "name": "barodepth", "hint": "freediving" },
+    { "name": "trailmath", "hint": "outdoors" },
+    { "name": "tidaltable", "hint": "outdoors" },
+    { "name": "hwsig", "hint": "systems" },
+    { "name": "memalloc", "hint": "systems" },
+    { "name": "procwatch", "hint": "systems" },
+    { "name": "OmniSight", "hint": "vision" }
+  ]
+}

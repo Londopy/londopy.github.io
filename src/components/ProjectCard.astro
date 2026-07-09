@@ -1,0 +1,253 @@
+---
+interface Props {
+  name: string;
+  tagline: string;
+  language: string;
+  tags: string[];
+  repo: string;
+  demo?: string | null;
+  page?: string | null;
+  featured?: boolean;
+  stars?: number;
+}
+
+const { name, tagline, language, tags, repo, demo, page, featured, stars } = Astro.props;
+
+const LANG_COLORS: Record<string, string> = {
+  Rust: "var(--lang-rust)",
+  Python: "var(--lang-python)",
+  TypeScript: "var(--lang-typescript)",
+  "C++": "var(--lang-cpp)",
+  Bash: "var(--lang-bash)",
+  JavaScript: "var(--lang-javascript)",
+  "x86 ASM": "var(--lang-asm)",
+  Astro: "var(--lang-astro)",
+};
+
+// "Rust + Python" → [Rust, Python]; split only on " + " so "C++" stays intact
+const langs = language.split(" + ").map((l) => l.trim()).filter(Boolean);
+
+// label the demo button by where it actually goes
+const isPypi = !!demo && demo.includes("pypi.org");
+const demoLabel = isPypi ? "pypi →" : "demo →";
+
+// derive the pip package name from a PyPI demo URL
+const pipPkg = isPypi ? demo!.split("/project/")[1]?.replace(/\/+$/, "") : null;
+---
+
+<article class="card" class:list={[{ featured }]} data-tags={tags.join("|")} data-langs={langs.join("|")}>
+  <div class="card-head">
+    <h3 class="mono"><a href={repo}>{name}</a></h3>
+    {stars ? <span class="stars mono" title={`${stars} stars on GitHub`}>★ {stars}</span> : null}
+  </div>
+
+  <p class="tagline">{tagline}</p>
+
+  <div class="meta mono">
+    {langs.map((lang) => (
+      <button class="lang" type="button" data-filter-lang={lang} title={`Filter by ${lang}`}>
+        <span class="dot" style={`background:${LANG_COLORS[lang] ?? "var(--text-faint)"}`}></span>
+        {lang}
+      </button>
+    ))}
+    {tags.map((t) => (
+      <button class="tag" type="button" data-filter-tag={t} title={`Filter by #${t}`}>#{t}</button>
+    ))}
+  </div>
+
+  {pipPkg && (
+    <button class="install mono" type="button" data-copy={`pip install ${pipPkg}`} title="Copy to clipboard">
+      <span class="dollar" aria-hidden="true">$</span>
+      <span class="cmd">pip install {pipPkg}</span>
+      <span class="copyicon" aria-hidden="true"></span>
+    </button>
+  )}
+
+  <div class="actions mono">
+    <a class="btn" href={repo}>repo →</a>
+    {demo && <a class="btn btn-accent" href={demo}>{demoLabel}</a>}
+    {page && <a class="btn" href={page}>docs →</a>}
+  </div>
+</article>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.15rem 1.25rem 1.1rem;
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-3px);
+    border-color: var(--border-bright);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+
+  .card.featured {
+    border-color: rgba(69, 212, 131, 0.35);
+    background:
+      linear-gradient(160deg, rgba(69, 212, 131, 0.05), transparent 40%),
+      var(--bg-card);
+  }
+
+  .card.featured:hover {
+    border-color: var(--accent);
+  }
+
+  .card-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    overflow-wrap: anywhere;
+  }
+
+  h3 a {
+    color: var(--text);
+  }
+
+  .card:hover h3 a {
+    color: var(--accent);
+  }
+
+  .stars {
+    color: var(--amber);
+    font-size: 0.78rem;
+    white-space: nowrap;
+  }
+
+  .tagline {
+    color: var(--text-dim);
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem 0.6rem;
+    font-size: 0.72rem;
+  }
+
+  /* clickable language + tag filters (reset button chrome) */
+  .lang,
+  .tag {
+    font: inherit;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: color 0.12s ease;
+  }
+
+  .lang {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    color: var(--text);
+  }
+
+  .tag {
+    color: var(--text-faint);
+  }
+
+  .lang:hover,
+  .tag:hover {
+    color: var(--accent);
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  /* copyable pip install line */
+  .install {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    width: 100%;
+    text-align: left;
+    font-size: 0.76rem;
+    color: var(--text-dim);
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.4rem 0.6rem;
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+
+  .install:hover {
+    border-color: var(--border-bright);
+    color: var(--text);
+  }
+
+  .install .dollar {
+    color: var(--accent);
+  }
+
+  .install .cmd {
+    flex: 1;
+    overflow-wrap: anywhere;
+  }
+
+  .install .copyicon::before {
+    content: "⧉";
+    color: var(--text-faint);
+  }
+
+  .install.copied {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .install.copied .copyicon::before {
+    content: "✓";
+    color: var(--accent);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: auto;
+    padding-top: 0.25rem;
+  }
+
+  .btn {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    border: 1px solid var(--border-bright);
+    border-radius: 4px;
+    padding: 0.28rem 0.65rem;
+    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .btn:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-dim);
+    text-decoration: none;
+  }
+
+  .btn-accent {
+    color: var(--accent);
+    border-color: rgba(69, 212, 131, 0.4);
+  }
+</style>

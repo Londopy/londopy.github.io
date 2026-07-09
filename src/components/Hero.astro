@@ -1,0 +1,137 @@
+---
+interface Cluster {
+  id: string;
+  emoji: string;
+  title: string;
+}
+
+interface Props {
+  clusters: Cluster[];
+}
+
+const { clusters } = Astro.props;
+---
+
+<header class="hero rise">
+  <div class="container">
+    <p class="prompt mono" aria-hidden="true">
+      <span class="user">londopy</span><span class="at">@</span><span class="host">github</span><span class="path">:~$</span>
+      ls ./projects --group-by domain<span class="cursor">▌</span>
+    </p>
+
+    <h1>London C.</h1>
+
+    <p class="tagline">
+      I build tools for <strong>climbing</strong>, <strong>medicine</strong>,
+      <strong>Windows internals</strong>, and <strong>myself</strong>.
+    </p>
+
+    <p class="sub">
+      I ship a lot. Half the time it's libraries, half the time it's GUIs,
+      occasionally it's a Rust core that makes the whole thing 100× faster.
+      I don't build for a resume — I build because the problem is interesting
+      and I want to know how it works underneath.
+    </p>
+
+    <p class="sub">
+      This is the curated index. Full history lives on
+      <a href="https://github.com/Londopy">github.com/Londopy</a>.
+    </p>
+
+    <nav class="cluster-nav mono" aria-label="Project domains">
+      {clusters.map((c) => (
+        <a href={`#${c.id}`}>
+          <span class="nav-emoji" aria-hidden="true">{c.emoji}</span>
+          {c.title}
+        </a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<style>
+  .hero {
+    padding: 5rem 0 1rem;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, transparent, rgba(15, 20, 27, 0.6));
+  }
+
+  .prompt {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .prompt .user { color: var(--accent); }
+  .prompt .at { color: var(--text-faint); }
+  .prompt .host { color: var(--text); }
+  .prompt .path { color: var(--text-faint); margin-right: 0.6em; }
+
+  .cursor {
+    color: var(--accent);
+    animation: blink 1.1s steps(1) infinite;
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.75rem;
+  }
+
+  .tagline {
+    font-size: clamp(1.05rem, 2.5vw, 1.3rem);
+    color: var(--text);
+    max-width: 46ch;
+  }
+
+  .tagline strong {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .sub {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    margin-top: 0.75rem;
+    max-width: 58ch;
+  }
+
+  .cluster-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 2.25rem 0 2rem;
+  }
+
+  .cluster-nav a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45em;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.3rem 0.8rem;
+    background: var(--bg-raised);
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+
+  .cluster-nav a:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    text-decoration: none;
+  }
+
+  .nav-emoji {
+    font-size: 0.9em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cursor { animation: none; }
+  }
+</style>

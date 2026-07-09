@@ -1,0 +1,70 @@
+---
+interface Item {
+  name: string;
+  hint: string;
+}
+
+interface Props {
+  items: Item[];
+}
+
+const { items } = Astro.props;
+---
+
+<section class="wip" aria-label="In progress">
+  <div class="section-header">
+    <span class="hash" aria-hidden="true">##</span>
+    <h2><span aria-hidden="true">🚧</span> In progress</h2>
+    <span class="rule" aria-hidden="true"></span>
+  </div>
+  <p class="section-blurb">
+    Names reserved, code brewing. Cards appear here once they ship.
+  </p>
+  <ul class="wip-list mono">
+    {items.map((item) => (
+      <li title={item.hint}>
+        {item.name}<span class="hint"> · {item.hint}</span>
+      </li>
+    ))}
+    <li class="cursor-item" aria-hidden="true">▌</li>
+  </ul>
+</section>
+
+<style>
+  .wip-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .wip-list li {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    border: 1px dashed var(--border-bright);
+    border-radius: 4px;
+    padding: 0.3rem 0.7rem;
+    background: var(--bg-raised);
+  }
+
+  .hint {
+    color: var(--text-faint);
+  }
+
+  .cursor-item {
+    border: none !important;
+    background: none !important;
+    color: var(--accent) !important;
+    animation: blink 1.1s steps(1) infinite;
+    padding: 0 !important;
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cursor-item { animation: none; }
+  }
+</style>

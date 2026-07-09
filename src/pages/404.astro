@@ -1,0 +1,138 @@
+---
+import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+
+const title = "404 — command not found";
+const description = "That page doesn't exist on londopy.github.io.";
+---
+
+<Base title={title} description={description}>
+  <Nav />
+
+  <main class="container notfound">
+    <div class="terminal rise">
+      <p class="line">
+        <span class="user">londopy</span><span class="at">@</span><span class="host">github</span><span class="path">:~$</span>
+        cd {Astro.url.pathname}
+      </p>
+      <p class="err">bash: cd: {Astro.url.pathname}: No such file or directory</p>
+
+      <p class="line">
+        <span class="user">londopy</span><span class="at">@</span><span class="host">github</span><span class="path">:~$</span>
+        echo $?
+      </p>
+      <p class="out">404</p>
+
+      <p class="hint">
+        The page you were looking for isn't here. It may have moved, or never
+        existed.
+      </p>
+
+      <p class="line prompt-final">
+        <span class="user">londopy</span><span class="at">@</span><span class="host">github</span><span class="path">:~$</span>
+        cd ~<span class="cursor" aria-hidden="true">▌</span>
+      </p>
+
+      <div class="actions">
+        <a class="btn" href="/">cd ~ (home)</a>
+        <a class="btn" href="/about/">./about</a>
+        <a class="btn" href="https://github.com/Londopy">github ↗</a>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .notfound {
+    padding: 4rem 0 2rem;
+    min-height: 46vh;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .terminal {
+    font-family: var(--mono);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem 1.6rem;
+    max-width: 680px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  }
+
+  .line {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .line .user { color: var(--accent); }
+  .line .at { color: var(--text-faint); }
+  .line .host { color: var(--text); }
+  .line .path { color: var(--text-faint); margin-right: 0.5em; }
+
+  .err {
+    color: #e8746f;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .out {
+    color: var(--amber);
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .hint {
+    color: var(--text-dim);
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+    font-family: var(--sans);
+    max-width: 52ch;
+  }
+
+  .prompt-final {
+    margin-bottom: 1.25rem;
+  }
+
+  .cursor {
+    color: var(--accent);
+    animation: blink 1.1s steps(1) infinite;
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .btn {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    border: 1px solid var(--border-bright);
+    border-radius: 4px;
+    padding: 0.35rem 0.75rem;
+    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .btn:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-dim);
+    text-decoration: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cursor { animation: none; }
+  }
+</style>

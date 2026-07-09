@@ -1,0 +1,51 @@
+---
+import ProjectDoc from "../../layouts/ProjectDoc.astro";
+---
+
+<ProjectDoc
+  name="drugdose"
+  tagline="An EMS and clinical drug-dosing calculator — weight-based dosing, a 49-drug database, and interaction rules."
+  language="Python"
+  repo="https://github.com/Londopy/drugdose"
+  demo="https://pypi.org/project/drugdose/"
+  pip="drugdose"
+>
+  <h2><span class="hash">##</span> What it is</h2>
+  <p>
+    <strong>drugdose</strong> is a Python library for pre-hospital and clinical
+    drug-dosing math. Give it a patient weight and a drug, and it returns the
+    correct weight-based dose, backed by a database of 49 drugs and a set of
+    interaction rules — so the arithmetic and the lookups happen in one place
+    instead of in your head under pressure.
+  </p>
+
+  <h2><span class="hash">##</span> Why I built it</h2>
+  <p>
+    In the field, dosing errors come from exactly the conditions you're working
+    in: time pressure, mental math, and juggling reference cards. A small, fast,
+    well-tested library that does the weight-based calculation and flags
+    interactions removes a whole class of avoidable mistakes. This one comes
+    straight out of the EMS side of what I do.
+  </p>
+
+  <h2><span class="hash">##</span> What's inside</h2>
+  <ul>
+    <li><strong>Weight-based dosing</strong> — dose calculated from patient weight and drug.</li>
+    <li><strong>49-drug database</strong> — dosing data for a working set of common medications.</li>
+    <li><strong>Interaction rules</strong> — flags combinations that warrant caution.</li>
+    <li>A clean Python API meant to be embedded in other tools.</li>
+  </ul>
+
+  <h2><span class="hash">##</span> Try it</h2>
+  <p>
+    drugdose is on PyPI — <code>pip install drugdose</code> and import it into
+    your own project. The README covers the API and the drug database.
+  </p>
+
+  <h2><span class="hash">##</span> A note on use</h2>
+  <p>
+    drugdose is a calculation aid, not a substitute for clinical judgment,
+    protocol, or medical direction. Always confirm doses against your local
+    protocols before administration.
+  </p>
+</ProjectDoc>

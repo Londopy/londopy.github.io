@@ -1,0 +1,212 @@
+---
+import Base from "../layouts/Base.astro";
+import BinaryIntro from "../components/BinaryIntro.astro";
+import Nav from "../components/Nav.astro";
+import Hero from "../components/Hero.astro";
+import ClusterSection from "../components/ClusterSection.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import InProgress from "../components/InProgress.astro";
+import Footer from "../components/Footer.astro";
+import data from "../data/projects.json";
+
+const featured = data.projects.filter((p) => p.featured);
+const clusters = data.clusters
+  .map((c) => ({
+    ...c,
+    projects: data.projects.filter((p) => p.cluster === c.id),
+  }))
+  .filter((c) => c.projects.length > 0);
+
+const title = "Londopy — projects";
+const description =
+  "London C.'s open-source work: tools for climbing, medicine, Windows internals, and geospatial — mostly Rust and Python.";
+---
+
+<Base title={title} description={description}>
+  <BinaryIntro />
+  <Nav active="home" />
+  <Hero clusters={clusters} />
+
+  <main class="container">
+    <div id="filter-bar" class="filter-bar mono" hidden>
+      <span class="fb-label">filtering by</span>
+      <span class="fb-chip" id="fb-chip"></span>
+      <span class="fb-count" id="fb-count"></span>
+      <button class="fb-clear" id="fb-clear" type="button">clear ✕</button>
+    </div>
+
+    <p id="filter-empty" class="filter-empty mono" hidden>
+      No projects match that filter.
+    </p>
+
+    <section id="featured" aria-label="Featured projects" class="rise" style="animation-delay: 0.1s">
+      <div class="section-header">
+        <span class="hash" aria-hidden="true">##</span>
+        <h2><span aria-hidden="true">⭐</span> Featured</h2>
+        <span class="rule" aria-hidden="true"></span>
+      </div>
+      <p class="section-blurb">Start here — the four that show the range.</p>
+      <div class="grid grid-featured">
+        {featured.map((p) => <ProjectCard {...p} />)}
+      </div>
+    </section>
+
+    {clusters.map((c) => (
+      <ClusterSection
+        id={c.id}
+        emoji={c.emoji}
+        title={c.title}
+        blurb={c.blurb}
+        projects={c.projects}
+      />
+    ))}
+
+    <InProgress items={data.inProgress} />
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .filter-bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin: 2rem 0 -1rem;
+    padding: 0.6rem 0.85rem;
+    background: var(--bg-raised);
+    border: 1px solid var(--border-bright);
+    border-radius: var(--radius);
+    font-size: 0.82rem;
+  }
+
+  .fb-label {
+    color: var(--text-faint);
+  }
+
+  .fb-chip {
+    color: var(--accent);
+    background: var(--accent-dim);
+    border: 1px solid rgba(69, 212, 131, 0.35);
+    border-radius: 999px;
+    padding: 0.1rem 0.6rem;
+  }
+
+  .fb-count {
+    color: var(--text-dim);
+  }
+
+  .fb-clear {
+    margin-left: auto;
+    font: inherit;
+    color: var(--text-dim);
+    background: none;
+    border: 1px solid var(--border-bright);
+    border-radius: 4px;
+    padding: 0.2rem 0.6rem;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .fb-clear:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .filter-empty {
+    color: var(--text-dim);
+    margin: 2.5rem 0;
+    font-size: 0.9rem;
+  }
+</style>
+
+<script>
+  const cards = Array.from(document.querySelectorAll<HTMLElement>(".card"));
+  const sections = Array.from(
+    document.querySelectorAll<HTMLElement>("main > section")
+  );
+  const wip = document.querySelector<HTMLElement>(".wip");
+  const bar = document.getElementById("filter-bar");
+  const chip = document.getElementById("fb-chip");
+  const countEl = document.getElementById("fb-count");
+  const emptyMsg = document.getElementById("filter-empty");
+
+  let active: { type: "tag" | "lang"; value: string } | null = null;
+
+  function cardMatches(card: HTMLElement) {
+    if (!active) return true;
+    const raw =
+      (active.type === "tag" ? card.dataset.tags : card.dataset.langs) || "";
+    return raw.split("|").includes(active.value);
+  }
+
+  function apply() {
+    let total = 0;
+    cards.forEach((c) => {
+      const m = cardMatches(c);
+      c.hidden = !m;
+      if (m) total += 1;
+    });
+
+    sections.forEach((s) => {
+      if (!s.querySelector(".card")) return; // non-project sections
+      const anyVisible = Array.from(s.querySelectorAll<HTMLElement>(".card")).some(
+        (c) => !c.hidden
+      );
+      s.hidden = !!active && !anyVisible;
+    });
+
+    if (wip) wip.hidden = !!active;
+
+    if (active && bar && chip && countEl) {
+      bar.hidden = false;
+      chip.textContent = (active.type === "tag" ? "#" : "") + active.value;
+      countEl.textContent = total + (total === 1 ? " project" : " projects");
+    } else if (bar) {
+      bar.hidden = true;
+    }
+
+    if (emptyMsg) emptyMsg.hidden = !(active && total === 0);
+  }
+
+  function setFilter(type: "tag" | "lang", value: string) {
+    if (active && active.type === type && active.value === value) {
+      active = null;
+    } else {
+      active = { type, value };
+    }
+    apply();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  document.addEventListener("click", (e) => {
+    const target = e.target as HTMLElement;
+
+    const filterEl = target.closest<HTMLElement>(
+      "[data-filter-tag],[data-filter-lang]"
+    );
+    if (filterEl) {
+      e.preventDefault();
+      if (filterEl.dataset.filterTag !== undefined) {
+        setFilter("tag", filterEl.dataset.filterTag);
+      } else if (filterEl.dataset.filterLang !== undefined) {
+        setFilter("lang", filterEl.dataset.filterLang);
+      }
+      return;
+    }
+
+    const copyEl = target.closest<HTMLElement>("[data-copy]");
+    if (copyEl && navigator.clipboard) {
+      navigator.clipboard.writeText(copyEl.dataset.copy || "").then(() => {
+        copyEl.classList.add("copied");
+        setTimeout(() => copyEl.classList.remove("copied"), 1400);
+      });
+    }
+  });
+
+  document.getElementById("fb-clear")?.addEventListener("click", () => {
+    active = null;
+    apply();
+  });
+</script>

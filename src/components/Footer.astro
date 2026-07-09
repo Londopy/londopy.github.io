@@ -1,0 +1,46 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer>
+  <div class="container">
+    <p class="mono exit" aria-hidden="true">
+      <span class="user">londopy</span><span class="at">@</span><span class="host">github</span><span class="path">:~$</span> exit
+    </p>
+    <p class="line">
+      © {year} London C. ·
+      <a href="https://github.com/Londopy">GitHub</a> ·
+      curated index — not every repo, just the good ones
+    </p>
+    <p class="line dim">Built with Astro. Static, fast, and nearly JS-free.</p>
+  </div>
+</footer>
+
+<style>
+  footer {
+    border-top: 1px solid var(--border);
+    margin-top: 4.5rem;
+    padding: 2.25rem 0 3rem;
+    background: linear-gradient(0deg, transparent, rgba(15, 20, 27, 0.6));
+  }
+
+  .exit {
+    color: var(--text-faint);
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .exit .user { color: var(--accent); }
+  .exit .host { color: var(--text-dim); }
+
+  .line {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+  }
+
+  .dim {
+    color: var(--text-faint);
+    font-size: 0.78rem;
+    margin-top: 0.25rem;
+  }
+</style>

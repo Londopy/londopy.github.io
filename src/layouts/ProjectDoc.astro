@@ -1,0 +1,221 @@
+---
+import Base from "./Base.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  name: string;
+  tagline: string;
+  language: string;
+  repo: string;
+  demo?: string | null;
+  pip?: string | null;
+  stars?: number;
+}
+
+const { name, tagline, language, repo, demo, pip, stars } = Astro.props;
+const isPypi = !!demo && demo.includes("pypi.org");
+const demoLabel = isPypi ? "View on PyPI ↗" : "Live demo ↗";
+const title = `${name} — London C.`;
+---
+
+<Base title={title} description={tagline}>
+  <Nav active="home" />
+
+  <main class="container doc">
+    <p class="crumb mono">
+      <a href="/">~/projects</a><span class="sep">/</span><span class="cur">{name}</span>
+    </p>
+
+    <header class="doc-head rise">
+      <div class="title-row">
+        <h1 class="mono">{name}</h1>
+        {stars ? <span class="stars mono">★ {stars}</span> : null}
+      </div>
+      <p class="tagline">{tagline}</p>
+      <p class="lang mono">{language}</p>
+
+      {pip && (
+        <button class="install mono" type="button" data-copy={`pip install ${pip}`} title="Copy to clipboard">
+          <span class="dollar" aria-hidden="true">$</span>
+          <span class="cmd">pip install {pip}</span>
+          <span class="copyicon" aria-hidden="true"></span>
+        </button>
+      )}
+
+      <div class="links mono">
+        <a class="btn btn-accent" href={repo}>View source ↗</a>
+        {demo && <a class="btn" href={demo}>{demoLabel}</a>}
+      </div>
+    </header>
+
+    <article class="prose rise" style="animation-delay: 0.05s">
+      <slot />
+    </article>
+
+    <p class="back mono"><a href="/">← back to all projects</a></p>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .doc {
+    max-width: 720px;
+    padding-top: 3.5rem;
+  }
+
+  .crumb {
+    font-size: 0.82rem;
+    color: var(--text-faint);
+    margin-bottom: 1.5rem;
+  }
+
+  .crumb .sep { margin: 0 0.4em; }
+  .crumb .cur { color: var(--text-dim); }
+
+  .title-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+  }
+
+  h1 {
+    font-size: clamp(1.7rem, 4vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    overflow-wrap: anywhere;
+  }
+
+  .stars {
+    color: var(--amber);
+    font-size: 0.9rem;
+  }
+
+  .doc-head .tagline {
+    color: var(--text);
+    font-size: 1.08rem;
+    line-height: 1.55;
+    margin: 0.75rem 0 0.4rem;
+    max-width: 60ch;
+  }
+
+  .doc-head .lang {
+    color: var(--text-dim);
+    font-size: 0.82rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .install {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.45rem 0.7rem;
+    cursor: pointer;
+    margin-bottom: 1.1rem;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+
+  .install:hover { border-color: var(--border-bright); color: var(--text); }
+  .install .dollar { color: var(--accent); }
+  .install .cmd { flex: 1; }
+  .install .copyicon::before { content: "⧉"; color: var(--text-faint); }
+  .install.copied { border-color: var(--accent); color: var(--accent); }
+  .install.copied .copyicon::before { content: "✓"; color: var(--accent); }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-bottom: 1.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .btn {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    border: 1px solid var(--border-bright);
+    border-radius: 4px;
+    padding: 0.32rem 0.7rem;
+    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .btn:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-dim);
+    text-decoration: none;
+  }
+
+  .btn-accent { color: var(--accent); border-color: rgba(69, 212, 131, 0.4); }
+
+  /* prose body */
+  .prose {
+    margin-top: 1.75rem;
+  }
+
+  .prose :global(h2) {
+    font-family: var(--mono);
+    font-size: 1.05rem;
+    color: var(--text);
+    margin: 2rem 0 0.6rem;
+  }
+
+  .prose :global(h2 .hash) { color: var(--text-faint); margin-right: 0.5em; }
+
+  .prose :global(p) {
+    color: var(--text-dim);
+    font-size: 0.97rem;
+    line-height: 1.72;
+    margin-bottom: 0.9rem;
+    max-width: 66ch;
+  }
+
+  .prose :global(ul) {
+    color: var(--text-dim);
+    font-size: 0.97rem;
+    line-height: 1.7;
+    margin: 0 0 1rem 1.1rem;
+    max-width: 66ch;
+  }
+
+  .prose :global(li) { margin-bottom: 0.3rem; }
+
+  .prose :global(code) {
+    font-family: var(--mono);
+    font-size: 0.85em;
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 0.05em 0.35em;
+    color: var(--accent);
+  }
+
+  .prose :global(strong) { color: var(--text); font-weight: 600; }
+
+  .back {
+    margin-top: 2.5rem;
+    font-size: 0.85rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rise { animation: none; }
+  }
+</style>
+
+<script>
+  document.addEventListener("click", (e) => {
+    const el = (e.target as HTMLElement).closest<HTMLElement>("[data-copy]");
+    if (el && navigator.clipboard) {
+      navigator.clipboard.writeText(el.dataset.copy || "").then(() => {
+        el.classList.add("copied");
+        setTimeout(() => el.classList.remove("copied"), 1400);
+      });
+    }
+  });
+</script>
