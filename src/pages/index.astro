@@ -28,6 +28,12 @@ const description =
   <Hero clusters={clusters} />
 
   <main class="container">
+    <p id="filter-hint" class="filter-hint mono">
+      <span class="tip">tip</span> click any <span class="ex">#tag</span> or
+      <span class="ex"><span class="ex-dot" aria-hidden="true"></span>language</span>
+      on a card to filter the list
+    </p>
+
     <div id="filter-bar" class="filter-bar mono" hidden>
       <span class="fb-label">filtering by</span>
       <span class="fb-chip" id="fb-chip"></span>
@@ -68,6 +74,41 @@ const description =
 </Base>
 
 <style>
+  .filter-hint {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.4em;
+    margin: 2rem 0 -0.5rem;
+    font-size: 0.78rem;
+    color: var(--text-faint);
+  }
+
+  .filter-hint .tip {
+    color: var(--accent);
+    border: 1px solid rgba(69, 212, 131, 0.35);
+    border-radius: 3px;
+    padding: 0.05rem 0.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.9em;
+  }
+
+  .filter-hint .ex {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    color: var(--text-dim);
+  }
+
+  .filter-hint .ex-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--lang-rust);
+    display: inline-block;
+  }
+
   .filter-bar {
     display: flex;
     align-items: center;
@@ -131,6 +172,7 @@ const description =
   const chip = document.getElementById("fb-chip");
   const countEl = document.getElementById("fb-count");
   const emptyMsg = document.getElementById("filter-empty");
+  const hint = document.getElementById("filter-hint");
 
   let active: { type: "tag" | "lang"; value: string } | null = null;
 
@@ -158,6 +200,7 @@ const description =
     });
 
     if (wip) wip.hidden = !!active;
+    if (hint) hint.hidden = !!active;
 
     if (active && bar && chip && countEl) {
       bar.hidden = false;

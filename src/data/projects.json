@@ -21,7 +21,7 @@
       "demo": null,
       "page": "/projects/capture-bypass/",
       "featured": true,
-      "stars": 20
+      "stars": 21
     },
     {
       "cluster": "systems",
@@ -196,6 +196,17 @@
       "tags": ["wifi", "assessment", "authorized-use"],
       "repo": "https://github.com/Londopy/kto",
       "demo": null,
+      "page": null,
+      "featured": false
+    },
+    {
+      "cluster": "security",
+      "name": "deadpoint",
+      "tagline": "Purple-team RNG analysis toolkit — detects predictable randomness (MT19937, LCG, xorshift), recovers the generator's state to prove it, then recommends the fix. Embedded/OT audit framing.",
+      "language": "Python + Rust",
+      "tags": ["prng", "z3", "purple-team", "pypi"],
+      "repo": "https://github.com/Londopy/deadpoint",
+      "demo": "https://pypi.org/project/deadpoint/",
       "page": null,
       "featured": false
     },
