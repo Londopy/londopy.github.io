@@ -1,0 +1,71 @@
+---
+// A soft glowing orb that trails the cursor. Desktop / fine-pointer only —
+// removed entirely on touch devices, and it never intercepts clicks.
+---
+
+<div id="cursor-orb" aria-hidden="true"></div>
+
+<style>
+  #cursor-orb {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    will-change: transform;
+    mix-blend-mode: screen;
+    background: radial-gradient(
+      circle,
+      rgba(69, 212, 131, 0.7) 0%,
+      rgba(69, 212, 131, 0.35) 35%,
+      rgba(69, 212, 131, 0) 70%
+    );
+    box-shadow:
+      0 0 22px 8px rgba(69, 212, 131, 0.22),
+      0 0 6px 2px rgba(201, 255, 228, 0.35);
+  }
+
+  /* Touch / coarse-pointer devices: no orb at all. */
+  @media (hover: none), (pointer: coarse) {
+    #cursor-orb { display: none; }
+  }
+</style>
+
+<script>
+  const orb = document.getElementById("cursor-orb");
+  const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+  if (!orb || !fine) {
+    orb?.remove();
+  } else {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const HALF = 13; // half of the orb size, to center it on the pointer
+    let tx = window.innerWidth / 2;
+    let ty = window.innerHeight / 2;
+    let x = tx;
+    let y = ty;
+
+    window.addEventListener("mousemove", (e) => {
+      tx = e.clientX;
+      ty = e.clientY;
+      orb.style.opacity = "1";
+    });
+    window.addEventListener("mouseleave", () => {
+      orb.style.opacity = "0";
+    });
+
+    function frame() {
+      const k = reduce ? 1 : 0.18; // no trailing when reduced motion is on
+      x += (tx - x) * k;
+      y += (ty - y) * k;
+      orb.style.transform = `translate(${x - HALF}px, ${y - HALF}px)`;
+      requestAnimationFrame(frame);
+    }
+    frame();
+  }
+</script>

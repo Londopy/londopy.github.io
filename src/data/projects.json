@@ -1,13 +1,13 @@
 {
   "clusters": [
     { "id": "systems", "emoji": "🖥️", "title": "Systems & Windows internals", "blurb": "Rust tooling that goes under the hood of Windows — injection, hooks, tray daemons." },
+    { "id": "security", "emoji": "🛡️", "title": "Security tooling", "blurb": "Assessment tools for authorized use, with the framing to match." },
     { "id": "medicine", "emoji": "🚑", "title": "Pre-hospital & clinical medicine", "blurb": "Calculators, decision support, and computational models built from the EMS track." },
     { "id": "climbing", "emoji": "🧗", "title": "Climbing, outdoors & physics", "blurb": "Physics engines and hardware replicas for rope, rock, and retro aerospace." },
     { "id": "geospatial", "emoji": "🌍", "title": "Geospatial / OSINT", "blurb": "Rust-accelerated geospatial intelligence tooling." },
     { "id": "networking", "emoji": "🔌", "title": "Networking & privacy", "blurb": "Daemons and monitors that keep traffic where it belongs." },
     { "id": "devtools", "emoji": "🛠️", "title": "Dev tooling & libraries", "blurb": "Small, sharp libraries published to PyPI." },
     { "id": "ai", "emoji": "🤖", "title": "AI & computer vision", "blurb": "Real-time vision pipelines and generative experiments." },
-    { "id": "security", "emoji": "🛡️", "title": "Security tooling", "blurb": "Assessment tools for authorized use, with the framing to match." },
     { "id": "games", "emoji": "🎮", "title": "Consumer & games", "blurb": "Tools for the games I actually play." }
   ],
   "projects": [
