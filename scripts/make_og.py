@@ -88,7 +88,7 @@ for row, start in enumerate((0, 4)):
         d.text((x + 24, y), name, font=f_lang, fill=TEXT)
         x += 24 + d.textlength(name, f_lang) + 34
 
-segments(132, 496, [("19 projects · 9 domains ", FAINT), ("▌", GREEN)], f_lang)
+segments(132, 496, [("20 projects · 9 domains ", FAINT), ("▌", GREEN)], f_lang)
 
 # url
 f_url = ImageFont.truetype(MONO, 22)

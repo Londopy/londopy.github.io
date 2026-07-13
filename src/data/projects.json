@@ -167,6 +167,17 @@
       "featured": false
     },
     {
+      "cluster": "devtools",
+      "name": "timefuzz",
+      "tagline": "Fuzzy natural-language time parsing that goes past dateparser — resolves phrases like \"end of Q3\" or \"the Tuesday after my birthday\" into datetimes or ranges, each with a confidence score. Rust core, Python API.",
+      "language": "Rust + Python",
+      "tags": ["nlp", "datetime", "pyo3", "pypi"],
+      "repo": "https://github.com/Londopy/timefuzz",
+      "demo": "https://pypi.org/project/timefuzz/",
+      "page": null,
+      "featured": false
+    },
+    {
       "cluster": "ai",
       "name": "Live_Video_Feed_Facial_Recognition",
       "tagline": "Real-time facial recognition pipeline running on a live webcam or video feed.",
@@ -224,7 +235,6 @@
   ],
   "inProgress": [
     { "name": "ghostwire", "hint": "networking" },
-    { "name": "timefuzz", "hint": "time ranges" },
     { "name": "barodepth", "hint": "freediving" },
     { "name": "trailmath", "hint": "outdoors" },
     { "name": "tidaltable", "hint": "outdoors" },

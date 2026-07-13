@@ -66,7 +66,7 @@ const pipPkg = isPypi ? demo!.split("/project/")[1]?.replace(/\/+$/, "") : null;
   <div class="actions mono">
     <a class="btn" href={repo}>repo →</a>
     {demo && <a class="btn btn-accent" href={demo}>{demoLabel}</a>}
-    {page && <a class="btn" href={page}>docs →</a>}
+    <a class="btn" href={`/projects/${name}/`}>docs →</a>
   </div>
 </article>
 

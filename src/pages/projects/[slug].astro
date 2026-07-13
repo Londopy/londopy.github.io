@@ -1,0 +1,55 @@
+---
+import ProjectDoc from "../../layouts/ProjectDoc.astro";
+import data from "../../data/projects.json";
+import { projectDocs } from "../../data/projectDocs.js";
+
+export function getStaticPaths() {
+  return data.projects.map((p) => ({
+    params: { slug: p.name },
+    props: { project: p },
+  }));
+}
+
+const { project } = Astro.props;
+const isPypi = !!project.demo && project.demo.includes("pypi.org");
+const pip = isPypi ? project.demo.split("/project/")[1]?.replace(/\/+$/, "") : null;
+const body = projectDocs[project.name];
+---
+
+<ProjectDoc
+  name={project.name}
+  tagline={project.tagline}
+  language={project.language}
+  repo={project.repo}
+  demo={project.demo}
+  pip={pip}
+  stars={project.stars}
+>
+  {body ? (
+    <Fragment set:html={body} />
+  ) : (
+    <Fragment>
+      <h2><span class="hash">##</span> Overview</h2>
+      <p>{project.tagline}</p>
+
+      <h2><span class="hash">##</span> At a glance</h2>
+      <ul>
+        <li><strong>Language:</strong> {project.language}</li>
+        <li><strong>Tags:</strong> {project.tags.map((t) => `#${t}`).join("  ·  ")}</li>
+        {pip && (
+          <li><strong>Install:</strong> <code>pip install {pip}</code></li>
+        )}
+      </ul>
+
+      <h2><span class="hash">##</span> Full docs</h2>
+      <p>
+        The complete documentation, usage, and examples for {project.name} live
+        in the <a href={project.repo}>README on GitHub »</a>{
+          project.demo && !isPypi && (
+            <Fragment> — or try the <a href={project.demo}>live demo</a></Fragment>
+          )
+        }.
+      </p>
+    </Fragment>
+  )}
+</ProjectDoc>
