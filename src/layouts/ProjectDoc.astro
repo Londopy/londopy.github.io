@@ -30,7 +30,7 @@ const title = `${name} — London C.`;
     <header class="doc-head rise">
       <div class="title-row">
         <h1 class="mono">{name}</h1>
-        {stars ? <span class="stars mono">★ {stars}</span> : null}
+        {stars && stars >= 2 ? <span class="stars mono">★ {stars}</span> : null}
       </div>
       <p class="tagline">{tagline}</p>
       <p class="lang mono">{language}</p>

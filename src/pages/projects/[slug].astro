@@ -2,6 +2,7 @@
 import ProjectDoc from "../../layouts/ProjectDoc.astro";
 import data from "../../data/projects.json";
 import { projectDocs } from "../../data/projectDocs.js";
+import { getStarMap, withStars } from "../../lib/stars.js";
 
 export function getStaticPaths() {
   return data.projects.map((p) => ({
@@ -10,7 +11,8 @@ export function getStaticPaths() {
   }));
 }
 
-const { project } = Astro.props;
+const starMap = await getStarMap();
+const project = withStars(Astro.props.project, starMap);
 const isPypi = !!project.demo && project.demo.includes("pypi.org");
 const pip = isPypi ? project.demo.split("/project/")[1]?.replace(/\/+$/, "") : null;
 const body = projectDocs[project.name];

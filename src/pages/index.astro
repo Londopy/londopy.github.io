@@ -8,12 +8,16 @@ import ProjectCard from "../components/ProjectCard.astro";
 import InProgress from "../components/InProgress.astro";
 import Footer from "../components/Footer.astro";
 import data from "../data/projects.json";
+import { getStarMap, withStars } from "../lib/stars.js";
 
-const featured = data.projects.filter((p) => p.featured);
+const starMap = await getStarMap();
+const projects = data.projects.map((p) => withStars(p, starMap));
+
+const featured = projects.filter((p) => p.featured);
 const clusters = data.clusters
   .map((c) => ({
     ...c,
-    projects: data.projects.filter((p) => p.cluster === c.id),
+    projects: projects.filter((p) => p.cluster === c.id),
   }))
   .filter((c) => c.projects.length > 0);
 

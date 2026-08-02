@@ -38,7 +38,7 @@ const pipPkg = isPypi ? demo!.split("/project/")[1]?.replace(/\/+$/, "") : null;
 <article class="card" class:list={[{ featured }]} data-tags={tags.join("|")} data-langs={langs.join("|")}>
   <div class="card-head">
     <h3 class="mono"><a href={repo}>{name}</a></h3>
-    {stars ? <span class="stars mono" title={`${stars} stars on GitHub`}>★ {stars}</span> : null}
+    {stars && stars >= 2 ? <span class="stars mono" title={`${stars} stars on GitHub`}>★ {stars}</span> : null}
   </div>
 
   <p class="tagline">{tagline}</p>
