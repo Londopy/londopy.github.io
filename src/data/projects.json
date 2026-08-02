@@ -101,6 +101,17 @@
       "featured": true
     },
     {
+      "cluster": "medicine",
+      "name": "DiresQ",
+      "tagline": "Disaster-response app that tracks the responders, not just the incidents — join a report, check in on a timer, and the accountability board turns red if you go dark. Flask backend, built at Katy Youth Hacks 2026.",
+      "language": "Python",
+      "tags": ["flask", "emergency-response", "hackathon"],
+      "repo": "https://github.com/Skythe7/DiresQ",
+      "demo": null,
+      "page": null,
+      "featured": false
+    },
+    {
       "cluster": "climbing",
       "name": "ropesim",
       "tagline": "Models lead-fall dynamics with a damped spring / RK4 integrator in Rust, exposed to Python via PyO3/Maturin. Ships a full Python API, a five-command CLI, and a PySide6 desktop GUI.",

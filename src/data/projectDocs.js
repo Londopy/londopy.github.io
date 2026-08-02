@@ -85,4 +85,24 @@ export const projectDocs = {
 <h2><span class="hash">##</span> Try it</h2>
 <p>timefuzz is on PyPI — <code>pip install timefuzz</code>. Point it at a phrase with an optional reference <code>now</code> plus anchor dates, then match on the result shape. The README carries the full grammar reference and a cookbook.</p>
 `,
+
+  DiresQ: `
+<h2><span class="hash">##</span> What it is</h2>
+<p><strong>DiresQ</strong> is a disaster-response app with an unusual premise: every other tool maps where the disaster is — DiresQ tracks <em>the people going into it</em>. Built at <strong>Katy Youth Hacks 2026</strong> (theme: Tech for Humanity). I did the backend; my teammate built the frontend.</p>
+
+<h2><span class="hash">##</span> The idea</h2>
+<p>When a civilian volunteer self-deploys into a flood or storm, nobody logs that they went, nobody knows where they are, and nobody knows when to start worrying. And because everyone converges on whatever address is loudest online, six responders pile onto one street while the next one over has nobody. DiresQ fixes both: you join a report, check in on a timer, and check out — and every report shows how many people are already on it, so help spreads out instead of piling up.</p>
+
+<h2><span class="hash">##</span> The accountability board</h2>
+<p>The core is the board — everyone who's out, what they're doing, and how long since anyone heard from them. Miss a check-in and your row turns red on its own. There's no background job to forget to start and no timer process that can silently die: "overdue" is computed the moment the board is read. Nobody has to notice you went dark — the board does, and now someone knows where to start looking.</p>
+
+<h2><span class="hash">##</span> How it's built</h2>
+<ul>
+<li><strong>Flask</strong> backend, server-rendered Jinja pages, a JSON API under <code>/api</code>, and SQLite — with 159 tests across every route, permission rule, and the overdue math.</li>
+<li>Free-text ETAs like "30 min" are parsed through <a href="https://github.com/Londopy/timefuzz">timefuzz</a> behind a confidence floor — a safety timer set from a bad guess is worse than no timer at all.</li>
+<li>Severity can be set by running <strong>START triage</strong> through <a href="https://pypi.org/project/vitalscore/">vitalscore</a> instead of a guess.</li>
+<li>Staffing is derived from responder votes, with the most cautious signal winning — an optimistic report can never suppress a call for help.</li>
+</ul>
+<p>Two of the pieces it leans on — timefuzz and vitalscore — are my own libraries, which is half the reason it came together in a weekend.</p>
+`,
 };
