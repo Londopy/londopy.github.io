@@ -110,7 +110,8 @@
       "repo": "https://github.com/Skythe7/DiresQ",
       "demo": null,
       "page": null,
-      "featured": true
+      "featured": true,
+      "stars": 2
     },
     {
       "cluster": "climbing",

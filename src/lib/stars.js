@@ -5,6 +5,10 @@
 
 let cache = null;
 
+// Cards that live under someone else's account (e.g. collaborations) — the
+// user-repos call won't cover them, so fetch each one directly. "owner/name".
+const EXTERNAL_REPOS = ["Skythe7/DiresQ"];
+
 export async function getStarMap() {
   if (cache) return cache;
   const map = {};
@@ -20,6 +24,19 @@ export async function getStarMap() {
     if (res.ok) {
       const repos = await res.json();
       for (const r of repos) map[r.name.toLowerCase()] = r.stargazers_count ?? 0;
+    }
+
+    // External / collaborator repos, one call each.
+    for (const full of EXTERNAL_REPOS) {
+      try {
+        const r = await fetch(`https://api.github.com/repos/${full}`, { headers });
+        if (r.ok) {
+          const j = await r.json();
+          map[j.name.toLowerCase()] = j.stargazers_count ?? 0;
+        }
+      } catch {
+        /* skip this one */
+      }
     }
   } catch {
     /* offline / rate-limited — fall back to manual values */
