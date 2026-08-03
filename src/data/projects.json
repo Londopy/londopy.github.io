@@ -8,7 +8,8 @@
     { "id": "networking", "emoji": "🔌", "title": "Networking & privacy", "blurb": "Daemons and monitors that keep traffic where it belongs." },
     { "id": "devtools", "emoji": "🛠️", "title": "Dev tooling & libraries", "blurb": "Small, sharp libraries published to PyPI." },
     { "id": "ai", "emoji": "🤖", "title": "AI & computer vision", "blurb": "Real-time vision pipelines and generative experiments." },
-    { "id": "games", "emoji": "🎮", "title": "Consumer & games", "blurb": "Tools for the games I actually play." }
+    { "id": "games", "emoji": "🎮", "title": "Consumer & games", "blurb": "Tools for the games I actually play." },
+    { "id": "audio", "emoji": "🎧", "title": "Audio", "blurb": "Desktop tools for hearing gear and tuning." }
   ],
   "projects": [
     {
@@ -242,10 +243,24 @@
       "demo": null,
       "page": null,
       "featured": false
+    },
+    {
+      "cluster": "audio",
+      "name": "IEM-Tool-rs",
+      "tagline": "Offline desktop tool for reviewing, tuning, and comparing in-ear monitors — Rust core, Tauri app, cross-platform builds. Based on IEM Tool by MyLittlePrimordia.",
+      "language": "Rust",
+      "tags": ["audio", "tauri", "desktop"],
+      "repo": "https://github.com/Londopy/IEM-Tool-rs",
+      "demo": null,
+      "page": null,
+      "featured": false,
+      "stars": 2
     }
   ],
   "inProgress": [
     { "name": "ghostwire", "hint": "networking" },
+    { "name": "katabasis", "hint": "new" },
+    { "name": "Cue", "hint": "new" },
     { "name": "barodepth", "hint": "freediving" },
     { "name": "trailmath", "hint": "outdoors" },
     { "name": "tidaltable", "hint": "outdoors" },
