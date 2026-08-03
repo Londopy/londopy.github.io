@@ -66,7 +66,7 @@
       "repo": "https://github.com/Londopy/drugdose",
       "demo": "https://pypi.org/project/drugdose/",
       "page": "/projects/drugdose/",
-      "featured": true
+      "featured": false
     },
     {
       "cluster": "medicine",
@@ -99,7 +99,7 @@
       "repo": "https://github.com/Londopy/akribia",
       "demo": "https://londopy.github.io/akribia/",
       "page": null,
-      "featured": true
+      "featured": false
     },
     {
       "cluster": "medicine",
@@ -110,7 +110,7 @@
       "repo": "https://github.com/Skythe7/DiresQ",
       "demo": null,
       "page": null,
-      "featured": false
+      "featured": true
     },
     {
       "cluster": "climbing",
@@ -176,7 +176,7 @@
       "repo": "https://github.com/Londopy/patchnotes",
       "demo": "https://pypi.org/project/patchnotes/",
       "page": null,
-      "featured": false
+      "featured": true
     },
     {
       "cluster": "devtools",
