@@ -8,10 +8,10 @@ import ProjectCard from "../components/ProjectCard.astro";
 import InProgress from "../components/InProgress.astro";
 import Footer from "../components/Footer.astro";
 import data from "../data/projects.json";
-import { getStarMap, withStars } from "../lib/stars.js";
+import { getMetaMap, withMeta } from "../lib/stars.js";
 
-const starMap = await getStarMap();
-const projects = data.projects.map((p) => withStars(p, starMap));
+const metaMap = await getMetaMap();
+const projects = data.projects.map((p) => withMeta(p, metaMap));
 
 const featured = projects.filter((p) => p.featured);
 const clusters = data.clusters
@@ -32,6 +32,16 @@ const description =
   <Hero clusters={clusters} />
 
   <main class="container">
+    <div class="controls mono">
+      <span class="ctrl-label">sort</span>
+      <div class="sort-group" role="group" aria-label="Sort projects">
+        <button class="sort-btn active" type="button" data-sort="domain">by domain</button>
+        <button class="sort-btn" type="button" data-sort="stars">most starred</button>
+        <button class="sort-btn" type="button" data-sort="updated">recently updated</button>
+        <button class="sort-btn" type="button" data-sort="az">A–Z</button>
+      </div>
+    </div>
+
     <p id="filter-hint" class="filter-hint mono">
       <span class="tip">tip</span> click any <span class="ex">#tag</span> or
       <span class="ex"><span class="ex-dot" aria-hidden="true"></span>language</span>
@@ -49,41 +59,95 @@ const description =
       No projects match that filter.
     </p>
 
-    <section id="featured" aria-label="Featured projects" class="rise" style="animation-delay: 0.1s">
+    <div id="grouped-view">
+      <section id="featured" aria-label="Featured projects" class="rise" style="animation-delay: 0.1s">
+        <div class="section-header">
+          <span class="hash" aria-hidden="true">##</span>
+          <h2><span aria-hidden="true">⭐</span> Featured</h2>
+          <span class="rule" aria-hidden="true"></span>
+        </div>
+        <p class="section-blurb">Start here — the ones that show the range.</p>
+        <div class="grid grid-featured">
+          {featured.map((p) => <ProjectCard {...p} />)}
+        </div>
+      </section>
+
+      {clusters.map((c) => (
+        <ClusterSection
+          id={c.id}
+          emoji={c.emoji}
+          title={c.title}
+          blurb={c.blurb}
+          projects={c.projects}
+        />
+      ))}
+
+      <InProgress items={data.inProgress} />
+    </div>
+
+    <div id="sorted-view" hidden>
       <div class="section-header">
         <span class="hash" aria-hidden="true">##</span>
-        <h2><span aria-hidden="true">⭐</span> Featured</h2>
+        <h2><span aria-hidden="true">↕</span> <span id="sorted-title">All projects</span></h2>
         <span class="rule" aria-hidden="true"></span>
       </div>
-      <p class="section-blurb">Start here — the four that show the range.</p>
-      <div class="grid grid-featured">
-        {featured.map((p) => <ProjectCard {...p} />)}
+      <div class="grid" id="sorted-grid">
+        {projects.map((p) => <ProjectCard {...p} />)}
       </div>
-    </section>
-
-    {clusters.map((c) => (
-      <ClusterSection
-        id={c.id}
-        emoji={c.emoji}
-        title={c.title}
-        blurb={c.blurb}
-        projects={c.projects}
-      />
-    ))}
-
-    <InProgress items={data.inProgress} />
+    </div>
   </main>
 
   <Footer />
 </Base>
 
 <style>
+  .controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.7rem;
+    margin: 2rem 0 0;
+    font-size: 0.8rem;
+  }
+
+  .ctrl-label {
+    color: var(--text-faint);
+  }
+
+  .sort-group {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+
+  .sort-btn {
+    font: inherit;
+    color: var(--text-dim);
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.25rem 0.7rem;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .sort-btn:hover {
+    color: var(--accent);
+    border-color: var(--border-bright);
+  }
+
+  .sort-btn.active {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-dim);
+  }
+
   .filter-hint {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     gap: 0.4em;
-    margin: 2rem 0 -0.5rem;
+    margin: 0.75rem 0 -0.5rem;
     font-size: 0.78rem;
     color: var(--text-faint);
   }
@@ -118,7 +182,7 @@ const description =
     align-items: center;
     flex-wrap: wrap;
     gap: 0.6rem;
-    margin: 2rem 0 -1rem;
+    margin: 1rem 0 -1rem;
     padding: 0.6rem 0.85rem;
     background: var(--bg-raised);
     border: 1px solid var(--border-bright);
@@ -126,9 +190,7 @@ const description =
     font-size: 0.82rem;
   }
 
-  .fb-label {
-    color: var(--text-faint);
-  }
+  .fb-label { color: var(--text-faint); }
 
   .fb-chip {
     color: var(--accent);
@@ -138,9 +200,7 @@ const description =
     padding: 0.1rem 0.6rem;
   }
 
-  .fb-count {
-    color: var(--text-dim);
-  }
+  .fb-count { color: var(--text-dim); }
 
   .fb-clear {
     margin-left: auto;
@@ -154,58 +214,58 @@ const description =
     transition: color 0.15s ease, border-color 0.15s ease;
   }
 
-  .fb-clear:hover {
-    color: var(--accent);
-    border-color: var(--accent);
-  }
+  .fb-clear:hover { color: var(--accent); border-color: var(--accent); }
 
   .filter-empty {
     color: var(--text-dim);
     margin: 2.5rem 0;
     font-size: 0.9rem;
   }
+
+  #sorted-view .grid { margin-top: 1.4rem; }
 </style>
 
 <script>
-  const cards = Array.from(document.querySelectorAll<HTMLElement>(".card"));
-  const sections = Array.from(
-    document.querySelectorAll<HTMLElement>("main > section")
-  );
-  const wip = document.querySelector<HTMLElement>(".wip");
+  const groupedView = document.getElementById("grouped-view");
+  const sortedView = document.getElementById("sorted-view");
+  const sortedGrid = document.getElementById("sorted-grid");
+  const sortedCards = sortedGrid ? Array.from(sortedGrid.children) : [];
+  const sortBtns = Array.from(document.querySelectorAll(".sort-btn"));
+
+  // filter elements (operate on the grouped view only)
+  const cards = Array.from(document.querySelectorAll("#grouped-view .card"));
+  const sections = Array.from(document.querySelectorAll("#grouped-view > section"));
+  const wip = document.querySelector(".wip");
   const bar = document.getElementById("filter-bar");
   const chip = document.getElementById("fb-chip");
   const countEl = document.getElementById("fb-count");
   const emptyMsg = document.getElementById("filter-empty");
   const hint = document.getElementById("filter-hint");
 
-  let active: { type: "tag" | "lang"; value: string } | null = null;
+  let active = null; // { type, value }
+  let sortMode = "domain";
 
-  function cardMatches(card: HTMLElement) {
+  // ---------- filter (grouped view) ----------
+  function cardMatches(card) {
     if (!active) return true;
-    const raw =
-      (active.type === "tag" ? card.dataset.tags : card.dataset.langs) || "";
+    const raw = (active.type === "tag" ? card.dataset.tags : card.dataset.langs) || "";
     return raw.split("|").includes(active.value);
   }
 
-  function apply() {
+  function applyFilter() {
     let total = 0;
     cards.forEach((c) => {
       const m = cardMatches(c);
       c.hidden = !m;
       if (m) total += 1;
     });
-
     sections.forEach((s) => {
-      if (!s.querySelector(".card")) return; // non-project sections
-      const anyVisible = Array.from(s.querySelectorAll<HTMLElement>(".card")).some(
-        (c) => !c.hidden
-      );
+      if (!s.querySelector(".card")) return;
+      const anyVisible = Array.from(s.querySelectorAll(".card")).some((c) => !c.hidden);
       s.hidden = !!active && !anyVisible;
     });
-
     if (wip) wip.hidden = !!active;
     if (hint) hint.hidden = !!active;
-
     if (active && bar && chip && countEl) {
       bar.hidden = false;
       chip.textContent = (active.type === "tag" ? "#" : "") + active.value;
@@ -213,37 +273,74 @@ const description =
     } else if (bar) {
       bar.hidden = true;
     }
-
     if (emptyMsg) emptyMsg.hidden = !(active && total === 0);
   }
 
-  function setFilter(type: "tag" | "lang", value: string) {
-    if (active && active.type === type && active.value === value) {
+  // ---------- sort (flat view) ----------
+  function starsOf(el) {
+    return parseFloat(el.dataset.stars) || 0;
+  }
+
+  function applySort() {
+    if (sortMode === "domain" || !sortedGrid) return;
+    const arr = sortedCards.slice();
+    arr.sort((a, b) => {
+      if (sortMode === "stars")
+        return starsOf(b) - starsOf(a) || a.dataset.name.localeCompare(b.dataset.name);
+      if (sortMode === "updated")
+        return (b.dataset.pushed || "").localeCompare(a.dataset.pushed || "");
+      if (sortMode === "az")
+        return a.dataset.name.toLowerCase().localeCompare(b.dataset.name.toLowerCase());
+      return 0;
+    });
+    arr.forEach((c) => sortedGrid.appendChild(c));
+  }
+
+  function setSort(mode) {
+    sortMode = mode;
+    const flat = mode !== "domain";
+    if (groupedView) groupedView.hidden = flat;
+    if (sortedView) sortedView.hidden = !flat;
+    if (flat) {
       active = null;
+      if (bar) bar.hidden = true;
+      if (emptyMsg) emptyMsg.hidden = true;
+      if (hint) hint.hidden = true;
+      applySort();
     } else {
-      active = { type, value };
+      if (hint) hint.hidden = !!active;
+      applyFilter();
     }
-    apply();
+    sortBtns.forEach((b) => b.classList.toggle("active", b.dataset.sort === mode));
+  }
+
+  // ---------- interactions ----------
+  function setFilter(type, value) {
+    if (sortMode !== "domain") setSort("domain"); // a tag click returns to grouped view
+    if (active && active.type === type && active.value === value) active = null;
+    else active = { type, value };
+    applyFilter();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   document.addEventListener("click", (e) => {
-    const target = e.target as HTMLElement;
+    const target = e.target;
 
-    const filterEl = target.closest<HTMLElement>(
-      "[data-filter-tag],[data-filter-lang]"
-    );
-    if (filterEl) {
-      e.preventDefault();
-      if (filterEl.dataset.filterTag !== undefined) {
-        setFilter("tag", filterEl.dataset.filterTag);
-      } else if (filterEl.dataset.filterLang !== undefined) {
-        setFilter("lang", filterEl.dataset.filterLang);
-      }
+    const sortEl = target.closest(".sort-btn");
+    if (sortEl) {
+      setSort(sortEl.dataset.sort);
       return;
     }
 
-    const copyEl = target.closest<HTMLElement>("[data-copy]");
+    const filterEl = target.closest("[data-filter-tag],[data-filter-lang]");
+    if (filterEl) {
+      e.preventDefault();
+      if (filterEl.dataset.filterTag !== undefined) setFilter("tag", filterEl.dataset.filterTag);
+      else if (filterEl.dataset.filterLang !== undefined) setFilter("lang", filterEl.dataset.filterLang);
+      return;
+    }
+
+    const copyEl = target.closest("[data-copy]");
     if (copyEl && navigator.clipboard) {
       navigator.clipboard.writeText(copyEl.dataset.copy || "").then(() => {
         copyEl.classList.add("copied");
@@ -254,6 +351,6 @@ const description =
 
   document.getElementById("fb-clear")?.addEventListener("click", () => {
     active = null;
-    apply();
+    applyFilter();
   });
 </script>

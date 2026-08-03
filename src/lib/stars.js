@@ -1,7 +1,8 @@
-// Build-time star fetch. Pulls live stargazer counts for all of @Londopy's
-// repos in a single GitHub API call and memoizes them for the build.
-// Falls back silently (empty map) if the API is unreachable or rate-limited,
-// so the build never breaks — cards then use the `stars` values in projects.json.
+// Build-time GitHub metadata fetch. Pulls live star counts and last-push dates
+// for all of @Londopy's repos (plus any external/collaborator repos) in as few
+// calls as possible, and memoizes them for the build. Falls back silently if
+// the API is unreachable or rate-limited, so the build never breaks — cards
+// then use the values baked into projects.json.
 
 let cache = null;
 
@@ -9,7 +10,7 @@ let cache = null;
 // user-repos call won't cover them, so fetch each one directly. "owner/name".
 const EXTERNAL_REPOS = ["Skythe7/DiresQ"];
 
-export async function getStarMap() {
+export async function getMetaMap() {
   if (cache) return cache;
   const map = {};
   try {
@@ -23,7 +24,12 @@ export async function getStarMap() {
     );
     if (res.ok) {
       const repos = await res.json();
-      for (const r of repos) map[r.name.toLowerCase()] = r.stargazers_count ?? 0;
+      for (const r of repos) {
+        map[r.name.toLowerCase()] = {
+          stars: r.stargazers_count ?? 0,
+          pushed: r.pushed_at ?? null,
+        };
+      }
     }
 
     // External / collaborator repos, one call each.
@@ -32,7 +38,10 @@ export async function getStarMap() {
         const r = await fetch(`https://api.github.com/repos/${full}`, { headers });
         if (r.ok) {
           const j = await r.json();
-          map[j.name.toLowerCase()] = j.stargazers_count ?? 0;
+          map[j.name.toLowerCase()] = {
+            stars: j.stargazers_count ?? 0,
+            pushed: j.pushed_at ?? null,
+          };
         }
       } catch {
         /* skip this one */
@@ -45,8 +54,13 @@ export async function getStarMap() {
   return map;
 }
 
-// Merge live stars into a project (live wins; JSON value is the fallback).
-export function withStars(project, starMap) {
-  const live = starMap[project.name.toLowerCase()];
-  return { ...project, stars: live ?? project.stars ?? 0 };
+// Merge live star + pushed data into a project (live wins; JSON values are the
+// fallback). `pushed` is an ISO date string or null.
+export function withMeta(project, metaMap) {
+  const m = metaMap[project.name.toLowerCase()] || {};
+  return {
+    ...project,
+    stars: m.stars ?? project.stars ?? 0,
+    pushed: m.pushed ?? project.pushed ?? null,
+  };
 }

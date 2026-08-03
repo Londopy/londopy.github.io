@@ -9,9 +9,10 @@ interface Props {
   page?: string | null;
   featured?: boolean;
   stars?: number;
+  pushed?: string | null;
 }
 
-const { name, tagline, language, tags, repo, demo, page, featured, stars } = Astro.props;
+const { name, tagline, language, tags, repo, demo, page, featured, stars, pushed } = Astro.props;
 
 const LANG_COLORS: Record<string, string> = {
   Rust: "var(--lang-rust)",
@@ -35,7 +36,15 @@ const demoLabel = isPypi ? "pypi →" : "demo →";
 const pipPkg = isPypi ? demo!.split("/project/")[1]?.replace(/\/+$/, "") : null;
 ---
 
-<article class="card" class:list={[{ featured }]} data-tags={tags.join("|")} data-langs={langs.join("|")}>
+<article
+  class="card"
+  class:list={[{ featured }]}
+  data-tags={tags.join("|")}
+  data-langs={langs.join("|")}
+  data-name={name}
+  data-stars={stars ?? 0}
+  data-pushed={pushed ?? ""}
+>
   <div class="card-head">
     <h3 class="mono"><a href={repo}>{name}</a></h3>
     {stars && stars >= 2 ? <span class="stars mono" title={`${stars} stars on GitHub`}>★ {stars}</span> : null}
