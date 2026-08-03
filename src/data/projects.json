@@ -188,7 +188,7 @@
       "repo": "https://github.com/Londopy/timefuzz",
       "demo": "https://pypi.org/project/timefuzz/",
       "page": null,
-      "featured": false
+      "featured": true
     },
     {
       "cluster": "ai",
@@ -232,7 +232,7 @@
       "repo": "https://github.com/Londopy/deadpoint",
       "demo": "https://pypi.org/project/deadpoint/",
       "page": null,
-      "featured": false
+      "featured": true
     },
     {
       "cluster": "games",
