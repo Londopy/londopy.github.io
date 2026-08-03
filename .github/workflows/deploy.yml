@@ -3,6 +3,10 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  # Rebuild daily so live star counts and "recently updated" dates refresh
+  # even when only other repos change.
+  schedule:
+    - cron: "0 6 * * *"
   workflow_dispatch:
 
 permissions:
