@@ -54,10 +54,13 @@ export async function getPulls() {
           date: (it.created_at || "").slice(0, 10),
         });
       }
-      // refresh the state of everything we already track
+      // refresh state, but only ever UPGRADE. GitHub's search API reports a
+      // merged PR's `merged_at` unreliably (often null), so it can call a
+      // merged PR merely "closed" — never let that downgrade a known merge.
       for (const p of pulls) {
         const l = live.get(p.url);
-        if (l) p.state = l.state;
+        if (!l) continue;
+        p.state = p.state === "merged" || l.state === "merged" ? "merged" : l.state;
       }
       // append PRs that showed up after the list was last baked
       const known = new Set(pulls.map((p) => p.url));

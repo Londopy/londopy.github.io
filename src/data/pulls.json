@@ -3,7 +3,7 @@
     "generated": "2026-09-20",
     "count": 33,
     "repos": 28,
-    "merged": 4,
+    "merged": 7,
     "reach": 691610
   },
   "pulls": [
@@ -74,7 +74,7 @@
       "repo": "sqlitebrowser/sqlitebrowser",
       "number": 4203,
       "title": "Fix dead Homebrew Cask links in README",
-      "state": "open",
+      "state": "merged",
       "url": "https://github.com/sqlitebrowser/sqlitebrowser/pull/4203",
       "date": "2026-09-19",
       "repoStars": 24611
@@ -138,7 +138,7 @@
       "repo": "chaitin/SafeLine",
       "number": 1328,
       "title": "Fix heading typo in README",
-      "state": "open",
+      "state": "merged",
       "url": "https://github.com/chaitin/SafeLine/pull/1328",
       "date": "2026-09-19",
       "repoStars": 22635
@@ -220,7 +220,7 @@
       "repo": "TheCruZ/Simple-Manual-Map-Injector",
       "number": 30,
       "title": "Fix typo in README",
-      "state": "open",
+      "state": "merged",
       "url": "https://github.com/TheCruZ/Simple-Manual-Map-Injector/pull/30",
       "date": "2026-09-19",
       "repoStars": 520
