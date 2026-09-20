@@ -5,11 +5,33 @@ import Footer from "../components/Footer.astro";
 
 const title = "Contact — London C.";
 const description =
-  "Get in touch with London C. — send a message and it lands in my inbox. No account, no login.";
+  "Get in touch with London C. — send a message and it lands in my inbox. No account, no login. Optional PGP end-to-end encryption.";
 
-// Public Web3Forms access key. This is designed to live in client HTML — it
-// only allows submitting this form and never exposes the destination address.
+// Public Web3Forms access key. Designed to live in client HTML — it only
+// allows submitting this form and never exposes the destination address.
 const ACCESS_KEY = "3ebb2c5a-06db-4542-a8da-9c65f0d8e18f";
+
+// --- optional features, activated by filling in a single public value ---
+
+// "Open to work" note in the hero. Flip to false to hide it.
+const OPEN_TO_WORK = true;
+const OPEN_TO_WORK_TEXT = "open to internships — security & systems";
+
+// Spam captcha. Paste an hCaptcha *site key* (public) to turn it on, and
+// enable hCaptcha in the Web3Forms dashboard so submissions are validated.
+// Empty = honeypot-only (no captcha shown).
+const HCAPTCHA_SITEKEY = "";
+
+// End-to-end PGP encryption. Paste your ASCII-armored *public* key to offer
+// senders an "encrypt" toggle; the message is encrypted in their browser so
+// only your private key can read it — Web3Forms only ever relays ciphertext.
+// Empty = the encryption option is hidden.
+const PGP_PUBLIC_KEY = "";
+const PGP_FINGERPRINT = ""; // optional, shown to senders who want to verify
+
+// Self-hosted-integrity crypto: pinned version + SRI hash.
+const OPENPGP_SRC = "https://cdn.jsdelivr.net/npm/openpgp@5.11.3/dist/openpgp.min.js";
+const OPENPGP_SRI = "sha384-meIGn/s43odkPR2f+TEg/YjO3USCOe6sc/il0iIBsWuV9K8kfAH/7Nepy2ErHxV6";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -36,6 +58,9 @@ const jsonLd = {
         mail -s "hello" london
       </p>
       <h1>Get in touch</h1>
+      {OPEN_TO_WORK && (
+        <p class="open-badge mono"><span class="pulse" aria-hidden="true"></span> {OPEN_TO_WORK_TEXT}</p>
+      )}
       <p class="lede">
         Recruiter, collaborator, or just want to talk shop — write a line and it
         lands straight in my inbox. No account, no login, and your note goes only
@@ -72,6 +97,28 @@ const jsonLd = {
         <textarea id="message" name="message" rows="6" required placeholder="What's on your mind?"></textarea>
       </div>
 
+      {PGP_PUBLIC_KEY && (
+        <div class="pgp">
+          <label class="pgp-toggle mono">
+            <input type="checkbox" id="pgp-encrypt" />
+            <span aria-hidden="true">🔒</span> encrypt my message (PGP, end-to-end)
+          </label>
+          <p class="hint mono">
+            Your message is encrypted in your browser with my public key — only I
+            can read it. Name &amp; email stay readable so I can reply; put anything
+            sensitive in the message itself.
+          </p>
+          <details class="pgp-key">
+            <summary class="mono">view my public key{PGP_FINGERPRINT ? ` · ${PGP_FINGERPRINT}` : ""}</summary>
+            <pre class="mono">{PGP_PUBLIC_KEY}</pre>
+          </details>
+        </div>
+      )}
+
+      {HCAPTCHA_SITEKEY && (
+        <div class="h-captcha" data-sitekey={HCAPTCHA_SITEKEY} data-theme="dark"></div>
+      )}
+
       <div class="actions">
         <button class="submit mono" type="submit">
           <span class="dollar" aria-hidden="true">$</span> send message
@@ -86,8 +133,92 @@ const jsonLd = {
     </p>
   </main>
 
+  {HCAPTCHA_SITEKEY && <script src="https://js.hcaptcha.com/1/api.js" async defer></script>}
+
   <Footer />
 </Base>
+
+<script define:vars={{ OPENPGP_SRC, OPENPGP_SRI, PGP_PUBLIC_KEY }}>
+  const form = document.getElementById("contact-form");
+  const status = document.getElementById("form-status");
+  const pgpToggle = document.getElementById("pgp-encrypt");
+
+  // lazy-load the crypto library only when someone chooses to encrypt
+  let openpgpPromise = null;
+  function loadOpenPGP() {
+    if (window.openpgp) return Promise.resolve(window.openpgp);
+    if (openpgpPromise) return openpgpPromise;
+    openpgpPromise = new Promise((res, rej) => {
+      const s = document.createElement("script");
+      s.src = OPENPGP_SRC;
+      s.integrity = OPENPGP_SRI;
+      s.crossOrigin = "anonymous";
+      s.onload = () => (window.openpgp ? res(window.openpgp) : rej(new Error("openpgp unavailable")));
+      s.onerror = () => rej(new Error("failed to load openpgp"));
+      document.head.appendChild(s);
+    });
+    return openpgpPromise;
+  }
+  // warm it up as soon as the sender opts in, so submit is instant
+  if (pgpToggle) pgpToggle.addEventListener("change", () => { if (pgpToggle.checked) loadOpenPGP().catch(() => {}); });
+
+  if (form && status) {
+    const btn = form.querySelector("button[type=submit]");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form));
+      if (data.botcheck) { // honeypot tripped — drop it, pretend success
+        status.textContent = "message sent — thanks!";
+        status.className = "status mono ok";
+        form.reset();
+        return;
+      }
+
+      // optional end-to-end encryption. if it fails, send NOTHING.
+      if (pgpToggle && pgpToggle.checked && PGP_PUBLIC_KEY) {
+        status.textContent = "encrypting…";
+        status.className = "status mono";
+        try {
+          const openpgp = await loadOpenPGP();
+          const key = await openpgp.readKey({ armoredKey: PGP_PUBLIC_KEY });
+          const message = await openpgp.createMessage({ text: String(data.message || "") });
+          data.message = await openpgp.encrypt({ message, encryptionKeys: key });
+          data.subject = "[PGP encrypted] New message from londopy.github.io";
+        } catch (err) {
+          status.textContent = "couldn't encrypt — nothing was sent. try again, or uncheck encryption.";
+          status.className = "status mono err";
+          return;
+        }
+      }
+
+      status.textContent = "sending…";
+      status.className = "status mono";
+      if (btn) btn.disabled = true;
+      try {
+        const res = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify(data),
+        });
+        const json = await res.json();
+        if (json.success) {
+          status.textContent = "message sent — I'll get back to you. thanks!";
+          status.className = "status mono ok";
+          form.reset();
+          if (window.hcaptcha) try { window.hcaptcha.reset(); } catch (_) {}
+        } else {
+          status.textContent = "something went wrong — reach me on GitHub instead.";
+          status.className = "status mono err";
+        }
+      } catch {
+        status.textContent = "network error — please try again, or reach me on GitHub.";
+        status.className = "status mono err";
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    });
+  }
+</script>
 
 <style>
   .contact {
@@ -117,6 +248,38 @@ const jsonLd = {
     font-weight: 700;
     letter-spacing: -0.03em;
     margin-bottom: 0.75rem;
+  }
+
+  .open-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    font-size: 0.78rem;
+    color: var(--accent);
+    background: var(--accent-dim);
+    border: 1px solid rgba(var(--accent-rgb), 0.35);
+    border-radius: 999px;
+    padding: 0.25rem 0.7rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .open-badge .pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0.5);
+    animation: pulse 2s ease-out infinite;
+  }
+
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0.5); }
+    70% { box-shadow: 0 0 0 7px rgba(var(--accent-rgb), 0); }
+    100% { box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .open-badge .pulse { animation: none; }
   }
 
   .lede {
@@ -187,6 +350,7 @@ const jsonLd = {
   .hint {
     font-size: 0.72rem;
     color: var(--text-faint);
+    line-height: 1.5;
   }
 
   /* honeypot — hidden from humans, present for bots */
@@ -196,6 +360,50 @@ const jsonLd = {
     width: 1px;
     height: 1px;
     opacity: 0;
+  }
+
+  /* PGP encryption block */
+  .pgp {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding: 0.85rem 0.95rem;
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+  }
+
+  .pgp-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    font-size: 0.82rem;
+    color: var(--text);
+    cursor: pointer;
+  }
+
+  .pgp-toggle input { accent-color: var(--accent); width: 15px; height: 15px; }
+
+  .pgp-key summary {
+    cursor: pointer;
+    font-size: 0.74rem;
+    color: var(--text-dim);
+    width: fit-content;
+  }
+
+  .pgp-key summary:hover { color: var(--accent); }
+
+  .pgp-key pre {
+    margin-top: 0.5rem;
+    padding: 0.6rem 0.7rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 0.62rem;
+    line-height: 1.35;
+    color: var(--text-faint);
+    overflow-x: auto;
+    white-space: pre;
   }
 
   .actions {
@@ -236,46 +444,3 @@ const jsonLd = {
 
   .alt .discord strong { color: var(--accent); font-weight: 500; }
 </style>
-
-<script>
-  const form = document.getElementById("contact-form") as HTMLFormElement | null;
-  const status = document.getElementById("form-status");
-  if (form && status) {
-    const btn = form.querySelector("button[type=submit]") as HTMLButtonElement | null;
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const data = Object.fromEntries(new FormData(form) as any);
-      // honeypot tripped → silently pretend success, drop the submission
-      if (data.botcheck) {
-        status.textContent = "message sent — thanks!";
-        status.className = "status mono ok";
-        form.reset();
-        return;
-      }
-      status.textContent = "sending…";
-      status.className = "status mono";
-      if (btn) btn.disabled = true;
-      try {
-        const res = await fetch("https://api.web3forms.com/submit", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify(data),
-        });
-        const json = await res.json();
-        if (json.success) {
-          status.textContent = "message sent — I'll get back to you. thanks!";
-          status.className = "status mono ok";
-          form.reset();
-        } else {
-          status.textContent = "something went wrong — email me at github.com/Londopy instead.";
-          status.className = "status mono err";
-        }
-      } catch {
-        status.textContent = "network error — please try again, or reach me on GitHub.";
-        status.className = "status mono err";
-      } finally {
-        if (btn) btn.disabled = false;
-      }
-    });
-  }
-</script>
