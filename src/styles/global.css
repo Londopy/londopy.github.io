@@ -31,10 +31,11 @@
   --lang-javascript: #f1e05a;
   --lang-asm: #c9a227;
   --lang-astro: #ff5a03;
-  --lang-zig: #ec915c;
+  --lang-zig: #f7a41d;
   --lang-nexium: #4fd1c5;
   --lang-svelte: #ff3e00;
   --lang-gleam: #ffaff3;
+  --lang-c: #8b949e;
 }
 
 /* ---------- accent themes (switched from the nav; persisted per visitor) ----------

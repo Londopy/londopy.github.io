@@ -9,11 +9,13 @@ interface Props {
   language: string;
   repo: string;
   demo?: string | null;
+  docsUrl?: string | null;
+  links?: { label: string; url: string }[] | null;
   pip?: string | null;
   stars?: number;
 }
 
-const { name, tagline, language, repo, demo, pip, stars } = Astro.props;
+const { name, tagline, language, repo, demo, docsUrl, links, pip, stars } = Astro.props;
 const isPypi = !!demo && demo.includes("pypi.org");
 const demoLabel = isPypi ? "View on PyPI ↗" : "Live demo ↗";
 const title = `${name} — London C.`;
@@ -45,6 +47,8 @@ const title = `${name} — London C.`;
 
       <div class="links mono">
         <a class="btn btn-accent" href={repo}>View source ↗</a>
+        {docsUrl && <a class="btn" href={docsUrl}>Docs ↗</a>}
+        {links?.map((l) => <a class="btn" href={l.url}>{l.label} ↗</a>)}
         {demo && <a class="btn" href={demo}>{demoLabel}</a>}
       </div>
     </header>

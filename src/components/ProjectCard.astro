@@ -10,9 +10,11 @@ interface Props {
   featured?: boolean;
   stars?: number;
   pushed?: string | null;
+  docsUrl?: string | null;
+  links?: { label: string; url: string }[] | null;
 }
 
-const { name, tagline, language, tags, repo, demo, page, featured, stars, pushed } = Astro.props;
+const { name, tagline, language, tags, repo, demo, page, featured, stars, pushed, docsUrl, links } = Astro.props;
 
 const LANG_COLORS: Record<string, string> = {
   Rust: "var(--lang-rust)",
@@ -27,6 +29,7 @@ const LANG_COLORS: Record<string, string> = {
   Nexium: "var(--lang-nexium)",
   Svelte: "var(--lang-svelte)",
   Gleam: "var(--lang-gleam)",
+  C: "var(--lang-c)",
 };
 
 // "Rust + Python" → [Rust, Python]; split only on " + " so "C++" stays intact
@@ -79,7 +82,10 @@ const pipPkg = isPypi ? demo!.split("/project/")[1]?.replace(/\/+$/, "") : null;
   <div class="actions mono">
     <a class="btn" href={repo}>repo →</a>
     {demo && <a class="btn btn-accent" href={demo}>{demoLabel}</a>}
-    <a class="btn" href={`/projects/${name}/`}>docs →</a>
+    {docsUrl
+      ? <a class="btn" href={docsUrl}>docs ↗</a>
+      : <a class="btn" href={`/projects/${name}/`}>docs →</a>}
+    {links?.map((l) => <a class="btn" href={l.url}>{l.label} ↗</a>)}
   </div>
 </article>
 

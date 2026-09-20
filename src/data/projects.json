@@ -72,7 +72,7 @@
       "cluster": "devtools",
       "name": "nexium",
       "tagline": "A programming language of my own — compiles to native code through C, with automatic reference counting (no tracing GC) and a machine-checked effect system that says what a function is allowed to do. Self-hosting compiler.",
-      "language": "Nexium",
+      "language": "Nexium + C",
       "tags": [
         "compiler",
         "language",
@@ -83,7 +83,14 @@
       "demo": null,
       "page": "/projects/nexium/",
       "featured": true,
-      "stars": 1
+      "stars": 1,
+      "docsUrl": "https://londopy.github.io/nexium/",
+      "links": [
+        {
+          "label": "the topo",
+          "url": "https://londopy.github.io/nexium/topo/01-base-camp.html"
+        }
+      ]
     },
     {
       "cluster": "audio",
