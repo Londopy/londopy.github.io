@@ -89,7 +89,7 @@
       "cluster": "audio",
       "name": "gesture-synth",
       "tagline": "A chord instrument you play with your hands in front of a camera. MediaPipe hand-tracking drives a synth; loop it and watch the harmony. A monorepo spanning Rust/WASM, Svelte + Three.js, a Tauri app, a Zig DSP kernel, and a Gleam service.",
-      "language": "TypeScript + Rust",
+      "language": "TypeScript + Rust + Svelte + Gleam + Zig",
       "tags": [
         "mediapipe",
         "music",
@@ -440,7 +440,7 @@
       "cluster": "climbing",
       "name": "whumpf",
       "tagline": "Avalanche bulletins projected onto the real mountain in 3D. Slope, aspect, and elevation are packed into RGBA tiles and filtered in a GLSL shader, so a whole range recomputes as you drag a slider. Sentinel-2 / LiDAR, CesiumJS.",
-      "language": "TypeScript + Rust",
+      "language": "TypeScript + Python + Rust",
       "tags": [
         "avalanche",
         "3d-terrain",
