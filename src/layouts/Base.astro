@@ -4,6 +4,7 @@ import "@fontsource/ibm-plex-sans/400.css";
 import "@fontsource/ibm-plex-sans/500.css";
 import "../styles/global.css";
 import CursorOrb from "../components/CursorOrb.astro";
+import TopoBackground from "../components/TopoBackground.astro";
 
 interface Props {
   title: string;
@@ -20,6 +21,19 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- apply the saved accent theme before first paint (no flash) -->
+    <script is:inline>
+      (() => {
+        try {
+          const t = localStorage.getItem("theme");
+          const ok = ["amber", "slate", "terracotta"];
+          document.documentElement.dataset.theme = ok.includes(t) ? t : "amber";
+        } catch (e) {
+          document.documentElement.dataset.theme = "amber";
+        }
+      })();
+    </script>
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -38,6 +52,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="theme-color" content="#0a0e13" />
   </head>
   <body>
+    <TopoBackground />
     <slot />
     <CursorOrb />
   </body>

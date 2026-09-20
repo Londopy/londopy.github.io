@@ -9,8 +9,13 @@
   --text: #cdd8e3;
   --text-dim: #8494a6;
   --text-faint: #56677a;
-  --accent: #45d483;
-  --accent-dim: rgba(69, 212, 131, 0.12);
+  /* accent is theme-driven — see the [data-theme] blocks below.
+     default (no data-theme) matches the "amber" theme. */
+  --accent: #e9a13a;
+  --accent-rgb: 233, 161, 58;
+  --accent-dim: rgba(var(--accent-rgb), 0.13);
+  --topo-line: rgba(var(--accent-rgb), 0.2);
+  --topo-line-soft: rgba(var(--accent-rgb), 0.09);
   --amber: #e8b444;
   --mono: "JetBrains Mono Variable", ui-monospace, "Cascadia Code", Consolas, monospace;
   --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -27,6 +32,23 @@
   --lang-asm: #c9a227;
   --lang-astro: #ff5a03;
   --lang-zig: #f7a41d;
+  --lang-nexium: #4fd1c5;
+}
+
+/* ---------- accent themes (switched from the nav; persisted per visitor) ----------
+   Only --accent + --accent-rgb change; every accent-tinted token above is
+   derived from --accent-rgb, so it all recolours automatically. */
+:root[data-theme="amber"] {
+  --accent: #e9a13a;
+  --accent-rgb: 233, 161, 58;
+}
+:root[data-theme="slate"] {
+  --accent: #5aa9e6;
+  --accent-rgb: 90, 169, 230;
+}
+:root[data-theme="terracotta"] {
+  --accent: #e0714a;
+  --accent-rgb: 224, 113, 74;
 }
 
 * {
@@ -44,6 +66,7 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 2rem;
+  background-color: var(--bg);
 }
 
 body {
@@ -53,13 +76,9 @@ body {
   font-size: 1rem;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  /* faint phosphor grid */
-  background-image:
-    radial-gradient(ellipse 80% 40% at 50% -10%, rgba(69, 212, 131, 0.06), transparent),
-    linear-gradient(rgba(29, 38, 50, 0.35) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(29, 38, 50, 0.35) 1px, transparent 1px);
-  background-size: 100% 100%, 40px 40px, 40px 40px;
-  background-attachment: fixed;
+  /* the animated topographic contours live in <TopoBackground>, painted
+     behind everything; body itself stays transparent so they show through. */
+  background-color: transparent;
 }
 
 ::selection {

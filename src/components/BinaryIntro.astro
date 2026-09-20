@@ -61,6 +61,11 @@
     const ctx = canvas.getContext("2d");
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
+    // trail colour follows the active accent theme
+    const accent =
+      getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() ||
+      "#e9a13a";
+
     let W, H, cols, drops;
     const FONT = 16;
 
@@ -89,10 +94,10 @@
         const y = drops[i] * step;
         const ch = glyphs[(Math.random() * glyphs.length) | 0];
 
-        // bright leading character, dimmer trail
-        ctx.fillStyle = "#c9ffe4";
+        // bright leading character, dimmer trail (trail tinted by the theme)
+        ctx.fillStyle = "#eef3f8";
         ctx.fillText(ch, x, y);
-        ctx.fillStyle = "#45d483";
+        ctx.fillStyle = accent;
         ctx.fillText(glyphs[(Math.random() * glyphs.length) | 0], x, y - step);
 
         if (y > H && Math.random() > 0.975) drops[i] = Math.random() * -20;

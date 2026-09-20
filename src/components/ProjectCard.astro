@@ -24,6 +24,7 @@ const LANG_COLORS: Record<string, string> = {
   "x86 ASM": "var(--lang-asm)",
   Astro: "var(--lang-astro)",
   Zig: "var(--lang-zig)",
+  Nexium: "var(--lang-nexium)",
 };
 
 // "Rust + Python" → [Rust, Python]; split only on " + " so "C++" stays intact
@@ -99,9 +100,9 @@ const pipPkg = isPypi ? demo!.split("/project/")[1]?.replace(/\/+$/, "") : null;
   }
 
   .card.featured {
-    border-color: rgba(69, 212, 131, 0.35);
+    border-color: rgba(var(--accent-rgb), 0.35);
     background:
-      linear-gradient(160deg, rgba(69, 212, 131, 0.05), transparent 40%),
+      linear-gradient(160deg, rgba(var(--accent-rgb), 0.05), transparent 40%),
       var(--bg-card);
   }
 
@@ -258,6 +259,6 @@ const pipPkg = isPypi ? demo!.split("/project/")[1]?.replace(/\/+$/, "") : null;
 
   .btn-accent {
     color: var(--accent);
-    border-color: rgba(69, 212, 131, 0.4);
+    border-color: rgba(var(--accent-rgb), 0.4);
   }
 </style>
