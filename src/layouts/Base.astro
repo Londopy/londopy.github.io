@@ -9,10 +9,12 @@ import TopoBackground from "../components/TopoBackground.astro";
 interface Props {
   title: string;
   description: string;
+  ogImage?: string;
+  jsonLd?: unknown;
 }
 
-const { title, description } = Astro.props;
-const ogImage = new URL("/og-image.png", Astro.site);
+const { title, description, ogImage: ogImagePath, jsonLd } = Astro.props;
+const ogImage = new URL(ogImagePath ?? "/og-image.png", Astro.site);
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -50,6 +52,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
     <meta name="theme-color" content="#0a0e13" />
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
   </head>
   <body>
     <TopoBackground />

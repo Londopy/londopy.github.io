@@ -19,9 +19,25 @@ const { name, tagline, language, repo, demo, docsUrl, links, pip, stars } = Astr
 const isPypi = !!demo && demo.includes("pypi.org");
 const demoLabel = isPypi ? "View on PyPI ↗" : "Live demo ↗";
 const title = `${name} — London C.`;
+const ogImage = `/og/${name}.png`;
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  name,
+  description: tagline,
+  codeRepository: repo,
+  programmingLanguage: language.split(" + ").map((s) => s.trim()),
+  url: new URL(`/projects/${name}/`, Astro.site).href,
+  author: {
+    "@type": "Person",
+    name: "London C.",
+    alternateName: "Londopy",
+    url: "https://github.com/Londopy",
+  },
+};
 ---
 
-<Base title={title} description={tagline}>
+<Base title={title} description={tagline} ogImage={ogImage} jsonLd={jsonLd}>
   <Nav active="home" />
 
   <main class="container doc">

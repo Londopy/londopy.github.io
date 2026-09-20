@@ -29,9 +29,28 @@ const clusters = data.clusters
 const title = "Londopy — projects";
 const description =
   "London C.'s open-source work: tools for climbing, medicine, Windows internals, and geospatial — mostly Rust and Python.";
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "London C.",
+  alternateName: "Londopy",
+  url: "https://londopy.github.io",
+  sameAs: ["https://github.com/Londopy"],
+  description:
+    "Builder across pre-hospital medicine, Windows internals, climbing physics, and security. Rust and Python.",
+  knowsAbout: [
+    "Rust",
+    "Python",
+    "OT/ICS security",
+    "Windows internals",
+    "embedded systems",
+    "climbing physics",
+  ],
+};
 ---
 
-<Base title={title} description={description}>
+<Base title={title} description={description} jsonLd={jsonLd}>
   <BinaryIntro />
   <Nav active="home" />
   <Hero clusters={clusters} />

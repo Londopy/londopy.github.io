@@ -6,9 +6,19 @@ import Footer from "../components/Footer.astro";
 const title = "About — London C.";
 const description =
   "London C. — builder working across pre-hospital medicine, Windows internals, climbing physics, and security. Rust and Python.";
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "London C.",
+  alternateName: "Londopy",
+  url: "https://londopy.github.io/about/",
+  sameAs: ["https://github.com/Londopy"],
+  description,
+};
 ---
 
-<Base title={title} description={description}>
+<Base title={title} description={description} jsonLd={jsonLd}>
   <Nav active="about" />
 
   <main class="container about">
