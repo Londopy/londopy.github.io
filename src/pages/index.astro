@@ -6,12 +6,17 @@ import Hero from "../components/Hero.astro";
 import ClusterSection from "../components/ClusterSection.astro";
 import ProjectCard from "../components/ProjectCard.astro";
 import InProgress from "../components/InProgress.astro";
+import PullRequests from "../components/PullRequests.astro";
 import Footer from "../components/Footer.astro";
 import data from "../data/projects.json";
 import { getMetaMap, withMeta } from "../lib/stars.js";
+import { getPulls, pullStats } from "../lib/pulls.js";
 
 const metaMap = await getMetaMap();
 const projects = data.projects.map((p) => withMeta(p, metaMap));
+
+const pulls = await getPulls();
+const prStats = pullStats(pulls);
 
 const featured = projects.filter((p) => p.featured);
 const clusters = data.clusters
@@ -95,6 +100,8 @@ const description =
         {projects.map((p) => <ProjectCard {...p} />)}
       </div>
     </div>
+
+    <PullRequests pulls={pulls} stats={prStats} />
   </main>
 
   <Footer />

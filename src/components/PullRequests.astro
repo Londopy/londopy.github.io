@@ -1,0 +1,265 @@
+---
+interface Pull {
+  repo: string;
+  number: number;
+  title: string;
+  state: string;
+  url: string;
+  date: string;
+  repoStars: number;
+}
+
+interface Stats {
+  count: number;
+  repos: number;
+  merged: number;
+  reach: number;
+}
+
+interface Props {
+  pulls: Pull[];
+  stats: Stats;
+}
+
+const { pulls, stats } = Astro.props;
+
+// compact star / reach formatting: 1400 → 1.4k, 104477 → 104k, 691610 → 692k
+function short(n: number): string {
+  if (n >= 1000) {
+    const k = n / 1000;
+    return (k >= 100 ? Math.round(k) : k >= 10 ? Math.round(k) : k.toFixed(1)) + "k";
+  }
+  return String(n);
+}
+
+const HIGHLIGHTS = 12;
+const highlights = pulls.slice(0, HIGHLIGHTS);
+const rest = pulls.slice(HIGHLIGHTS);
+
+const stateLabel: Record<string, string> = {
+  merged: "merged",
+  open: "open",
+  closed: "closed",
+};
+---
+
+<section id="contributions" aria-label="Open-source contributions">
+  <div class="section-header">
+    <span class="hash" aria-hidden="true">##</span>
+    <h2><span aria-hidden="true">🔀</span> Open-source contributions</h2>
+    <span class="rule" aria-hidden="true"></span>
+  </div>
+  <p class="section-blurb">
+    Pull requests I've opened to projects I use — mostly small fixes to docs and
+    dead links, a few code changes. If I trip over something while reading a
+    README, I send the fix.
+  </p>
+
+  <div class="pr-stats mono">
+    <span class="stat"><b>{stats.count}</b> PRs</span>
+    <span class="sep" aria-hidden="true">·</span>
+    <span class="stat"><b>{stats.repos}</b> repositories</span>
+    <span class="sep" aria-hidden="true">·</span>
+    <span class="stat"><b>{stats.merged}</b> merged</span>
+    <span class="sep" aria-hidden="true">·</span>
+    <span class="stat"><b>★ {short(stats.reach)}</b> combined reach</span>
+  </div>
+
+  <div class="pr-grid">
+    {highlights.map((p) => (
+      <a class="pr-card" href={p.url} class:list={[{ merged: p.state === "merged" }]}>
+        <div class="pr-top mono">
+          <span class="pr-repo">{p.repo}</span>
+          <span class="pr-state" data-state={p.state}>{stateLabel[p.state] ?? p.state}</span>
+        </div>
+        <p class="pr-title">{p.title}</p>
+        <div class="pr-meta mono">
+          {p.repoStars > 0 && <span class="pr-stars">★ {short(p.repoStars)}</span>}
+          <span class="pr-num">#{p.number}</span>
+        </div>
+      </a>
+    ))}
+  </div>
+
+  {rest.length > 0 && (
+    <details class="pr-more">
+      <summary class="mono">＋ {rest.length} more contributions</summary>
+      <ul class="pr-list mono">
+        {rest.map((p) => (
+          <li>
+            <a href={p.url}>
+              <span class="pr-state sm" data-state={p.state}>{stateLabel[p.state] ?? p.state}</span>
+              <span class="pr-repo">{p.repo}</span>
+              {p.repoStars > 0 && <span class="pr-stars">★ {short(p.repoStars)}</span>}
+              <span class="pr-list-title">{p.title}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </details>
+  )}
+</section>
+
+<style>
+  .pr-stats {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3rem 0.7rem;
+    margin: -0.6rem 0 1.4rem;
+    font-size: 0.82rem;
+    color: var(--text-dim);
+  }
+
+  .pr-stats b {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .pr-stats .sep {
+    color: var(--text-faint);
+  }
+
+  .pr-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+
+  @media (min-width: 640px) {
+    .pr-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (min-width: 960px) {
+    .pr-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .pr-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.85rem 0.95rem;
+    color: inherit;
+    transition: transform 0.16s ease, border-color 0.16s ease;
+  }
+
+  .pr-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-bright);
+    text-decoration: none;
+  }
+
+  .pr-card.merged {
+    border-color: rgba(69, 212, 131, 0.3);
+  }
+
+  .pr-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    font-size: 0.76rem;
+  }
+
+  .pr-repo {
+    color: var(--text);
+    overflow-wrap: anywhere;
+  }
+
+  .pr-card:hover .pr-repo {
+    color: var(--accent);
+  }
+
+  .pr-state {
+    flex: none;
+    font-size: 0.68rem;
+    padding: 0.05rem 0.45rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-bright);
+    color: var(--text-faint);
+    text-transform: lowercase;
+  }
+
+  .pr-state[data-state="merged"] {
+    color: var(--accent);
+    border-color: rgba(69, 212, 131, 0.4);
+    background: var(--accent-dim);
+  }
+
+  .pr-state[data-state="closed"] {
+    color: var(--lang-cpp);
+    border-color: rgba(243, 75, 125, 0.35);
+  }
+
+  .pr-title {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .pr-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-top: auto;
+    font-size: 0.72rem;
+  }
+
+  .pr-stars { color: var(--amber); }
+  .pr-num { color: var(--text-faint); }
+
+  /* the "show more" tail */
+  .pr-more {
+    margin-top: 1.1rem;
+  }
+
+  .pr-more summary {
+    cursor: pointer;
+    color: var(--text-dim);
+    font-size: 0.82rem;
+    padding: 0.4rem 0;
+    list-style: none;
+    width: fit-content;
+  }
+
+  .pr-more summary::-webkit-details-marker { display: none; }
+  .pr-more summary:hover { color: var(--accent); }
+  .pr-more[open] summary { color: var(--accent); margin-bottom: 0.4rem; }
+
+  .pr-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .pr-list li a {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    padding: 0.4rem 0.5rem;
+    border-radius: 4px;
+    color: var(--text-dim);
+    font-size: 0.78rem;
+    transition: background 0.14s ease;
+  }
+
+  .pr-list li a:hover {
+    background: var(--bg-raised);
+    text-decoration: none;
+  }
+
+  .pr-state.sm {
+    font-size: 0.64rem;
+    padding: 0.02rem 0.4rem;
+  }
+
+  .pr-list .pr-repo { color: var(--text); }
+  .pr-list .pr-list-title { color: var(--text-faint); overflow-wrap: anywhere; }
+  .pr-list li a:hover .pr-list-title { color: var(--text-dim); }
+</style>

@@ -1,0 +1,308 @@
+{
+  "meta": {
+    "generated": "2026-09-20",
+    "count": 33,
+    "repos": 28,
+    "merged": 4,
+    "reach": 691610
+  },
+  "pulls": [
+    {
+      "repo": "deepseek-ai/DeepSeek-V3",
+      "number": 1661,
+      "title": "docs: fix broken vLLM distributed serving link in README",
+      "state": "open",
+      "url": "https://github.com/deepseek-ai/DeepSeek-V3/pull/1661",
+      "date": "2026-09-19",
+      "repoStars": 104477
+    },
+    {
+      "repo": "sherlock-project/sherlock",
+      "number": 3143,
+      "title": "Fix logo link to point at sherlockproject.xyz",
+      "state": "open",
+      "url": "https://github.com/sherlock-project/sherlock/pull/3143",
+      "date": "2026-09-19",
+      "repoStars": 92136
+    },
+    {
+      "repo": "ComposioHQ/awesome-claude-skills",
+      "number": 1942,
+      "title": "Add skill-rollcall skill",
+      "state": "open",
+      "url": "https://github.com/ComposioHQ/awesome-claude-skills/pull/1942",
+      "date": "2026-09-19",
+      "repoStars": 75341
+    },
+    {
+      "repo": "emilk/egui",
+      "number": 8598,
+      "title": "Fix typo in README",
+      "state": "open",
+      "url": "https://github.com/emilk/egui/pull/8598",
+      "date": "2026-09-19",
+      "repoStars": 30627
+    },
+    {
+      "repo": "modular/modular",
+      "number": 7160,
+      "title": "[docs] Fix Mojo stdlib link in README",
+      "state": "open",
+      "url": "https://github.com/modular/modular/pull/7160",
+      "date": "2026-09-19",
+      "repoStars": 29828
+    },
+    {
+      "repo": "micro-editor/micro",
+      "number": 4234,
+      "title": "Fix typo and dead snap link in README",
+      "state": "open",
+      "url": "https://github.com/micro-editor/micro/pull/4234",
+      "date": "2026-09-19",
+      "repoStars": 29608
+    },
+    {
+      "repo": "elixir-lang/elixir",
+      "number": 15915,
+      "title": "Fix dark-mode logo in README",
+      "state": "open",
+      "url": "https://github.com/elixir-lang/elixir/pull/15915",
+      "date": "2026-09-19",
+      "repoStars": 26663
+    },
+    {
+      "repo": "sqlitebrowser/sqlitebrowser",
+      "number": 4203,
+      "title": "Fix dead Homebrew Cask links in README",
+      "state": "open",
+      "url": "https://github.com/sqlitebrowser/sqlitebrowser/pull/4203",
+      "date": "2026-09-19",
+      "repoStars": 24611
+    },
+    {
+      "repo": "syl20bnr/spacemacs",
+      "number": 17324,
+      "title": "Fix typo in README",
+      "state": "open",
+      "url": "https://github.com/syl20bnr/spacemacs/pull/17324",
+      "date": "2026-09-19",
+      "repoStars": 24559
+    },
+    {
+      "repo": "Max-Eee/NeoPass",
+      "number": 85,
+      "title": "Fix typo in README",
+      "state": "open",
+      "url": "https://github.com/Max-Eee/NeoPass/pull/85",
+      "date": "2026-09-19",
+      "repoStars": 24505
+    },
+    {
+      "repo": "electron-react-boilerplate/electron-react-boilerplate",
+      "number": 3748,
+      "title": "Fix dead React link in README",
+      "state": "open",
+      "url": "https://github.com/electron-react-boilerplate/electron-react-boilerplate/pull/3748",
+      "date": "2026-09-19",
+      "repoStars": 24252
+    },
+    {
+      "repo": "pyg-team/pytorch_geometric",
+      "number": 10821,
+      "title": "Fix two broken doc links in README",
+      "state": "open",
+      "url": "https://github.com/pyg-team/pytorch_geometric/pull/10821",
+      "date": "2026-09-19",
+      "repoStars": 24093
+    },
+    {
+      "repo": "copy/v86",
+      "number": 1638,
+      "title": "Fix typo in Readme",
+      "state": "open",
+      "url": "https://github.com/copy/v86/pull/1638",
+      "date": "2026-09-19",
+      "repoStars": 23503
+    },
+    {
+      "repo": "slimtoolkit/slim",
+      "number": 860,
+      "title": "Fix \"procotol\" field name in HTTP probe example",
+      "state": "merged",
+      "url": "https://github.com/slimtoolkit/slim/pull/860",
+      "date": "2026-09-19",
+      "repoStars": 23413
+    },
+    {
+      "repo": "chaitin/SafeLine",
+      "number": 1328,
+      "title": "Fix heading typo in README",
+      "state": "open",
+      "url": "https://github.com/chaitin/SafeLine/pull/1328",
+      "date": "2026-09-19",
+      "repoStars": 22635
+    },
+    {
+      "repo": "wandb/openui",
+      "number": 266,
+      "title": "Fix typo in README",
+      "state": "open",
+      "url": "https://github.com/wandb/openui/pull/266",
+      "date": "2026-09-19",
+      "repoStars": 22564
+    },
+    {
+      "repo": "bee-san/Ciphey",
+      "number": 913,
+      "title": "Fix broken demo images in README",
+      "state": "open",
+      "url": "https://github.com/bee-san/Ciphey/pull/913",
+      "date": "2026-09-19",
+      "repoStars": 21620
+    },
+    {
+      "repo": "bee-san/Ciphey",
+      "number": 912,
+      "title": "Fix typos in README",
+      "state": "open",
+      "url": "https://github.com/bee-san/Ciphey/pull/912",
+      "date": "2026-09-19",
+      "repoStars": 21620
+    },
+    {
+      "repo": "Zeyi-Lin/HivisionIDPhotos",
+      "number": 290,
+      "title": "Fix heading typo in README",
+      "state": "open",
+      "url": "https://github.com/Zeyi-Lin/HivisionIDPhotos/pull/290",
+      "date": "2026-09-19",
+      "repoStars": 21549
+    },
+    {
+      "repo": "nim-lang/Nim",
+      "number": 26248,
+      "title": "readme: doc/ is Markdown, not reStructuredText",
+      "state": "open",
+      "url": "https://github.com/nim-lang/Nim/pull/26248",
+      "date": "2026-09-19",
+      "repoStars": 18236
+    },
+    {
+      "repo": "Tencent-Hunyuan/Hunyuan3D-2",
+      "number": 377,
+      "title": "Fix typo and moved CraftsMan3D link in README",
+      "state": "open",
+      "url": "https://github.com/Tencent-Hunyuan/Hunyuan3D-2/pull/377",
+      "date": "2026-09-19",
+      "repoStars": 14907
+    },
+    {
+      "repo": "BehiSecc/awesome-claude-skills",
+      "number": 732,
+      "title": "Add skill-rollcall to Utility & Automation",
+      "state": "open",
+      "url": "https://github.com/BehiSecc/awesome-claude-skills/pull/732",
+      "date": "2026-09-19",
+      "repoStars": 10155
+    },
+    {
+      "repo": "yatli/fvim",
+      "number": 280,
+      "title": "Fix typo in README",
+      "state": "open",
+      "url": "https://github.com/yatli/fvim/pull/280",
+      "date": "2026-09-19",
+      "repoStars": 1405
+    },
+    {
+      "repo": "TheCruZ/Simple-Manual-Map-Injector",
+      "number": 30,
+      "title": "Fix typo in README",
+      "state": "open",
+      "url": "https://github.com/TheCruZ/Simple-Manual-Map-Injector/pull/30",
+      "date": "2026-09-19",
+      "repoStars": 520
+    },
+    {
+      "repo": "mintoolkit/mint",
+      "number": 197,
+      "title": "Remove dead Code Sage link from README",
+      "state": "open",
+      "url": "https://github.com/mintoolkit/mint/pull/197",
+      "date": "2026-09-19",
+      "repoStars": 359
+    },
+    {
+      "repo": "mintoolkit/mint",
+      "number": 196,
+      "title": "Fix Docker Hub link for container-transform.slim",
+      "state": "open",
+      "url": "https://github.com/mintoolkit/mint/pull/196",
+      "date": "2026-09-19",
+      "repoStars": 359
+    },
+    {
+      "repo": "mintoolkit/mint",
+      "number": 195,
+      "title": "Update README to use --host-exec / --host-exec-file flag names",
+      "state": "open",
+      "url": "https://github.com/mintoolkit/mint/pull/195",
+      "date": "2026-09-19",
+      "repoStars": 359
+    },
+    {
+      "repo": "mintoolkit/mint",
+      "number": 194,
+      "title": "Fix typos in README and docs/proposal.md",
+      "state": "open",
+      "url": "https://github.com/mintoolkit/mint/pull/194",
+      "date": "2026-09-19",
+      "repoStars": 359
+    },
+    {
+      "repo": "The-animus-project/Orc-Torrent",
+      "number": 20,
+      "title": "docs: fix rqbit attribution link",
+      "state": "merged",
+      "url": "https://github.com/The-animus-project/Orc-Torrent/pull/20",
+      "date": "2026-08-03",
+      "repoStars": 35
+    },
+    {
+      "repo": "The-animus-project/Orc-Torrent",
+      "number": 25,
+      "title": "Fix link to deleted docs/SEARCH_PROVIDERS.md in README",
+      "state": "open",
+      "url": "https://github.com/The-animus-project/Orc-Torrent/pull/25",
+      "date": "2026-09-19",
+      "repoStars": 35
+    },
+    {
+      "repo": "MyLittlePrimordia/IEM-Tool",
+      "number": 1,
+      "title": "Fix typo in README",
+      "state": "open",
+      "url": "https://github.com/MyLittlePrimordia/IEM-Tool/pull/1",
+      "date": "2026-09-19",
+      "repoStars": 6
+    },
+    {
+      "repo": "Skythe7/DiresQ",
+      "number": 2,
+      "title": "Demo mode, the paper, and an accessibility pass",
+      "state": "merged",
+      "url": "https://github.com/Skythe7/DiresQ/pull/2",
+      "date": "2026-08-05",
+      "repoStars": 2
+    },
+    {
+      "repo": "Londopy/whumpf",
+      "number": 6,
+      "title": "Port contour-map onto whumpf's stack",
+      "state": "merged",
+      "url": "https://github.com/Londopy/whumpf/pull/6",
+      "date": "2026-08-25",
+      "repoStars": 1
+    }
+  ]
+}
