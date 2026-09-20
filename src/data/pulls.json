@@ -131,7 +131,8 @@
       "state": "merged",
       "url": "https://github.com/slimtoolkit/slim/pull/860",
       "date": "2026-09-19",
-      "repoStars": 23413
+      "repoStars": 23413,
+      "highlight": true
     },
     {
       "repo": "chaitin/SafeLine",
@@ -185,7 +186,8 @@
       "state": "open",
       "url": "https://github.com/nim-lang/Nim/pull/26248",
       "date": "2026-09-19",
-      "repoStars": 18236
+      "repoStars": 18236,
+      "highlight": true
     },
     {
       "repo": "Tencent-Hunyuan/Hunyuan3D-2",
@@ -266,7 +268,8 @@
       "state": "merged",
       "url": "https://github.com/The-animus-project/Orc-Torrent/pull/20",
       "date": "2026-08-03",
-      "repoStars": 35
+      "repoStars": 35,
+      "highlight": true
     },
     {
       "repo": "The-animus-project/Orc-Torrent",
@@ -293,7 +296,8 @@
       "state": "merged",
       "url": "https://github.com/Skythe7/DiresQ/pull/2",
       "date": "2026-08-05",
-      "repoStars": 2
+      "repoStars": 2,
+      "highlight": true
     },
     {
       "repo": "Londopy/whumpf",
@@ -302,7 +306,8 @@
       "state": "merged",
       "url": "https://github.com/Londopy/whumpf/pull/6",
       "date": "2026-08-25",
-      "repoStars": 1
+      "repoStars": 1,
+      "highlight": true
     }
   ]
 }

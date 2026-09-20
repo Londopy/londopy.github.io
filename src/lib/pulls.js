@@ -15,12 +15,15 @@ function stateOf(item) {
 }
 
 function sortPulls(pulls) {
-  // Biggest, most-recognizable projects lead; merged PRs win the tiebreak.
-  const mergedRank = (s) => (s === "merged" ? 0 : 1);
+  // Lead with real work — merged PRs and flagged substantive ones — not with
+  // whichever famous repo a one-line fix happened to touch. Everything else
+  // falls to the tail, newest first. (Deliberately NOT sorted by repo stars.)
+  const lead = (p) => (p.highlight || p.state === "merged" ? 0 : 1);
+  const mergedRank = (p) => (p.state === "merged" ? 0 : 1);
   pulls.sort(
     (a, b) =>
-      b.repoStars - a.repoStars ||
-      mergedRank(a.state) - mergedRank(b.state) ||
+      lead(a) - lead(b) ||
+      mergedRank(a) - mergedRank(b) ||
       (b.date || "").localeCompare(a.date || "")
   );
   return pulls;

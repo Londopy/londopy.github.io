@@ -32,9 +32,10 @@ function short(n: number): string {
   return String(n);
 }
 
-const HIGHLIGHTS = 12;
-const highlights = pulls.slice(0, HIGHLIGHTS);
-const rest = pulls.slice(HIGHLIGHTS);
+// lead with the curated substantive PRs only; everything else (incl. small
+// fixes that happened to get merged) goes to the honest, collapsed tail
+const highlights = pulls.filter((p) => p.highlight);
+const rest = pulls.filter((p) => !p.highlight);
 
 const stateLabel: Record<string, string> = {
   merged: "merged",
@@ -56,13 +57,9 @@ const stateLabel: Record<string, string> = {
   </p>
 
   <div class="pr-stats mono">
-    <span class="stat"><b>{stats.count}</b> PRs</span>
-    <span class="sep" aria-hidden="true">·</span>
-    <span class="stat"><b>{stats.repos}</b> repositories</span>
+    <span class="stat"><b>{stats.count}</b> pull requests</span>
     <span class="sep" aria-hidden="true">·</span>
     <span class="stat"><b>{stats.merged}</b> merged</span>
-    <span class="sep" aria-hidden="true">·</span>
-    <span class="stat"><b>★ {short(stats.reach)}</b> combined reach</span>
   </div>
 
   <div class="pr-grid">
@@ -83,14 +80,13 @@ const stateLabel: Record<string, string> = {
 
   {rest.length > 0 && (
     <details class="pr-more">
-      <summary class="mono">＋ {rest.length} more contributions</summary>
+      <summary class="mono">plus {rest.length} smaller README &amp; dead-link fixes across egui, elixir, micro, sherlock and others</summary>
       <ul class="pr-list mono">
         {rest.map((p) => (
           <li>
             <a href={p.url}>
               <span class="pr-state sm" data-state={p.state}>{stateLabel[p.state] ?? p.state}</span>
               <span class="pr-repo">{p.repo}</span>
-              {p.repoStars > 0 && <span class="pr-stars">★ {short(p.repoStars)}</span>}
               <span class="pr-list-title">{p.title}</span>
             </a>
           </li>
