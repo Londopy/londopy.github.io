@@ -26,8 +26,20 @@ const HCAPTCHA_SITEKEY = "";
 // senders an "encrypt" toggle; the message is encrypted in their browser so
 // only your private key can read it — Web3Forms only ever relays ciphertext.
 // Empty = the encryption option is hidden.
-const PGP_PUBLIC_KEY = "";
-const PGP_FINGERPRINT = ""; // optional, shown to senders who want to verify
+const PGP_PUBLIC_KEY = `-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+mDMEaq+KNhYJKwYBBAHaRw8BAQdAgecubJTOMQrZl8Jmq7NpA9oCDW3IL1TF71bU
+X8vtic20H0xvbmRvIDxsb25kb24ud29ya0BweGRtYWlsLmNvbT6IlgQTFgoAPhYh
+BPAQU7hv59YKCh+3kLEeAvES+vSXBQJqr4o2AhsDBQkDwmcABQsJCAcCBhUKCQgL
+AgQWAgMBAh4BAheAAAoJELEeAvES+vSXaDoBAKM6kDhMUuqSp6QzmOVtmgFkhNsA
+W8g943cziwmKIBNEAP9i0SAFkQ1G2nPjkyviBdgy6HmJ8LzaTglVI7UfXaWXBLg4
+BGqvijYSCisGAQQBl1UBBQEBB0AWw9pWQHQWSUq2Tyui+nHvC81brHkKXiERnp9T
+1BtiPwMBCAeIeAQYFgoAIBYhBPAQU7hv59YKCh+3kLEeAvES+vSXBQJqr4o2AhsM
+AAoJELEeAvES+vSXLN0BANC7h72/FHLHzcKUJUxl5kuGADAJpuW5b31tF1PtMjq3
+AP0XnX7kHqSy+00jF0Qu1FQPglyQaO8S8b98z1IsYxDwAg==
+=gw7L
+-----END PGP PUBLIC KEY BLOCK-----`;
+const PGP_FINGERPRINT = "F010 53B8 6FE7 D60A 0A1F B790 B11E 02F1 12FA F497";
 
 // Self-hosted-integrity crypto: pinned version + SRI hash.
 const OPENPGP_SRC = "https://cdn.jsdelivr.net/npm/openpgp@5.11.3/dist/openpgp.min.js";
