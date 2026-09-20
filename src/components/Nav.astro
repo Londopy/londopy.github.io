@@ -1,6 +1,6 @@
 ---
 interface Props {
-  active?: "home" | "about";
+  active?: "home" | "about" | "contact";
 }
 
 const { active = "home" } = Astro.props;
@@ -15,6 +15,7 @@ const { active = "home" } = Astro.props;
       <div class="links">
         <a href="/" class:list={["navlink", { active: active === "home" }]}>projects</a>
         <a href="/about/" class:list={["navlink", { active: active === "about" }]}>about</a>
+        <a href="/contact/" class:list={["navlink", { active: active === "contact" }]}>contact</a>
         <a href="https://github.com/Londopy" class="navlink">github ↗</a>
       </div>
       <div class="theme-switch" role="group" aria-label="Accent theme">

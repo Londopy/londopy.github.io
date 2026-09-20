@@ -1,0 +1,281 @@
+---
+import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+
+const title = "Contact — London C.";
+const description =
+  "Get in touch with London C. — send a message and it lands in my inbox. No account, no login.";
+
+// Public Web3Forms access key. This is designed to live in client HTML — it
+// only allows submitting this form and never exposes the destination address.
+const ACCESS_KEY = "3ebb2c5a-06db-4542-a8da-9c65f0d8e18f";
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  name: "Contact — London C.",
+  url: "https://londopy.github.io/contact/",
+  mainEntity: {
+    "@type": "Person",
+    name: "London C.",
+    alternateName: "Londopy",
+    url: "https://londopy.github.io",
+    sameAs: ["https://github.com/Londopy"],
+  },
+};
+---
+
+<Base title={title} description={description} jsonLd={jsonLd}>
+  <Nav active="contact" />
+
+  <main class="container contact">
+    <header class="c-hero rise">
+      <p class="prompt mono" aria-hidden="true">
+        <span class="user">londopy</span><span class="at">@</span><span class="host">github</span><span class="path">:~$</span>
+        mail -s "hello" london
+      </p>
+      <h1>Get in touch</h1>
+      <p class="lede">
+        Recruiter, collaborator, or just want to talk shop — write a line and it
+        lands straight in my inbox. No account, no login, and your note goes only
+        to me.
+      </p>
+    </header>
+
+    <form
+      id="contact-form"
+      class="c-form rise"
+      style="animation-delay: 0.05s"
+      action="https://api.web3forms.com/submit"
+      method="POST"
+    >
+      <input type="hidden" name="access_key" value={ACCESS_KEY} />
+      <input type="hidden" name="subject" value="New message from londopy.github.io" />
+      <input type="hidden" name="from_name" value="londopy.github.io" />
+      <!-- honeypot: real people leave this empty; bots fill it and get dropped -->
+      <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+      <div class="field">
+        <label class="mono" for="name">name</label>
+        <input id="name" name="name" type="text" required autocomplete="name" placeholder="Jane Doe" />
+      </div>
+
+      <div class="field">
+        <label class="mono" for="email">email</label>
+        <input id="email" name="email" type="email" required autocomplete="email" placeholder="jane@company.com" />
+        <span class="hint mono">so I can reply — never shown publicly</span>
+      </div>
+
+      <div class="field">
+        <label class="mono" for="message">message</label>
+        <textarea id="message" name="message" rows="6" required placeholder="What's on your mind?"></textarea>
+      </div>
+
+      <div class="actions">
+        <button class="submit mono" type="submit">
+          <span class="dollar" aria-hidden="true">$</span> send message
+        </button>
+        <p id="form-status" class="status mono" role="status" aria-live="polite"></p>
+      </div>
+    </form>
+
+    <p class="alt mono">
+      prefer another channel? &nbsp;<span class="discord">discord <strong>_londo</strong></span>
+      &nbsp;·&nbsp; <a href="https://github.com/Londopy">github.com/Londopy</a>
+    </p>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .contact {
+    padding-top: 3.5rem;
+    max-width: 680px;
+  }
+
+  .c-hero {
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1.75rem;
+  }
+
+  .prompt {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .prompt .user { color: var(--accent); }
+  .prompt .at { color: var(--text-faint); }
+  .prompt .host { color: var(--text); }
+  .prompt .path { color: var(--text-faint); margin-right: 0.6em; }
+
+  h1 {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.75rem;
+  }
+
+  .lede {
+    color: var(--text-dim);
+    font-size: 1.02rem;
+    line-height: 1.6;
+    max-width: 60ch;
+  }
+
+  .c-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem 1.5rem 1.6rem;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .field label {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+  }
+
+  .field label::before {
+    content: "> ";
+    color: var(--accent);
+  }
+
+  input[type="text"],
+  input[type="email"],
+  textarea {
+    font: inherit;
+    font-size: 0.95rem;
+    color: var(--text);
+    background: var(--bg-raised);
+    border: 1px solid var(--border-bright);
+    border-radius: 5px;
+    padding: 0.6rem 0.75rem;
+    width: 100%;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 7rem;
+    line-height: 1.55;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--text-faint);
+  }
+
+  input:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+  }
+
+  .hint {
+    font-size: 0.72rem;
+    color: var(--text-faint);
+  }
+
+  /* honeypot — hidden from humans, present for bots */
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    margin-top: 0.25rem;
+  }
+
+  .submit {
+    font-size: 0.85rem;
+    color: var(--bg);
+    background: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 5px;
+    padding: 0.55rem 1.1rem;
+    cursor: pointer;
+    transition: filter 0.15s ease, opacity 0.15s ease;
+  }
+
+  .submit .dollar { opacity: 0.7; }
+  .submit:hover { filter: brightness(1.08); }
+  .submit:disabled { opacity: 0.6; cursor: default; }
+
+  .status { font-size: 0.82rem; color: var(--text-dim); }
+  .status.ok { color: var(--accent); }
+  .status.err { color: var(--lang-cpp); }
+
+  .alt {
+    margin-top: 1.5rem;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .alt .discord strong { color: var(--accent); font-weight: 500; }
+</style>
+
+<script>
+  const form = document.getElementById("contact-form") as HTMLFormElement | null;
+  const status = document.getElementById("form-status");
+  if (form && status) {
+    const btn = form.querySelector("button[type=submit]") as HTMLButtonElement | null;
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form) as any);
+      // honeypot tripped → silently pretend success, drop the submission
+      if (data.botcheck) {
+        status.textContent = "message sent — thanks!";
+        status.className = "status mono ok";
+        form.reset();
+        return;
+      }
+      status.textContent = "sending…";
+      status.className = "status mono";
+      if (btn) btn.disabled = true;
+      try {
+        const res = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify(data),
+        });
+        const json = await res.json();
+        if (json.success) {
+          status.textContent = "message sent — I'll get back to you. thanks!";
+          status.className = "status mono ok";
+          form.reset();
+        } else {
+          status.textContent = "something went wrong — email me at github.com/Londopy instead.";
+          status.className = "status mono err";
+        }
+      } catch {
+        status.textContent = "network error — please try again, or reach me on GitHub.";
+        status.className = "status mono err";
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    });
+  }
+</script>
