@@ -72,7 +72,7 @@
       "cluster": "devtools",
       "name": "nexium",
       "tagline": "A programming language of my own — compiles to native code through C, with automatic reference counting (no tracing GC) and a machine-checked effect system that says what a function is allowed to do. Self-hosting compiler.",
-      "language": "Zig",
+      "language": "Nexium",
       "tags": [
         "compiler",
         "language",
