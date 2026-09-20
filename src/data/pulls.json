@@ -3,7 +3,7 @@
     "generated": "2026-09-20",
     "count": 44,
     "repos": 39,
-    "merged": 7
+    "merged": 8
   },
   "pulls": [
     {
@@ -103,7 +103,7 @@
       "state": "merged",
       "url": "https://github.com/nukeop/nuclear/pull/2200",
       "date": "2026-09-20",
-      "repoStars": 18478
+      "repoStars": 18479
     },
     {
       "repo": "1jehuang/jcode",
@@ -220,7 +220,7 @@
       "state": "merged",
       "url": "https://github.com/chaitin/SafeLine/pull/1328",
       "date": "2026-09-19",
-      "repoStars": 22640
+      "repoStars": 22644
     },
     {
       "repo": "wandb/openui",
@@ -334,10 +334,10 @@
       "repo": "micro-editor/micro",
       "number": 4234,
       "title": "Fix typo and dead snap link in README",
-      "state": "open",
+      "state": "merged",
       "url": "https://github.com/micro-editor/micro/pull/4234",
       "date": "2026-09-19",
-      "repoStars": 0
+      "repoStars": 29611
     },
     {
       "repo": "emilk/egui",
