@@ -105,4 +105,115 @@ export const projectDocs = {
 </ul>
 <p>Two of the pieces it leans on — timefuzz and vitalscore — are my own libraries, which is half the reason it came together in a weekend.</p>
 `,
+
+  nexium: `
+<h2><span class="hash">##</span> What it is</h2>
+<p><strong>nexium</strong> is a programming language of my own. It compiles to native code <em>through C</em>, uses automatic reference counting instead of a tracing garbage collector, and carries a machine-checked <strong>effect system</strong> that says whether a function allocates, blocks, or can panic. One source tree can be shipped as a C library, a Python wheel, a Rust crate, or a command-line tool.</p>
+
+<h2><span class="hash">##</span> Why build a language</h2>
+<p>The pitch I kept wanting was "complete enough to build everything in, but also the best thing to reach for when you only need <em>one piece</em> of something else." Most languages make you pick: a big runtime that's great alone and painful to embed, or a low-level language that embeds well but fights you everywhere else. Nexium is an attempt to get both — native performance, no heavyweight runtime, and a compiler that hands you whatever artifact the host project actually consumes.</p>
+
+<h2><span class="hash">##</span> How it works</h2>
+<ul>
+<li><strong>Native through C</strong> — the backend lowers to C and hands off to a C compiler, so Nexium inherits a mature optimiser and runs anywhere C does.</li>
+<li><strong>ARC, not GC</strong> — automatic reference counting means deterministic cleanup and no stop-the-world pauses.</li>
+<li><strong>Effect system</strong> — allocation, blocking, and panic are tracked in the type system and checked at compile time, so a function's signature tells you what it's allowed to do.</li>
+<li><strong>One tree, every target</strong> — declare <code>artifact cabi</code>, <code>artifact python</code>, and the rest, then <code>nx ship</code> emits a DLL + header, a Python wheel, a Rust crate, or a CLI in one pass.</li>
+</ul>
+
+<h2><span class="hash">##</span> A taste</h2>
+<p>A single <code>.nx</code> file, exported to C and Python at once:</p>
+<pre><code>fn checksum(data: []u8) -&gt; u32 export(c) { ... }
+artifact cabi   { name = "hasher" }
+artifact python { name = "hasher" }</code></pre>
+<p>Then <code>nx ship hasher.nx</code> produces the <code>.dll</code>, <code>.lib</code>, <code>.h</code>, and a <code>.whl</code> you can <code>import</code> straight into Python. The full language reference and roadmap live in the <a href="https://github.com/Londopy/nexium">repo</a>.</p>
+`,
+
+  "gesture-synth": `
+<h2><span class="hash">##</span> What it is</h2>
+<p><strong>Gesture Synth</strong> is a chord instrument you play with your hands in front of a camera. Your left hand picks the chord — scale degree from which fingers are up, major or minor from the palm tilt. Your right hand shapes it — inversion, sevenths, octave with the thumb, filter with tilt, volume with height. A loop pedal records gesture performances into four tracks against a metronome, and everything you play is drawn back at you as a harmony-aware scene.</p>
+
+<h2><span class="hash">##</span> The idea</h2>
+<p>I wanted an instrument where the theory <em>is</em> the interface: four fingers and a tilted palm is a IV major, add three fingers on the right hand and it's a IV maj7. The visuals aren't decoration — the ring walks with the chord root, the note constellation is the actual voicing, and the circle of fifths shows where you are in the key. You learn harmony by moving your hands and watching what lights up.</p>
+
+<h2><span class="hash">##</span> How it's built</h2>
+<p>It runs from one codebase as two things: a <strong>Tauri desktop app</strong> (native audio thread, MIDI out, ffmpeg export) and a <strong>web app / installable PWA</strong> at the same URLs, offline after first load. Sessions are byte-identical across both, so a loop made in the browser opens on desktop and back again. Under the hood it spans an unusual stack:</p>
+<ul>
+<li><strong>Rust compiled to WASM</strong> for the hot path,</li>
+<li><strong>Svelte + Three.js</strong> for the reactive 3D scene,</li>
+<li>a <strong>Zig</strong> DSP kernel,</li>
+<li>a <strong>Gleam</strong> service, and</li>
+<li><strong>MediaPipe</strong> hand-tracking feeding the whole thing.</li>
+</ul>
+<p>The desktop build opens in <em>Stage</em> — a game shell with song select on the circle of fifths and rated sets; the website opens in <em>Studio</em>, the workstation layout. One switch in Settings moves between them.</p>
+
+<h2><span class="hash">##</span> Try it</h2>
+<p>There's a live web build — <a href="https://gesture-synth.onrender.com/">gesture-synth.onrender.com</a> — that runs in the browser with your camera. Give it a hand and start with a IV maj7.</p>
+`,
+
+  whumpf: `
+<h2><span class="hash">##</span> What it is</h2>
+<p><strong>WHUMPF</strong> projects an avalanche bulletin onto the actual mountain in 3D. A <em>whumpf</em> is the sound a weak snow layer makes when it collapses under you — the most unambiguous signal in avalanche safety. This is an attempt to give you that signal <em>before</em> you're standing on the slope.</p>
+
+<h2><span class="hash">##</span> The problem it solves</h2>
+<p>A published bulletin reads like "Persistent slab. N through NE aspects. Above 2400 m. 30–45 degrees. Danger: CONSIDERABLE (3)." That's accurate, and it's not an answer to the question you're actually asking: <strong>is the slope in front of me one of those slopes?</strong> WHUMPF filters the terrain by the bulletin's own parameters and lights up every slope that matches — rotate the mountain, see which bowls are loaded, see whether your skin track crosses one.</p>
+
+<h2><span class="hash">##</span> How it works</h2>
+<p>Almost everything is static files; the backend is deliberately thin. A DEM (3DEP / LINZ) feeds two paths: quantized-mesh terrain through Cesium ion, and a slope / aspect / elevation computation packed into <strong>RGBA XYZ tiles</strong>. A GLSL shader reads those channels and repaints the whole range live as you drag the danger sliders — no server round-trip per frame. Two bulletin adapters sit behind a cache, plus one route-analysis endpoint. No database.</p>
+
+<h2><span class="hash">##</span> Where it's at</h2>
+<p>Early, but no longer scaffolding: the Cesium client runs, the bulletin API answers, and a full mapping client has been ported in — GPX / GeoJSON / KML, route analysis, offline tiles, Garmin export, ski runs and lifts. Still ahead: wiring the attribute-tile pipeline to real DEM output rather than a synthetic test tile. The repo's <code>PORTING-STATUS.md</code> tracks exactly what's proven and what isn't.</p>
+
+<h2><span class="hash">##</span> A note on safety</h2>
+<p>WHUMPF <em>displays</em> official bulletins published by regional forecast centres — it doesn't generate, interpolate, or supplement any forecast. The overlay is a visualisation of a published product, not a recommendation, and no substitute for avalanche education, current observations, or your own judgement. Always consult the source bulletin; terrain data contains errors.</p>
+`,
+
+  filekind: `
+<h2><span class="hash">##</span> What it is</h2>
+<p><strong>filekind</strong> turns one declarative spec file into a real, recognised file type on Windows, Linux, and macOS. You describe the format once; it generates every artifact the three operating systems need to treat your extension as a first-class type — icons, MIME registration, and the scripts that install and remove it all.</p>
+
+<h2><span class="hash">##</span> Why I built it</h2>
+<p>Registering a custom file type today means hand-writing four unrelated artifacts in four dialects: a Windows <code>.reg</code> tree, a freedesktop shared-mime-info XML plus a <code>.desktop</code> entry, a macOS <code>Info.plist</code> UTI block, and a libmagic pattern. Each is separately and poorly documented, and getting any one subtly wrong means your icon silently doesn't show up. I wanted to write the format down <em>once</em>.</p>
+
+<h2><span class="hash">##</span> What it generates</h2>
+<p>From a single <code>.filekind</code> TOML spec — name, extension, magic bytes, MIME type, icon, handler — <code>filekind build</code> emits the whole set:</p>
+<ul>
+<li><strong>Windows:</strong> register / unregister <code>.reg</code>, Inno and NSIS installer snippets, and an <code>.ico</code>.</li>
+<li><strong>Linux:</strong> shared-mime-info XML, a <code>.desktop</code> entry, hicolor icons at every size, install / uninstall scripts, and packaging fragments.</li>
+<li><strong>macOS:</strong> an <code>Info.plist</code> UTI fragment and an <code>.icns</code>.</li>
+<li>A <code>magic.txt</code> libmagic pattern and a README explaining what to run.</li>
+</ul>
+<p>Nothing is installed for you — it writes the files and points you at the generated README, so the system-changing step stays in your hands. Rust core, with a Tauri desktop app and a CLI.</p>
+`,
+
+  beam: `
+<h2><span class="hash">##</span> What it is</h2>
+<p><strong>Beam</strong> sends files and text between your devices, browser to browser, by scanning a QR code. No accounts, no uploads, no server of your own — just open the page on one device, scan the code with another, and drop files in either direction.</p>
+
+<h2><span class="hash">##</span> How it works</h2>
+<p>Data travels over a <strong>direct WebRTC connection</strong> between the two browsers. A tiny signalling server is used only to introduce the two peers to each other; once they're connected, the bytes go peer-to-peer and never touch a third machine. The whole thing is a handful of static files with no build step, served from GitHub Pages.</p>
+
+<h2><span class="hash">##</span> Why it's built this way</h2>
+<p>Most "send it to my other device" tools route your file through someone's cloud, tie it to a login, or keep a copy. Beam keeps the transfer between the only two machines that should ever see it. It's the quickest way to get a file from a phone to a laptop when you don't want to email it to yourself.</p>
+
+<h2><span class="hash">##</span> Try it</h2>
+<p>Open <a href="https://londopy.github.io/beam/">londopy.github.io/beam</a> on two devices and scan.</p>
+`,
+
+  "claude-skills": `
+<h2><span class="hash">##</span> What it is</h2>
+<p><strong>claude-skills</strong> is the whole rollcall family in one install — <a href="https://github.com/Londopy/skill-rollcall">skill-rollcall</a>, <a href="https://github.com/Londopy/mcp-rollcall">mcp-rollcall</a>, <a href="https://github.com/Londopy/settings-effective">settings-effective</a>, and <a href="https://github.com/Londopy/git-attribution">git-attribution</a>. Each one makes a step that Claude Code does silently legible again.</p>
+
+<h2><span class="hash">##</span> The through-line</h2>
+<p>Claude Code registers skills, starts MCP servers, merges six settings files, and signs commits — and tells you nothing about any of it until something's missing. Each tool here rebuilds one of those silent steps <em>from disk, with the reasons attached</em>, then repairs or reports:</p>
+<ul>
+<li><strong>skill-rollcall</strong> — which skills registered, which are new, which will never show up and why.</li>
+<li><strong>mcp-rollcall</strong> — which MCP servers will fail to connect and exactly why, and what each costs in tools and context.</li>
+<li><strong>settings-effective</strong> — every setting actually in effect, which file decided it, and why the value you set isn't applying.</li>
+<li><strong>git-attribution</strong> — whether AI co-author trailers are landing in your history, which commits carry them, and how to scrub and block them.</li>
+</ul>
+
+<h2><span class="hash">##</span> How it's built</h2>
+<p>Every tool is a single <strong>stdlib-only Python script</strong> that also runs as a plain CLI — read-only unless you pass <code>--apply</code>, with <code>--json</code> and <code>--strict</code> for tooling and CI. This repo is the family in one install; each skill also lives in its own repo, which is the source of truth. The copies here are synced from upstream, pinned in a lock file, and CI fails if they drift.</p>
+`,
 };
