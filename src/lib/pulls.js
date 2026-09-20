@@ -62,13 +62,19 @@ export async function getPulls() {
         if (!l) continue;
         p.state = p.state === "merged" || l.state === "merged" ? "merged" : l.state;
       }
-      // append PRs that showed up after the list was last baked
+      // append PRs that showed up after the list was last baked — but never
+      // PRs to my own/collab repos; this section is contributions to *others'*
+      // projects (my own work is shown as project cards).
+      const OWN = /^Londopy\//i;
+      const DENY = new Set(["Skythe7/DiresQ"]);
       const known = new Set(pulls.map((p) => p.url));
       for (const [url, l] of live) {
         if (known.has(url)) continue;
         const m = url.match(/github\.com\/([^/]+\/[^/]+)\/pull\/(\d+)/);
+        const repo = m ? m[1] : url;
+        if (OWN.test(repo) || DENY.has(repo)) continue;
         pulls.push({
-          repo: m ? m[1] : url,
+          repo,
           number: m ? Number(m[2]) : 0,
           title: l.title,
           state: l.state,
