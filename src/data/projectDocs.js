@@ -216,4 +216,24 @@ artifact python { name = "hasher" }</code></pre>
 <h2><span class="hash">##</span> How it's built</h2>
 <p>Every tool is a single <strong>stdlib-only Python script</strong> that also runs as a plain CLI — read-only unless you pass <code>--apply</code>, with <code>--json</code> and <code>--strict</code> for tooling and CI. This repo is the family in one install; each skill also lives in its own repo, which is the source of truth. The copies here are synced from upstream, pinned in a lock file, and CI fails if they drift.</p>
 `,
+
+  statusmith: `
+<h2><span class="hash">##</span> What it is</h2>
+<p><strong>statusmith</strong> is a tray app for writing your own Discord <strong>Rich Presence</strong> — the "Playing…" card with details, state, images, timers, party size and buttons — and flipping between saved presets without leaving the system tray. Windows, macOS and Linux.</p>
+
+<h2><span class="hash">##</span> Why it exists</h2>
+<p>Rich Presence is something games get for free and people don't, because it's an API rather than a setting. Every tool that offers it either wants your account token — which is a password to your whole Discord account — or makes you write a script and keep it running. I wanted the good version: a real app, no token, no babysitting a terminal.</p>
+
+<h2><span class="hash">##</span> How it works</h2>
+<p>It talks to the Discord client already running on your machine over its <strong>local Rich Presence pipe</strong>, exactly the way a game does. That's the important part: the handshake is with the desktop client on localhost, so <em>statusmith never sees your account token</em> and there's no credential to leak. If Discord isn't running, there's simply nothing to talk to.</p>
+<ul>
+<li><strong>Applications as headlines</strong> — each Discord application you register becomes one headline ("Playing <em>life</em>", "Listening to <em>lofi</em>"), and you pick which one is active.</li>
+<li><strong>Presets</strong> with details, state, large/small images, hover text, party size and up to two link buttons. Edits save as you type.</li>
+<li><strong>Live variables and rotation</strong> — presence that changes on its own instead of sitting static.</li>
+<li><strong>A Nexium SDK</strong>, so programs written in <a href="/projects/nexium/">my own language</a> can drive the presence directly.</li>
+</ul>
+
+<h2><span class="hash">##</span> How it's built</h2>
+<p>A <strong>Tauri 2</strong> desktop app — web front end, Rust core — with the IPC work done against Discord's pipe by hand rather than through a heavyweight SDK. There's a Zig component in the mix and Python on the build side, which makes it four languages in one tray icon. Cross-platform builds and auto-update ship with it.</p>
+`,
 };

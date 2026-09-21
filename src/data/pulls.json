@@ -1,11 +1,191 @@
 {
   "meta": {
-    "generated": "2026-09-20",
-    "count": 44,
-    "repos": 39,
-    "merged": 8
+    "generated": "2026-09-21",
+    "count": 64,
+    "repos": 55,
+    "merged": 11
   },
   "pulls": [
+    {
+      "repo": "firebase/firebaseui-web",
+      "number": 1494,
+      "title": "Fix typos in README",
+      "state": "open",
+      "url": "https://github.com/firebase/firebaseui-web/pull/1494",
+      "date": "2026-09-21",
+      "repoStars": 0
+    },
+    {
+      "repo": "tonikelope/megabasterd",
+      "number": 793,
+      "title": "Fix typo in README",
+      "state": "open",
+      "url": "https://github.com/tonikelope/megabasterd/pull/793",
+      "date": "2026-09-21",
+      "repoStars": 0
+    },
+    {
+      "repo": "omkarcloud/botasaurus",
+      "number": 308,
+      "title": "Fix typo in README",
+      "state": "open",
+      "url": "https://github.com/omkarcloud/botasaurus/pull/308",
+      "date": "2026-09-21",
+      "repoStars": 0
+    },
+    {
+      "repo": "mrlt8/docker-wyze-bridge",
+      "number": 1546,
+      "title": "Fix typo in README",
+      "state": "open",
+      "url": "https://github.com/mrlt8/docker-wyze-bridge/pull/1546",
+      "date": "2026-09-21",
+      "repoStars": 0
+    },
+    {
+      "repo": "zmister2016/MrDoc",
+      "number": 207,
+      "title": "Fix typos in README",
+      "state": "open",
+      "url": "https://github.com/zmister2016/MrDoc/pull/207",
+      "date": "2026-09-21",
+      "repoStars": 0
+    },
+    {
+      "repo": "jlesage/docker-firefox",
+      "number": 357,
+      "title": "Fix typos in README",
+      "state": "merged",
+      "url": "https://github.com/jlesage/docker-firefox/pull/357",
+      "date": "2026-09-21",
+      "repoStars": 2552
+    },
+    {
+      "repo": "eKoopmans/html2pdf.js",
+      "number": 1044,
+      "title": "Fix typo in README",
+      "state": "open",
+      "url": "https://github.com/eKoopmans/html2pdf.js/pull/1044",
+      "date": "2026-09-21",
+      "repoStars": 0
+    },
+    {
+      "repo": "HJLebbink/asm-dude",
+      "number": 166,
+      "title": "Fix typo in README",
+      "state": "open",
+      "url": "https://github.com/HJLebbink/asm-dude/pull/166",
+      "date": "2026-09-21",
+      "repoStars": 0
+    },
+    {
+      "repo": "skeeto/w64devkit",
+      "number": 419,
+      "title": "Fix typos in README",
+      "state": "merged",
+      "url": "https://github.com/skeeto/w64devkit/pull/419",
+      "date": "2026-09-21",
+      "repoStars": 4837
+    },
+    {
+      "repo": "Keyitdev/sddm-astronaut-theme",
+      "number": 99,
+      "title": "Fix typos in README",
+      "state": "open",
+      "url": "https://github.com/Keyitdev/sddm-astronaut-theme/pull/99",
+      "date": "2026-09-21",
+      "repoStars": 0
+    },
+    {
+      "repo": "geo-tp/ESP32-Bit-Pirate",
+      "number": 178,
+      "title": "Fix typos in README",
+      "state": "open",
+      "url": "https://github.com/geo-tp/ESP32-Bit-Pirate/pull/178",
+      "date": "2026-09-21",
+      "repoStars": 0
+    },
+    {
+      "repo": "dafthack/MailSniper",
+      "number": 115,
+      "title": "Fix typos in README",
+      "state": "open",
+      "url": "https://github.com/dafthack/MailSniper/pull/115",
+      "date": "2026-09-21",
+      "repoStars": 0
+    },
+    {
+      "repo": "Tuhinshubhra/CMSeeK",
+      "number": 207,
+      "title": "Fix typos in README",
+      "state": "open",
+      "url": "https://github.com/Tuhinshubhra/CMSeeK/pull/207",
+      "date": "2026-09-21",
+      "repoStars": 0
+    },
+    {
+      "repo": "connorferster/handcalcs",
+      "number": 278,
+      "title": "Fix typos in README",
+      "state": "open",
+      "url": "https://github.com/connorferster/handcalcs/pull/278",
+      "date": "2026-09-21",
+      "repoStars": 0
+    },
+    {
+      "repo": "philippe44/AirConnect",
+      "number": 594,
+      "title": "Fix typos in README",
+      "state": "open",
+      "url": "https://github.com/philippe44/AirConnect/pull/594",
+      "date": "2026-09-21",
+      "repoStars": 0
+    },
+    {
+      "repo": "gusmanb/logicanalyzer",
+      "number": 386,
+      "title": "Fix typos in README",
+      "state": "open",
+      "url": "https://github.com/gusmanb/logicanalyzer/pull/386",
+      "date": "2026-09-21",
+      "repoStars": 0
+    },
+    {
+      "repo": "gusmanb/logicanalyzer",
+      "number": 385,
+      "title": "Fix typos in README",
+      "state": "closed",
+      "url": "https://github.com/gusmanb/logicanalyzer/pull/385",
+      "date": "2026-09-21",
+      "repoStars": 0
+    },
+    {
+      "repo": "mintoolkit/mint",
+      "number": 199,
+      "title": "Derive Dockerfile instruction names from pkg/docker/instruction instead of duplicating them",
+      "state": "open",
+      "url": "https://github.com/mintoolkit/mint/pull/199",
+      "date": "2026-09-20",
+      "repoStars": 0
+    },
+    {
+      "repo": "micro-editor/micro",
+      "number": 4236,
+      "title": "syntax/c: highlight the header name in #include as a string, not a type",
+      "state": "open",
+      "url": "https://github.com/micro-editor/micro/pull/4236",
+      "date": "2026-09-20",
+      "repoStars": 29610
+    },
+    {
+      "repo": "micro-editor/micro",
+      "number": 4235,
+      "title": "help/colors: remove references to the removed cmc-paper colorscheme",
+      "state": "open",
+      "url": "https://github.com/micro-editor/micro/pull/4235",
+      "date": "2026-09-20",
+      "repoStars": 29610
+    },
     {
       "repo": "mukul975/Anthropic-Cybersecurity-Skills",
       "number": 145,
@@ -103,7 +283,7 @@
       "state": "merged",
       "url": "https://github.com/nukeop/nuclear/pull/2200",
       "date": "2026-09-20",
-      "repoStars": 18479
+      "repoStars": 18480
     },
     {
       "repo": "1jehuang/jcode",
@@ -220,7 +400,7 @@
       "state": "merged",
       "url": "https://github.com/chaitin/SafeLine/pull/1328",
       "date": "2026-09-19",
-      "repoStars": 22644
+      "repoStars": 22645
     },
     {
       "repo": "wandb/openui",
@@ -253,10 +433,10 @@
       "repo": "copy/v86",
       "number": 1638,
       "title": "Fix typo in Readme",
-      "state": "open",
+      "state": "merged",
       "url": "https://github.com/copy/v86/pull/1638",
       "date": "2026-09-19",
-      "repoStars": 0
+      "repoStars": 23507
     },
     {
       "repo": "slimtoolkit/slim",
@@ -337,7 +517,7 @@
       "state": "merged",
       "url": "https://github.com/micro-editor/micro/pull/4234",
       "date": "2026-09-19",
-      "repoStars": 29611
+      "repoStars": 29610
     },
     {
       "repo": "emilk/egui",

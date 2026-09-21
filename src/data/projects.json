@@ -58,7 +58,7 @@
       "id": "games",
       "emoji": "🎮",
       "title": "Consumer & games",
-      "blurb": "Tools for the games I actually play."
+      "blurb": "Tools for the games I play and the apps I live in."
     },
     {
       "id": "audio",
@@ -570,6 +570,23 @@
       "repo": "https://github.com/Londopy/git-attribution",
       "demo": null,
       "page": "/projects/git-attribution/",
+      "featured": false,
+      "stars": 1
+    },
+    {
+      "cluster": "games",
+      "name": "statusmith",
+      "tagline": "Write your own Discord Rich Presence from the tray — details, images, timers, party size and buttons, with saved presets, live variables and rotation. Talks to Discord’s local RPC pipe the way a game does, so it never sees your account token. Tauri 2, cross-platform, ships a Nexium SDK.",
+      "language": "JavaScript + Rust + Zig + Python",
+      "tags": [
+        "discord",
+        "tauri",
+        "tray",
+        "cross-platform"
+      ],
+      "repo": "https://github.com/Londopy/statusmith",
+      "demo": null,
+      "page": "/projects/statusmith/",
       "featured": false,
       "stars": 1
     }
