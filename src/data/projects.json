@@ -577,9 +577,10 @@
       "cluster": "games",
       "name": "statusmith",
       "tagline": "Write your own Discord Rich Presence from the tray — details, images, timers, party size and buttons, with saved presets, live variables and rotation. Talks to Discord’s local RPC pipe the way a game does, so it never sees your account token. Tauri 2, cross-platform, ships a Nexium SDK.",
-      "language": "JavaScript + Rust + Zig + Python",
+      "language": "JavaScript + Rust + Nexium + Python",
       "tags": [
         "discord",
+        "nexium",
         "tauri",
         "tray",
         "cross-platform"

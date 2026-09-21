@@ -234,6 +234,7 @@ artifact python { name = "hasher" }</code></pre>
 </ul>
 
 <h2><span class="hash">##</span> How it's built</h2>
-<p>A <strong>Tauri 2</strong> desktop app — web front end, Rust core — with the IPC work done against Discord's pipe by hand rather than through a heavyweight SDK. There's a Zig component in the mix and Python on the build side, which makes it four languages in one tray icon. Cross-platform builds and auto-update ship with it.</p>
+<p>A <strong>Tauri 2</strong> desktop app — web front end, Rust core — with the IPC work done against Discord's pipe by hand rather than through a heavyweight SDK. The SDK layer is written in <a href="/projects/nexium/">Nexium</a>, my own language, which makes statusmith the first thing I've shipped that runs Nexium in production rather than in its own test suite. Python handles the build side, and cross-platform builds and auto-update ship with it.</p>
+<p><sub>GitHub reports those <code>.nx</code> files as Zig, because Nexium isn't in Linguist yet — the repo pins <code>linguist-language=Zig</code> as the closest grammar until it is.</sub></p>
 `,
 };
