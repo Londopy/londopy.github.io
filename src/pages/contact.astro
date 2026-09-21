@@ -144,6 +144,11 @@ const jsonLd = {
       &nbsp;·&nbsp; <span class="irc">irc <strong>Londopy</strong> @ irc.libera.chat</span>
       &nbsp;·&nbsp; <a href="https://github.com/Londopy">github.com/Londopy</a>
     </p>
+    <p class="alt-hint mono">
+      on irc: <code>/msg Londopy</code> from any client, or straight from
+      <a href="https://web.libera.chat">web.libera.chat</a> — no account needed.
+      I stay connected, so it reaches me even when I'm away from the keyboard.
+    </p>
   </main>
 
   {HCAPTCHA_SITEKEY && <script src="https://js.hcaptcha.com/1/api.js" async defer></script>}
@@ -457,4 +462,20 @@ const jsonLd = {
 
   .alt .discord strong,
   .alt .irc strong { color: var(--accent); font-weight: 500; }
+
+  .alt-hint {
+    margin-top: 0.55rem;
+    font-size: 0.76rem;
+    line-height: 1.65;
+    color: var(--text-faint);
+    max-width: 62ch;
+  }
+
+  .alt-hint code {
+    color: var(--accent);
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 0.05em 0.35em;
+  }
 </style>
