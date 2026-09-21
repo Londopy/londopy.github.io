@@ -3,7 +3,7 @@
     "generated": "2026-09-21",
     "count": 64,
     "repos": 55,
-    "merged": 11
+    "merged": 13
   },
   "pulls": [
     {
@@ -58,7 +58,7 @@
       "state": "merged",
       "url": "https://github.com/jlesage/docker-firefox/pull/357",
       "date": "2026-09-21",
-      "repoStars": 2552
+      "repoStars": 2553
     },
     {
       "repo": "eKoopmans/html2pdf.js",
@@ -85,7 +85,7 @@
       "state": "merged",
       "url": "https://github.com/skeeto/w64devkit/pull/419",
       "date": "2026-09-21",
-      "repoStars": 4837
+      "repoStars": 4838
     },
     {
       "repo": "Keyitdev/sddm-astronaut-theme",
@@ -109,10 +109,10 @@
       "repo": "dafthack/MailSniper",
       "number": 115,
       "title": "Fix typos in README",
-      "state": "open",
+      "state": "merged",
       "url": "https://github.com/dafthack/MailSniper/pull/115",
       "date": "2026-09-21",
-      "repoStars": 0
+      "repoStars": 3280
     },
     {
       "repo": "Tuhinshubhra/CMSeeK",
@@ -175,7 +175,7 @@
       "state": "open",
       "url": "https://github.com/micro-editor/micro/pull/4236",
       "date": "2026-09-20",
-      "repoStars": 29610
+      "repoStars": 29612
     },
     {
       "repo": "micro-editor/micro",
@@ -184,7 +184,7 @@
       "state": "open",
       "url": "https://github.com/micro-editor/micro/pull/4235",
       "date": "2026-09-20",
-      "repoStars": 29610
+      "repoStars": 29612
     },
     {
       "repo": "mukul975/Anthropic-Cybersecurity-Skills",
@@ -283,7 +283,7 @@
       "state": "merged",
       "url": "https://github.com/nukeop/nuclear/pull/2200",
       "date": "2026-09-20",
-      "repoStars": 18480
+      "repoStars": 18483
     },
     {
       "repo": "1jehuang/jcode",
@@ -355,7 +355,7 @@
       "state": "merged",
       "url": "https://github.com/sqlitebrowser/sqlitebrowser/pull/4203",
       "date": "2026-09-19",
-      "repoStars": 24612
+      "repoStars": 24613
     },
     {
       "repo": "pyg-team/pytorch_geometric",
@@ -400,7 +400,7 @@
       "state": "merged",
       "url": "https://github.com/chaitin/SafeLine/pull/1328",
       "date": "2026-09-19",
-      "repoStars": 22645
+      "repoStars": 22648
     },
     {
       "repo": "wandb/openui",
@@ -436,7 +436,7 @@
       "state": "merged",
       "url": "https://github.com/copy/v86/pull/1638",
       "date": "2026-09-19",
-      "repoStars": 23507
+      "repoStars": 23509
     },
     {
       "repo": "slimtoolkit/slim",
@@ -517,7 +517,7 @@
       "state": "merged",
       "url": "https://github.com/micro-editor/micro/pull/4234",
       "date": "2026-09-19",
-      "repoStars": 29610
+      "repoStars": 29612
     },
     {
       "repo": "emilk/egui",
@@ -532,16 +532,16 @@
       "repo": "nim-lang/Nim",
       "number": 26248,
       "title": "readme: doc/ is Markdown, not reStructuredText",
-      "state": "open",
+      "state": "merged",
       "url": "https://github.com/nim-lang/Nim/pull/26248",
       "date": "2026-09-19",
-      "repoStars": 0
+      "repoStars": 18240
     },
     {
       "repo": "modular/modular",
       "number": 7160,
       "title": "[docs] Fix Mojo stdlib link in README",
-      "state": "open",
+      "state": "closed",
       "url": "https://github.com/modular/modular/pull/7160",
       "date": "2026-09-19",
       "repoStars": 0
@@ -553,7 +553,7 @@
       "state": "merged",
       "url": "https://github.com/elixir-lang/elixir/pull/15915",
       "date": "2026-09-19",
-      "repoStars": 26665
+      "repoStars": 26666
     },
     {
       "repo": "ComposioHQ/awesome-claude-skills",
