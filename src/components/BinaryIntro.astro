@@ -3,6 +3,27 @@
 // reveal the page. Skips on reduced-motion and after the first view per session.
 ---
 
+<!-- Runs during parse, before the overlay below exists, so a returning
+     visitor never gets a flash of the black intro panel. -->
+<script is:inline>
+  (() => {
+    let seen = false;
+    try {
+      seen = sessionStorage.getItem("intro-seen") === "1";
+    } catch (e) {
+      /* private mode / blocked storage — just play it */
+    }
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (seen || reduce) {
+      document.documentElement.dataset.intro = "skip";
+    } else {
+      try {
+        sessionStorage.setItem("intro-seen", "1");
+      } catch (e) {}
+    }
+  })();
+</script>
+
 <div id="binary-intro" aria-hidden="true">
   <canvas id="binary-canvas"></canvas>
   <div class="scanline"></div>
@@ -21,6 +42,11 @@
   #binary-intro.done {
     opacity: 0;
     pointer-events: none;
+  }
+
+  /* already seen this session, or reduced motion — hide before first paint */
+  :global(:root[data-intro="skip"]) #binary-intro {
+    display: none;
   }
 
   #binary-canvas {
@@ -50,8 +76,14 @@
     const overlay = document.getElementById("binary-intro");
     if (!overlay) return;
 
-    // Plays on every homepage load, regardless of motion settings.
-    // Anyone can dismiss it instantly by clicking or pressing a key.
+    // Seen it already this session (or reduced motion): drop the overlay
+    // without locking scroll or spinning up the canvas loop.
+    if (document.documentElement.dataset.intro === "skip") {
+      overlay.remove();
+      return;
+    }
+
+    // First view of the session. Dismissable instantly by click or keypress.
 
     // Lock scroll while the intro plays.
     const prevOverflow = document.documentElement.style.overflow;
