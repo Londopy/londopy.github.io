@@ -45,8 +45,8 @@
     {
       "id": "claude-tooling",
       "emoji": "🧩",
-      "title": "Claude Code tooling",
-      "blurb": "Single-file, stdlib-only tools that make what Claude Code does silently legible — which skills registered, which MCP servers fail and why, which settings file won, and who signed your commits."
+      "title": "Agent tooling",
+      "blurb": "Single-file, stdlib-only tools that make what your coding agent does silently legible — which skills registered, which MCP servers fail and why, which settings file won, and who signed your commits. For Claude Code, Codex, Cursor, Gemini CLI, Copilot and every other Agent Skills host."
     },
     {
       "id": "ai",
@@ -495,29 +495,33 @@
     },
     {
       "cluster": "claude-tooling",
-      "name": "claude-skills",
-      "tagline": "The whole rollcall family in one install — skill-rollcall, mcp-rollcall, settings-effective, git-attribution. Each stays synced from its own upstream repo, pinned and drift-checked in CI.",
+      "name": "agent-skills",
+      "tagline": "The whole rollcall family in one install — skill-rollcall, mcp-rollcall, settings-effective, git-attribution — for Claude Code, Codex, Cursor, Gemini CLI, Copilot, OpenCode and every other Agent Skills host. Each stays synced from its own upstream repo, pinned and drift-checked in CI.",
       "language": "Python",
       "tags": [
+        "agent-skills",
         "claude-code",
-        "skills",
+        "codex",
+        "cursor",
         "mcp"
       ],
-      "repo": "https://github.com/Londopy/claude-skills",
+      "repo": "https://github.com/Londopy/agent-skills",
       "demo": null,
-      "page": "/projects/claude-skills/",
+      "page": "/projects/agent-skills/",
       "featured": false,
       "stars": 1
     },
     {
       "cluster": "claude-tooling",
       "name": "skill-rollcall",
-      "tagline": "Roll call of your Claude Code skills — who is here, who is new, who is never going to show up, and why. Rebuilds the skill index from disk with the reasons attached, then repairs, lints, or audits. Runs as a skill and a CLI.",
+      "tagline": "Roll call of your agent's skills — who is here, who is new, who is never going to show up, and why — for the host you're in or all of them. Rebuilds each host's skill index from disk with the reasons attached, then repairs, lints, or audits. Claude Code, Codex, Cursor, Gemini CLI, Copilot, OpenCode.",
       "language": "Python",
       "tags": [
         "claude-code",
-        "skills",
-        "cli"
+        "cli",
+        "codex",
+        "cursor",
+        "skills"
       ],
       "repo": "https://github.com/Londopy/skill-rollcall",
       "demo": null,
@@ -528,12 +532,14 @@
     {
       "cluster": "claude-tooling",
       "name": "mcp-rollcall",
-      "tagline": "Roll call of your MCP servers — which will fail to connect and exactly why (bad paths, unset env, dead ports, the server’s own stderr), and what each one costs you in tools and context.",
+      "tagline": "Roll call of your MCP servers across every agent's config — Claude Code, Codex config.toml, Cursor, Gemini CLI, Copilot, VS Code, Windsurf, OpenCode — which will fail to connect and exactly why (bad paths, unset env, dead ports, the server’s own stderr), and what each one costs you in tools and context.",
       "language": "Python",
       "tags": [
         "claude-code",
-        "mcp",
-        "diagnostics"
+        "codex",
+        "cursor",
+        "diagnostics",
+        "mcp"
       ],
       "repo": "https://github.com/Londopy/mcp-rollcall",
       "demo": null,
@@ -544,12 +550,12 @@
     {
       "cluster": "claude-tooling",
       "name": "settings-effective",
-      "tagline": "The Claude Code settings actually in effect — every key, which of the six settings files decided it, and why the value you set is not applying.",
+      "tagline": "The Claude Code settings actually in effect — every key, which of the six settings files decided it, and why the value you set is not applying. Runs from any agent and says which one.",
       "language": "Python",
       "tags": [
         "claude-code",
-        "settings",
-        "cli"
+        "cli",
+        "settings"
       ],
       "repo": "https://github.com/Londopy/settings-effective",
       "demo": null,
@@ -560,12 +566,14 @@
     {
       "cluster": "claude-tooling",
       "name": "git-attribution",
-      "tagline": "Find and remove AI co-author attribution from your git history — whether Claude Code is still adding it, which commits carry it, scrub them, and block it going forward.",
+      "tagline": "Find and remove AI co-author attribution from your git history — whether Claude Code, Codex or Copilot is still adding it and where that switch lives, which commits carry it, scrub them, and block it going forward.",
       "language": "Python",
       "tags": [
-        "git",
         "claude-code",
-        "cli"
+        "cli",
+        "codex",
+        "cursor",
+        "git"
       ],
       "repo": "https://github.com/Londopy/git-attribution",
       "demo": null,

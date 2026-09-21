@@ -200,21 +200,21 @@ artifact python { name = "hasher" }</code></pre>
 <p>Open <a href="https://londopy.github.io/beam/">londopy.github.io/beam</a> on two devices and scan.</p>
 `,
 
-  "claude-skills": `
+  "agent-skills": `
 <h2><span class="hash">##</span> What it is</h2>
-<p><strong>claude-skills</strong> is the whole rollcall family in one install — <a href="https://github.com/Londopy/skill-rollcall">skill-rollcall</a>, <a href="https://github.com/Londopy/mcp-rollcall">mcp-rollcall</a>, <a href="https://github.com/Londopy/settings-effective">settings-effective</a>, and <a href="https://github.com/Londopy/git-attribution">git-attribution</a>. Each one makes a step that Claude Code does silently legible again.</p>
+<p><strong>agent-skills</strong> is the whole rollcall family in one install — <a href="https://github.com/Londopy/skill-rollcall">skill-rollcall</a>, <a href="https://github.com/Londopy/mcp-rollcall">mcp-rollcall</a>, <a href="https://github.com/Londopy/settings-effective">settings-effective</a>, and <a href="https://github.com/Londopy/git-attribution">git-attribution</a>. Each one makes a step that a coding agent does silently legible again — and each reads the files of whichever agent you're in: Claude Code, Codex, Cursor, Gemini CLI, Copilot, VS Code, Windsurf, OpenCode.</p>
 
 <h2><span class="hash">##</span> The through-line</h2>
-<p>Claude Code registers skills, starts MCP servers, merges six settings files, and signs commits — and tells you nothing about any of it until something's missing. Each tool here rebuilds one of those silent steps <em>from disk, with the reasons attached</em>, then repairs or reports:</p>
+<p>Every coding agent registers skills, starts MCP servers, merges settings files, and signs commits — and tells you nothing about any of it until something's missing. Each also keeps those things somewhere different (<code>~/.claude</code>, <code>~/.codex</code>, <code>~/.agents</code>, <code>~/.cursor</code>, <code>~/.gemini</code>). Each tool here rebuilds one of those silent steps <em>from disk, with the reasons attached</em>, then repairs or reports:</p>
 <ul>
-<li><strong>skill-rollcall</strong> — which skills registered, which are new, which will never show up and why.</li>
-<li><strong>mcp-rollcall</strong> — which MCP servers will fail to connect and exactly why, and what each costs in tools and context.</li>
-<li><strong>settings-effective</strong> — every setting actually in effect, which file decided it, and why the value you set isn't applying.</li>
-<li><strong>git-attribution</strong> — whether AI co-author trailers are landing in your history, which commits carry them, and how to scrub and block them.</li>
+<li><strong>skill-rollcall</strong> — which skills registered for which host, which are new, which will never show up and why, and whether a skill folder passes the Agent Skills spec.</li>
+<li><strong>mcp-rollcall</strong> — which MCP servers will fail to connect and exactly why, and what each costs in tools and context, read from every host's own config shape.</li>
+<li><strong>settings-effective</strong> — every Claude Code setting actually in effect, which file decided it, and why the value you set isn't applying (runs from any host).</li>
+<li><strong>git-attribution</strong> — whether AI co-author trailers are landing in your history, where each agent's switch lives (Codex's is a workspace policy with nothing local to flip), which commits carry them, and how to scrub and block them.</li>
 </ul>
 
 <h2><span class="hash">##</span> How it's built</h2>
-<p>Every tool is a single <strong>stdlib-only Python script</strong> that also runs as a plain CLI — read-only unless you pass <code>--apply</code>, with <code>--json</code> and <code>--strict</code> for tooling and CI. This repo is the family in one install; each skill also lives in its own repo, which is the source of truth. The copies here are synced from upstream, pinned in a lock file, and CI fails if they drift.</p>
+<p>Every tool is a single <strong>stdlib-only Python script</strong> that also runs as a plain CLI — read-only unless you pass <code>--apply</code>, with <code>--json</code> and <code>--strict</code> for tooling and CI. This repo is the family in one install; each skill also lives in its own repo, which is the source of truth. The copies here are synced from upstream, pinned in a lock file, and CI fails if they drift. The layout is the <a href="https://agentskills.io">Agent Skills</a> standard, so one <code>npx skills add Londopy/agent-skills</code> installs into any of 79 agents.</p>
 `,
 
   statusmith: `
