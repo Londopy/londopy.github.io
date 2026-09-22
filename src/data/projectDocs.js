@@ -274,7 +274,7 @@ artifact python { name = "hasher" }</code></pre>
 <p>It's a native tray app in <strong>Rust</strong> — no Electron, no runtime, a few MB resident. It talks to the Win32 shell directly: toggling the visibility of the desktop's icon container, the taskbar's app bar, and the windows themselves, with global hotkeys registered at the OS level so it works no matter what has focus. Everything it hides is restored exactly as it was, because the windows are only hidden, never closed or moved.</p>
 
 <h2><span class="hash">##</span> Getting it</h2>
-<p>It ships properly, which is half the point: signed releases on GitHub, plus <strong>winget</strong> and <strong>Scoop</strong>, so it installs and updates like any other package rather than a zip you have to remember to re-download.</p>
-<pre><code>winget install Londopy.HideDesktopApps</code></pre>
+<p>Builds are on the <a href="https://github.com/Londopy/HideDesktopApps/releases">releases page</a>, and the repo carries a <strong>Scoop</strong> manifest so it installs and updates as a managed package rather than a zip you have to remember to re-download:</p>
+<pre><code>scoop install https://raw.githubusercontent.com/Londopy/HideDesktopApps/main/scoop/HideDesktopApps.json</code></pre>
 `,
 };

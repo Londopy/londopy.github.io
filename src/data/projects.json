@@ -133,7 +133,6 @@
       "tags": [
         "windows",
         "tray",
-        "winget",
         "scoop"
       ],
       "repo": "https://github.com/Londopy/HideDesktopApps",
