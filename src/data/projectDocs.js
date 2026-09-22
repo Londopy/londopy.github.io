@@ -262,4 +262,19 @@ artifact python { name = "hasher" }</code></pre>
 <h2><span class="hash">##</span> Play it</h2>
 <p>It runs in the browser or downloads from <a href="https://londopy.itch.io/point-of-origin">itch.io</a>. Takes about a minute to see the core idea.</p>
 `,
+
+  HideDesktopApps: `
+<h2><span class="hash">##</span> What it is</h2>
+<p><strong>HideDesktopApps</strong> is a small Windows tray utility that makes your desktop disappear — and come back — on a hotkey. Desktop icons, the taskbar, and every open window, each on its own shortcut. <code>Ctrl+Alt+H</code> clears the icons, <code>Ctrl+Alt+T</code> hides the taskbar, press again to restore.</p>
+
+<h2><span class="hash">##</span> Why I built it</h2>
+<p>Three situations kept producing the same annoyance: a Wallpaper Engine wallpaper buried under a grid of icons, a screen share about to expose a desktop full of files, and wanting a clean frame for a screenshot. Windows gives you a right-click toggle for icons buried in a context menu and nothing at all for a one-shot "clean slate." So this is the missing keyboard shortcut.</p>
+
+<h2><span class="hash">##</span> How it works</h2>
+<p>It's a native tray app in <strong>Rust</strong> — no Electron, no runtime, a few MB resident. It talks to the Win32 shell directly: toggling the visibility of the desktop's icon container, the taskbar's app bar, and the windows themselves, with global hotkeys registered at the OS level so it works no matter what has focus. Everything it hides is restored exactly as it was, because the windows are only hidden, never closed or moved.</p>
+
+<h2><span class="hash">##</span> Getting it</h2>
+<p>It ships properly, which is half the point: signed releases on GitHub, plus <strong>winget</strong> and <strong>Scoop</strong>, so it installs and updates like any other package rather than a zip you have to remember to re-download.</p>
+<pre><code>winget install Londopy.HideDesktopApps</code></pre>
+`,
 };

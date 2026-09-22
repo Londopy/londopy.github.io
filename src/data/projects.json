@@ -139,7 +139,8 @@
       "repo": "https://github.com/Londopy/HideDesktopApps",
       "demo": null,
       "page": null,
-      "featured": false
+      "featured": true,
+      "stars": 2
     },
     {
       "cluster": "systems",
@@ -474,7 +475,7 @@
       "repo": "https://github.com/Londopy/filekind",
       "demo": null,
       "page": "/projects/filekind/",
-      "featured": false,
+      "featured": true,
       "stars": 3
     },
     {
@@ -596,7 +597,7 @@
       "repo": "https://github.com/Londopy/statusmith",
       "demo": null,
       "page": "/projects/statusmith/",
-      "featured": false,
+      "featured": true,
       "stars": 1
     },
     {
