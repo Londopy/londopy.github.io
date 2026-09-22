@@ -598,6 +598,23 @@
       "page": "/projects/statusmith/",
       "featured": false,
       "stars": 1
+    },
+    {
+      "cluster": "games",
+      "name": "point-of-origin",
+      "tagline": "A side-scrolling platformer where the puzzle is the ground. Your lantern shows only the ghost of what grew here, so you run the ruins to learn its shape — then find the cell it started from, plant a seed, and grow it back. A reverse cellular automaton, with an Odin simulation DLL, Nexium tooling and Unity 6. Built for CPGD’s World’s First Game Jam (theme: ORIGIN).",
+      "language": "C# + Nexium + Odin + Python",
+      "tags": [
+        "game-jam",
+        "unity",
+        "cellular-automaton",
+        "nexium"
+      ],
+      "repo": "https://github.com/Londopy/point-of-origin",
+      "demo": "https://londopy.itch.io/point-of-origin",
+      "page": "/projects/point-of-origin/",
+      "featured": true,
+      "stars": 1
     }
   ],
   "inProgress": [

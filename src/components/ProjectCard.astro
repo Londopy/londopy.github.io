@@ -30,6 +30,8 @@ const LANG_COLORS: Record<string, string> = {
   Svelte: "var(--lang-svelte)",
   Gleam: "var(--lang-gleam)",
   C: "var(--lang-c)",
+  "C#": "var(--lang-csharp)",
+  Odin: "var(--lang-odin)",
 };
 
 // "Rust + Python" → [Rust, Python]; split only on " + " so "C++" stays intact
@@ -37,7 +39,8 @@ const langs = language.split(" + ").map((l) => l.trim()).filter(Boolean);
 
 // label the demo button by where it actually goes
 const isPypi = !!demo && demo.includes("pypi.org");
-const demoLabel = isPypi ? "pypi →" : "demo →";
+const isItch = !!demo && demo.includes("itch.io");
+const demoLabel = isPypi ? "pypi →" : isItch ? "play →" : "demo →";
 
 // derive the pip package name from a PyPI demo URL
 const pipPkg = isPypi ? demo!.split("/project/")[1]?.replace(/\/+$/, "") : null;

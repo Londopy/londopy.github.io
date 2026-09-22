@@ -32,6 +32,7 @@ LANG = {
     "C++": "#f34b7d", "Bash": "#89e051", "JavaScript": "#f1e05a",
     "x86 ASM": "#c9a227", "Astro": "#ff5a03", "Zig": "#f7a41d",
     "Nexium": "#4fd1c5", "Svelte": "#ff3e00", "Gleam": "#ffaff3", "C": "#8b949e",
+    "C#": "#178600", "Odin": "#60affe",
 }
 
 HERE = os.path.dirname(os.path.abspath(__file__))

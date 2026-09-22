@@ -17,7 +17,8 @@ interface Props {
 
 const { name, tagline, language, repo, demo, docsUrl, links, pip, stars } = Astro.props;
 const isPypi = !!demo && demo.includes("pypi.org");
-const demoLabel = isPypi ? "View on PyPI ↗" : "Live demo ↗";
+const isItch = !!demo && demo.includes("itch.io");
+const demoLabel = isPypi ? "View on PyPI ↗" : isItch ? "Play on itch.io ↗" : "Live demo ↗";
 const title = `${name} — London C.`;
 const ogImage = `/og/${name}.png`;
 const jsonLd = {

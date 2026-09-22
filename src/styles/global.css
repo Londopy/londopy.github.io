@@ -36,6 +36,8 @@
   --lang-svelte: #ff3e00;
   --lang-gleam: #ffaff3;
   --lang-c: #8b949e;
+  --lang-csharp: #178600;
+  --lang-odin: #60affe;
 }
 
 /* ---------- accent themes (switched from the nav; persisted per visitor) ----------

@@ -237,4 +237,29 @@ artifact python { name = "hasher" }</code></pre>
 <p>A <strong>Tauri 2</strong> desktop app — web front end, Rust core — with the IPC work done against Discord's pipe by hand rather than through a heavyweight SDK. The SDK layer is written in <a href="/projects/nexium/">Nexium</a>, my own language, which makes statusmith the first thing I've shipped that runs Nexium in production rather than in its own test suite. Python handles the build side, and cross-platform builds and auto-update ship with it.</p>
 <p><sub>GitHub reports those <code>.nx</code> files as Zig, because Nexium isn't in Linguist yet — the repo pins <code>linguist-language=Zig</code> as the closest grammar until it is.</sub></p>
 `,
+
+  "point-of-origin": `
+<h2><span class="hash">##</span> What it is</h2>
+<p><strong>Point of Origin</strong> is a side-scrolling platformer where the puzzle <em>is</em> the ground. Built for the Cal Poly Game Development Club's <strong>World's First Game Jam</strong> (September 2026, theme <strong>ORIGIN</strong>). It's playable in the browser — no download needed.</p>
+
+<h2><span class="hash">##</span> The idea</h2>
+<p>You're shown how something ended, and asked to find where it began. You wake in the dark among the ruins of a structure that <em>grew</em> there, and your lantern only reveals the ghost of it in a small circle around you — so you have to run and jump through the ruins to piece together the full shape from memory. Then you find the single cell it grew from, stand there, plant a seed, get clear, and press Grow.</p>
+<p>The living cells rise as solid ground: <strong>gold where they match the outline, red where they don't</strong>. Get it exact and the door opens — and the growth you just created is the bridge that carries you to it. The puzzle and the platforming are the same object, which is the part I'm happiest with.</p>
+
+<h2><span class="hash">##</span> Why it's a hard puzzle</h2>
+<p>It's a <strong>reverse cellular automaton</strong>. Running a growth law forward is trivial; asking which starting cell produces a given final pattern is the interesting direction, because the forward rule loses information. You're not solving a maze, you're inverting a simulation by reading its output.</p>
+<p>And it can go wrong in ways that matter: living growth overgrows whoever is standing inside it, so you have to move away from your own seed before you grow it, or run.</p>
+
+<h2><span class="hash">##</span> How it's built</h2>
+<ul>
+<li><strong>Odin</strong> — the cellular-automaton simulation, compiled to a native DLL so the grid steps fast enough to be a real-time mechanic rather than a turn.</li>
+<li><strong>Nexium</strong> — <a href="/projects/nexium/">my own language</a> drives the build, the binding generation and the level pipeline.</li>
+<li><strong>Unity 6</strong> — the game itself, calling into the Odin simulation through generated bindings.</li>
+<li><strong>Houdini and Blender</strong> for the assets.</li>
+</ul>
+<p>Four languages, a native interop boundary and a custom level format, put together under jam deadline. The Nexium tooling is the part that makes it more than a jam entry to me — it's a second production user of a language I wrote.</p>
+
+<h2><span class="hash">##</span> Play it</h2>
+<p>It runs in the browser or downloads from <a href="https://londopy.itch.io/point-of-origin">itch.io</a>. Takes about a minute to see the core idea.</p>
+`,
 };
