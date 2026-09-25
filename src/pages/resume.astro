@@ -2,6 +2,7 @@
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
+import ResumeGenerator from "../components/ResumeGenerator.astro";
 import { resume } from "../data/resume.js";
 import { profile, OPEN_TO_WORK, OPEN_TO_WORK_TEXT } from "../data/profile.js";
 import { getSnapshot } from "../lib/api.js";
@@ -38,6 +39,34 @@ const updated = new Date(s.generated).toLocaleDateString("en-US", {
   month: "long", day: "numeric", year: "numeric", timeZone: "UTC",
 });
 
+// the program the "generate" show types out, in Nexium, from the real data
+const school = resume.education[0];
+const genCode = [
+  "// resume.nx: builds this page from the site's own API",
+  "import site.api",
+  "",
+  "fn main() -> !void {",
+  '    let me = try api.get("/api/v1/profile.json")',
+  "    var page = Resume.new(me.name, .letter)",
+  "",
+  `    page.education("${school.school}", "${school.degree}")`,
+  '    let projects = try api.get("/api/v1/projects.json")',
+  `    for p in pick(projects, ${projects.length}) { page.project(p) }`,
+  '    page.open_source(try api.get("/api/v1/pulls.json"))',
+  '    page.awards(try api.get("/api/v1/awards.json"))',
+  "    try page.render(.one_page)",
+  "}",
+  "",
+  'artifact pdf { name = "resume" }',
+].join("\n");
+const genFallback = {
+  name: profile.name,
+  projects: s.projects.length,
+  pulls: s.prStats.count,
+  merged: s.prStats.merged,
+  awards: awards.length,
+};
+
 const title = "Résumé — London C.";
 const description =
   "London C.'s résumé: engineering student at Cal Poly heading into OT / XIoT security. Projects, open source, awards and skills, on one printable page.";
@@ -58,16 +87,20 @@ const jsonLd = {
   <Nav active="resume" />
 
   <main class="container resume">
+    <ResumeGenerator code={genCode} picked={projects.length} fallback={genFallback} />
+
     <div class="toolbar mono">
       <span class="crumb"><a href="/">~</a>/resume</span>
-      <span class="upd">updated {updated}</span>
+      <span class="upd">updated {updated}<span class="status" id="resume-status"></span></span>
+      <button class="btn" type="button" id="resume-again" hidden>regenerate ↻</button>
       <button class="btn btn-accent" type="button" id="print-resume">print / save as PDF</button>
     </div>
 
+    <div class="sheet-wrap">
     <article class="sheet rise">
       <header class="r-head">
         <div>
-          <h1>{profile.name}</h1>
+          <h1 id="resume-name" tabindex="-1">{profile.name}</h1>
           <p class="r-headline">{resume.headline}</p>
           {OPEN_TO_WORK && <p class="r-open mono">{OPEN_TO_WORK_TEXT}</p>}
         </div>
@@ -152,6 +185,7 @@ const jsonLd = {
         </dl>
       </section>
     </article>
+    </div>
 
     <p class="aside mono">
       The full index is on the <a href="/">projects page</a>; to get in touch, use the <a href="/contact/">contact form</a>.
@@ -179,6 +213,13 @@ const jsonLd = {
 
   .crumb { color: var(--text-dim); }
   .upd { flex: 1; }
+  .status { color: #8fc78a; }
+
+  /* the generator's print head sweeps down this */
+  .sheet-wrap { position: relative; }
+
+  /* focused (for screen readers) when the show finishes; no ring needed */
+  #resume-name:focus { outline: none; }
 
   .btn {
     font-family: var(--mono);
@@ -319,6 +360,9 @@ const jsonLd = {
   }
 
   @media (max-width: 600px) {
+    /* ~/resume, then the date and build status on a line of their own, then the buttons */
+    .upd { order: 1; flex-basis: 100%; }
+    .toolbar .btn { order: 2; }
     .sheet { padding: 1.3rem 1.1rem 1.5rem; }
     .r-contact { text-align: left; }
     .skill { grid-template-columns: 1fr; gap: 0; }

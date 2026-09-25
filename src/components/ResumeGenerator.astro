@@ -1,0 +1,467 @@
+---
+// The résumé's "generate" bit. On the first visit in a session the page shows
+// a generate button instead of the résumé. Pressing it types out a resume.nx
+// program, "runs" it against the site's real API (the fetches are real, and
+// so are the numbers in the log), then prints the résumé onto the page.
+//
+// It never gets in anyone's way: skip at any point (button or Esc), it plays
+// once per session (the toolbar's "regenerate" replays it), and the résumé is
+// always in the HTML, only hidden on screen while the show is pending, so
+// printing, readers without JavaScript and crawlers all get it straight away.
+//
+// Place it before the résumé in the page: its inline script locks the page
+// before the résumé is parsed, so there's no flash of it.
+
+interface Props {
+  code: string;
+  picked: number;
+  fallback: { name: string; projects: number; pulls: number; merged: number; awards: number };
+}
+
+const { code, picked, fallback } = Astro.props;
+const payload = JSON.stringify({ code, picked, fallback }).replace(/</g, "\\u003c");
+---
+
+<script is:inline>
+  (() => {
+    if (/bot|crawl|spider|slurp|lighthouse|headless/i.test(navigator.userAgent)) return;
+    try {
+      if (sessionStorage.getItem("resume-built")) return;
+    } catch (e) {
+      /* no storage: show it every time */
+    }
+    document.documentElement.dataset.resume = "locked";
+  })();
+</script>
+
+<section class="gen" id="gen" aria-label="Résumé generator">
+  <div class="gen-bar mono" aria-hidden="true">
+    <span class="gen-dots"><i></i><i></i><i></i></span>
+    <span class="gen-title" id="gen-title">~/resume</span>
+  </div>
+
+  <div class="gen-idle" id="gen-idle">
+    <pre class="gen-term mono"><span class="pr">$</span> ls
+resume.nx   data/
+<span class="pr">$</span> cat resume.pdf
+<span class="err">cat: resume.pdf: No such file or directory</span></pre>
+    <p class="gen-copy">
+      This résumé hasn't been built yet. The site compiles it from its own data
+      when you ask, which takes about four seconds.
+    </p>
+    <div class="gen-actions">
+      <button class="gen-go mono" id="gen-go" type="button"><span aria-hidden="true">▶</span> generate résumé</button>
+      <button class="gen-skip mono" id="gen-skip" type="button">skip the show →</button>
+    </div>
+  </div>
+
+  <div class="gen-run" id="gen-run" hidden>
+    <button class="gen-skip gen-skip-run mono" id="gen-skip-run" type="button">skip ⏭</button>
+    <pre class="gen-code mono" id="gen-code" aria-hidden="true"></pre>
+    <pre class="gen-log mono" id="gen-log" aria-hidden="true"></pre>
+  </div>
+
+  <p class="sr-only" id="gen-live" aria-live="polite"></p>
+  <script type="application/json" id="gen-data" set:html={payload}></script>
+</section>
+
+<style>
+  .gen {
+    display: none;
+    position: relative;
+    margin: 0 0 1.2rem;
+    background: #080b10;
+    border: 1px solid var(--border-bright);
+    border-radius: 10px;
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+    overflow: hidden;
+  }
+
+  :global(html[data-resume="locked"]) .gen,
+  :global(html[data-resume="generating"]) .gen {
+    display: block;
+  }
+
+  .gen-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.55rem 0.8rem;
+    background: #10161e;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.74rem;
+    color: var(--text-faint);
+  }
+
+  .gen-dots { display: inline-flex; gap: 0.35rem; }
+  .gen-dots i { width: 10px; height: 10px; border-radius: 50%; background: #3a4a5a; }
+  .gen-dots i:nth-child(1) { background: #e8564f; }
+  .gen-dots i:nth-child(2) { background: #e8b444; }
+
+  .gen-idle { padding: 1.1rem 1.2rem 1.3rem; }
+
+  .gen-term,
+  .gen-code,
+  .gen-log {
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: #cdd8e3;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .gen-copy {
+    color: var(--text-dim);
+    font-size: 0.93rem;
+    line-height: 1.6;
+    max-width: 58ch;
+    margin: 0.9rem 0 1.1rem;
+  }
+
+  .gen-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.1rem;
+  }
+
+  .gen-go {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #0a0e13;
+    background: var(--accent);
+    border: none;
+    border-radius: 6px;
+    padding: 0.6rem 1.05rem;
+    cursor: pointer;
+    animation: gen-glow 2.2s ease-in-out infinite;
+    transition: transform 0.12s ease, filter 0.12s ease;
+  }
+
+  .gen-go:hover { filter: brightness(1.1); transform: translateY(-1px); }
+  .gen-go:active { transform: translateY(0); }
+
+  @keyframes gen-glow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0.45); }
+    50% { box-shadow: 0 0 0 7px rgba(var(--accent-rgb), 0); }
+  }
+
+  .gen-skip {
+    font-size: 0.78rem;
+    color: var(--text-faint);
+    background: none;
+    border: none;
+    padding: 0.2rem 0;
+    cursor: pointer;
+  }
+
+  .gen-skip:hover { color: var(--accent); }
+
+  .gen-skip-run {
+    position: absolute;
+    top: 0.42rem;
+    right: 0.75rem;
+    font-size: 0.72rem;
+  }
+
+  .gen-run { padding: 0.9rem 1.2rem 1.1rem; }
+
+  .gen-log {
+    margin-top: 0.8rem;
+    padding-top: 0.7rem;
+    border-top: 1px dashed var(--border);
+  }
+
+  .gen-log:empty { display: none; }
+
+  /* resume.nx, highlighted as it types */
+  .gen-code :global(.nx-k) { color: var(--accent); }
+  .gen-code :global(.nx-s) { color: #a8c98f; }
+  .gen-code :global(.nx-n) { color: #7fb4e8; }
+  .gen-code :global(.nx-e) { color: #c9a8f0; }
+  .gen-code :global(.nx-c) { color: var(--text-faint); font-style: italic; }
+  .gen-code :global(.caret),
+  .gen-log :global(.caret) { color: var(--accent); animation: gen-blink 1s steps(1) infinite; }
+
+  @keyframes gen-blink { 50% { opacity: 0; } }
+
+  .gen-term .pr,
+  .gen-log :global(.pr) { color: var(--accent); }
+  .gen-term .err { color: #e8564f; }
+  .gen-log :global(.ok) { color: #8fc78a; }
+  .gen-log :global(.warn) { color: #e8b444; }
+  .gen-log :global(.spin) { color: var(--accent); }
+  .gen-log :global(.dim) { color: var(--text-faint); }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  /* the page's résumé stays out of sight until it's "built" (screen only:
+     print always shows it) */
+  @media screen {
+    :global(html[data-resume="locked"] .resume .toolbar),
+    :global(html[data-resume="locked"] .resume .sheet-wrap),
+    :global(html[data-resume="locked"] .resume .aside),
+    :global(html[data-resume="generating"] .resume .toolbar),
+    :global(html[data-resume="generating"] .resume .sheet-wrap),
+    :global(html[data-resume="generating"] .resume .aside) {
+      display: none;
+    }
+  }
+
+  /* ...then it prints onto the page, top to bottom, under a glowing head */
+  :global(html[data-resume="rendering"] .resume .sheet) {
+    animation: resume-print 1s cubic-bezier(0.3, 0.1, 0.3, 1) both;
+  }
+
+  :global(html[data-resume="rendering"] .resume .sheet-wrap::after) {
+    content: "";
+    position: absolute;
+    left: -3px;
+    right: -3px;
+    height: 2px;
+    background: var(--accent);
+    box-shadow: 0 0 16px 3px rgba(var(--accent-rgb), 0.65);
+    pointer-events: none;
+    animation: resume-scan 1s cubic-bezier(0.3, 0.1, 0.3, 1) both;
+  }
+
+  @keyframes resume-print {
+    from { clip-path: inset(0 0 100% 0); }
+    to { clip-path: inset(0 0 0 0); }
+  }
+
+  @keyframes resume-scan {
+    from { top: 0; opacity: 1; }
+    92% { opacity: 1; }
+    to { top: 100%; opacity: 0; }
+  }
+
+  @media (max-width: 560px) {
+    .gen-idle,
+    .gen-run { padding: 0.9rem 0.9rem 1rem; }
+    .gen-term,
+    .gen-code,
+    .gen-log { font-size: 0.72rem; }
+  }
+
+  @media print {
+    .gen { display: none !important; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gen-go { animation: none; }
+    :global(html[data-resume="rendering"] .resume .sheet) { animation: none; }
+    :global(html[data-resume="rendering"] .resume .sheet-wrap::after) { display: none; }
+  }
+</style>
+
+<script>
+  import { escapeHtml } from "../lib/ansi.js";
+
+  type Step = { label: string; job: Promise<string> };
+
+  const html = document.documentElement;
+  const el = (id: string) => document.getElementById(id) as HTMLElement;
+  const idle = el("gen-idle");
+  const runBox = el("gen-run");
+  const codeEl = el("gen-code");
+  const logEl = el("gen-log");
+  const live = el("gen-live");
+  const title = el("gen-title");
+  const status = document.getElementById("resume-status");
+  const again = document.getElementById("resume-again") as HTMLButtonElement | null;
+  const heading = document.getElementById("resume-name");
+  const data = JSON.parse(el("gen-data").textContent || "{}");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const SPIN = "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏";
+  let token = 0; // bumped by every run and skip, so a stale run stops where it is
+  let lines: string[] = [];
+
+  const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+  const paint = () => (logEl.innerHTML = lines.join("\n"));
+  const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? "" : "s"}`;
+
+  // Nexium, highlighted: comments, strings, keywords, numbers, and .enum
+  // literals (a dot that doesn't follow a name, so `api.get` isn't one)
+  const TOKENS = /(\/\/[^\n]*)|("[^"\n]*"?)|\b(import|fn|let|var|for|in|if|try|return|artifact)\b|\b(\d+)\b|((?<![\w)\]])\.[a-z_]+)\b/g;
+  function nx(src: string) {
+    let out = "";
+    let last = 0;
+    for (const m of src.matchAll(TOKENS)) {
+      const cls = m[1] ? "c" : m[2] ? "s" : m[3] ? "k" : m[4] ? "n" : "e";
+      out += escapeHtml(src.slice(last, m.index)) + `<span class="nx-${cls}">${escapeHtml(m[0])}</span>`;
+      last = (m.index ?? 0) + m[0].length;
+    }
+    return out + escapeHtml(src.slice(last));
+  }
+
+  // typed against the clock, not the frame rate: the whole program takes
+  // TYPE_MS whether the screen runs at 30, 60 or 144 Hz, and it still
+  // finishes if the tab is in the background (timers keep running there;
+  // animation frames don't)
+  const TYPE_MS = 1500;
+  async function typeCode(t: number, text: string) {
+    if (reduce) {
+      codeEl.innerHTML = nx(text);
+      return;
+    }
+    const start = performance.now();
+    for (;;) {
+      if (t !== token) return;
+      const n = Math.min(text.length, Math.ceil(((performance.now() - start) / TYPE_MS) * text.length));
+      codeEl.innerHTML = nx(text.slice(0, n)) + (n < text.length ? '<span class="caret">▌</span>' : "");
+      if (n >= text.length) return;
+      await wait(16);
+    }
+  }
+
+  const getJSON = (url: string) =>
+    Promise.race([
+      fetch(url, { cache: "no-cache" }).then((r) => (r.ok ? r.json() : Promise.reject(r.status))),
+      wait(2500).then(() => Promise.reject("timeout")),
+    ]);
+
+  // the fetches start at once and run while the code types
+  function steps(): Step[] {
+    const f = data.fallback;
+    const job = (p: Promise<string>, offline: string) => p.catch(() => `offline, using the built copy (${offline})`);
+    return [
+      {
+        label: "GET /api/v1/profile.json",
+        job: job(getJSON("/api/v1/profile.json").then((j) => `200  ${j.data.name}`), f.name),
+      },
+      {
+        label: "GET /api/v1/projects.json",
+        job: job(
+          getJSON("/api/v1/projects.json").then((j) => `200  ${plural(j.meta.count, "project")}, picked ${data.picked}`),
+          plural(f.projects, "project")
+        ),
+      },
+      {
+        label: "GET /api/v1/pulls.json",
+        job: job(
+          getJSON("/api/v1/pulls.json").then(
+            (j) => `200  ${j.meta.count} PRs, ${j.data.filter((p: { state: string }) => p.state === "merged").length} merged`
+          ),
+          `${f.pulls} PRs`
+        ),
+      },
+      {
+        label: "GET /api/v1/awards.json",
+        job: job(getJSON("/api/v1/awards.json").then((j) => `200  ${plural(j.meta.count, "award")}`), plural(f.awards, "award")),
+      },
+      { label: "effects", job: Promise.resolve("render() proven !panics") },
+      { label: "layout", job: Promise.resolve("US Letter, 1 page") },
+    ];
+  }
+
+  async function logStep(t: number, step: Step) {
+    // phones: no dot leaders, and the result goes on its own line
+    const narrow = logEl.clientWidth < 480;
+    const dots = narrow ? "" : " " + ".".repeat(Math.max(3, 29 - step.label.length)) + " ";
+    const sep = narrow ? "\n      " : "";
+    const at = lines.push("") - 1;
+    let result: string | null = null;
+    step.job.then((r) => (result = r));
+    const started = performance.now();
+    for (let k = 0; (result === null || performance.now() - started < (reduce ? 0 : 130)) && t === token; k++) {
+      lines[at] = `  <span class="spin">${SPIN[k % SPIN.length]}</span> ${escapeHtml(step.label)}<span class="dim">${dots}</span>`;
+      paint();
+      await wait(60);
+    }
+    if (t !== token) return;
+    const text = result ?? "";
+    const offline = text.startsWith("offline");
+    lines[at] =
+      `  <span class="${offline ? "warn" : "ok"}">${offline ? "!" : "✓"}</span> ${escapeHtml(step.label)}` +
+      `<span class="dim">${dots}</span>${sep}${escapeHtml(text)}`;
+    paint();
+  }
+
+  function finish(started?: number) {
+    // drop the page-load "rise" first, or it would replay once the print-in
+    // animation is removed and the résumé would jump twice
+    document.querySelector(".resume .sheet")?.classList.remove("rise");
+    html.removeAttribute("data-resume");
+    try {
+      sessionStorage.setItem("resume-built", "1");
+    } catch {
+      /* no storage */
+    }
+    if (status) {
+      status.textContent = started
+        ? ` · ✓ built in ${((performance.now() - started) / 1000).toFixed(1)}s`
+        : " · ✓ built";
+    }
+    live.textContent = "Résumé ready.";
+    idle.hidden = false;
+    runBox.hidden = true;
+    heading?.focus({ preventScroll: true });
+  }
+
+  async function run() {
+    const t = ++token;
+    const started = performance.now();
+    html.dataset.resume = "generating";
+    idle.hidden = true;
+    runBox.hidden = false;
+    title.textContent = "~/resume/resume.nx";
+    codeEl.textContent = "";
+    lines = [];
+    paint();
+    if (status) status.textContent = "";
+    live.textContent = "Generating the résumé.";
+    window.scrollTo({ top: 0 });
+
+    const list = steps();
+    await typeCode(t, data.code);
+    if (t !== token) return;
+
+    title.textContent = "~/resume · nx run";
+    lines.push(`<span class="pr">$</span> nx run resume.nx`);
+    paint();
+    await wait(reduce ? 0 : 220);
+    for (const step of list) {
+      await logStep(t, step);
+      if (t !== token) return;
+    }
+    lines.push(`  <span class="ok">✓</span> resume.pdf <span class="dim">· 1 page · printing…</span>`);
+    paint();
+    await wait(reduce ? 0 : 420);
+    if (t !== token) return;
+
+    // show the résumé and let it print onto the page
+    html.dataset.resume = "rendering";
+    window.scrollTo({ top: 0 });
+    if (status) status.textContent = " · printing…";
+    await wait(reduce ? 0 : 1050);
+    if (t !== token) return;
+    finish(started);
+  }
+
+  function skip() {
+    token++;
+    finish();
+  }
+
+  el("gen-go").addEventListener("click", run);
+  el("gen-skip").addEventListener("click", skip);
+  el("gen-skip-run").addEventListener("click", skip);
+  if (again) {
+    again.hidden = false;
+    again.addEventListener("click", run);
+  }
+  document.addEventListener("keydown", (e) => {
+    const state = html.dataset.resume;
+    const paletteOpen = document.getElementById("cmdk")?.hidden === false;
+    if (e.key === "Escape" && !paletteOpen && (state === "generating" || state === "rendering")) skip();
+  });
+</script>
