@@ -6,4 +6,6 @@ import sitemap from "@astrojs/sitemap";
 export default defineConfig({
   site: "https://londopy.github.io",
   integrations: [sitemap()],
+  // the API's version root has no file of its own; send people to the docs
+  redirects: { "/api/v1": "/api/" },
 });

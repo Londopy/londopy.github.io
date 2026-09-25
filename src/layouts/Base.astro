@@ -53,6 +53,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="twitter:image" content={ogImage} />
     <meta name="theme-color" content="#0a0e13" />
     {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+    <slot name="head" />
   </head>
   <body>
     <TopoBackground />

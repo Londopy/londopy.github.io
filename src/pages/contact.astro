@@ -2,6 +2,8 @@
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
+// open-to-work note + PGP key live in src/data/profile.js (shared with the API)
+import { OPEN_TO_WORK, OPEN_TO_WORK_TEXT, PGP_PUBLIC_KEY, PGP_FINGERPRINT } from "../data/profile.js";
 
 const title = "Contact — London C.";
 const description =
@@ -13,33 +15,10 @@ const ACCESS_KEY = "3ebb2c5a-06db-4542-a8da-9c65f0d8e18f";
 
 // --- optional features, activated by filling in a single public value ---
 
-// "Open to work" note in the hero. Flip to false to hide it.
-const OPEN_TO_WORK = true;
-const OPEN_TO_WORK_TEXT = "open to internships — security & systems";
-
 // Spam captcha. Paste an hCaptcha *site key* (public) to turn it on, and
 // enable hCaptcha in the Web3Forms dashboard so submissions are validated.
 // Empty = honeypot-only (no captcha shown).
 const HCAPTCHA_SITEKEY = "";
-
-// End-to-end PGP encryption. Paste your ASCII-armored *public* key to offer
-// senders an "encrypt" toggle; the message is encrypted in their browser so
-// only your private key can read it — Web3Forms only ever relays ciphertext.
-// Empty = the encryption option is hidden.
-const PGP_PUBLIC_KEY = `-----BEGIN PGP PUBLIC KEY BLOCK-----
-
-mDMEaq+KNhYJKwYBBAHaRw8BAQdAgecubJTOMQrZl8Jmq7NpA9oCDW3IL1TF71bU
-X8vtic20H0xvbmRvIDxsb25kb24ud29ya0BweGRtYWlsLmNvbT6IlgQTFgoAPhYh
-BPAQU7hv59YKCh+3kLEeAvES+vSXBQJqr4o2AhsDBQkDwmcABQsJCAcCBhUKCQgL
-AgQWAgMBAh4BAheAAAoJELEeAvES+vSXaDoBAKM6kDhMUuqSp6QzmOVtmgFkhNsA
-W8g943cziwmKIBNEAP9i0SAFkQ1G2nPjkyviBdgy6HmJ8LzaTglVI7UfXaWXBLg4
-BGqvijYSCisGAQQBl1UBBQEBB0AWw9pWQHQWSUq2Tyui+nHvC81brHkKXiERnp9T
-1BtiPwMBCAeIeAQYFgoAIBYhBPAQU7hv59YKCh+3kLEeAvES+vSXBQJqr4o2AhsM
-AAoJELEeAvES+vSXLN0BANC7h72/FHLHzcKUJUxl5kuGADAJpuW5b31tF1PtMjq3
-AP0XnX7kHqSy+00jF0Qu1FQPglyQaO8S8b98z1IsYxDwAg==
-=gw7L
------END PGP PUBLIC KEY BLOCK-----`;
-const PGP_FINGERPRINT = "F010 53B8 6FE7 D60A 0A1F B790 B11E 02F1 12FA F497";
 
 // Self-hosted-integrity crypto: pinned version + SRI hash.
 const OPENPGP_SRC = "https://cdn.jsdelivr.net/npm/openpgp@5.11.3/dist/openpgp.min.js";

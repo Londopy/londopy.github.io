@@ -1,0 +1,671 @@
+---
+import Base from "../../layouts/Base.astro";
+import Nav from "../../components/Nav.astro";
+import Footer from "../../components/Footer.astro";
+import { getSnapshot, ROUTES, GROUPS, BADGES, SITE, BASE, VERSION, DESCRIPTION, card, render } from "../../lib/api.js";
+import { ansiToHtml } from "../../lib/ansi.js";
+
+const s = await getSnapshot();
+
+const title = "API — London C.";
+const description =
+  "Everything on londopy.github.io as JSON: projects and writeups, domains, languages, awards, pull requests, blog posts and stats. Static, read-only, no key, CORS-open, with an OpenAPI 3.1 spec.";
+
+// what "try" fetches first on a templated route
+const DEFAULTS = { name: "nxtls", id: "security", metric: "catalog" };
+const valuesOf = (r) => (r.param ? r.param.values(s) : []);
+const defaultOf = (r) => {
+  const values = valuesOf(r);
+  return values.includes(DEFAULTS[r.param?.name]) ? DEFAULTS[r.param.name] : values[0];
+};
+
+const groups = GROUPS.map((g) => ({
+  ...g,
+  routes: ROUTES.filter((r) => r.group === g.name).map((r) => {
+    const [pre, post] = r.param ? r.path.split(`{${r.param.name}}`) : [r.path, ""];
+    return {
+      ...r,
+      pre,
+      post,
+      values: valuesOf(r),
+      def: defaultOf(r),
+      href: r.param ? r.path.replace(`{${r.param.name}}`, defaultOf(r)) : r.path,
+      // `code` spans in descriptions
+      desc: r.description ? r.description.split("`") : null,
+    };
+  }),
+})).filter((g) => g.routes.length);
+
+const fileCount = ROUTES.reduce((n, r) => n + (r.param ? valuesOf(r).length : 1), 0);
+
+const quick = [
+  {
+    label: "every project and its stars — curl + jq",
+    code: "curl -s " + SITE + BASE + "/projects.json | jq -r '.data[] | \"\\(.stars)★  \\(.name)\"'",
+  },
+  {
+    label: "JavaScript, from any origin",
+    code:
+      'const { data } = await fetch("' + SITE + BASE + '/stats.json").then((r) => r.json());\n' +
+      'console.log(`${data.projects} projects, ${data.pull_requests.merged} PRs merged upstream`);',
+  },
+  {
+    label: "Python, standard library only",
+    code:
+      "import json, urllib.request\n\n" +
+      'url = "' + SITE + BASE + '/awards.json"\n' +
+      'for a in json.load(urllib.request.urlopen(url))["data"]:\n' +
+      '    print(a["place"], "·", a["event"], "·", a["project"])',
+  },
+];
+
+// a real envelope from this build, with the payload elided
+const sample = JSON.parse(render(s, `${BASE}/featured.json`).body);
+const envelope = JSON.stringify({ meta: sample.meta, data: "__DATA__" }, null, 2).replace(
+  '"__DATA__"',
+  `[ …${sample.data.length} projects… ]`
+);
+
+const badges = Object.entries(BADGES).map(([metric, b]) => {
+  const img = `https://img.shields.io/endpoint?url=${encodeURIComponent(`${SITE}${BASE}/badges/${metric}.json`)}&style=flat-square`;
+  return { metric, about: b.about, img, md: `![${metric}](${img})` };
+});
+
+const cardHtml = ansiToHtml(card(s, { ansi: true }));
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebAPI",
+  name: "Londopy API",
+  description: DESCRIPTION,
+  url: `${SITE}/api/`,
+  documentation: `${SITE}/api/openapi.json`,
+  provider: { "@type": "Person", name: "London C.", alternateName: "Londopy", url: SITE },
+};
+---
+
+<Base title={title} description={description} jsonLd={jsonLd}>
+  <link slot="head" rel="service-desc" type="application/openapi+json" href="/api/openapi.json" />
+  <Nav active="api" />
+
+  <main class="container api">
+    <header class="api-hero rise">
+      <p class="prompt mono" aria-hidden="true">
+        <span class="user">londopy</span><span class="at">@</span><span class="host">github</span><span class="path">:~$</span>
+        curl -s londopy.github.io/api/v1/index.json | jq
+      </p>
+      <h1>API</h1>
+      <p class="lede">
+        Everything on this site is also JSON: the projects and their writeups, the
+        domains they're grouped by, languages and tags, awards, pull requests,
+        blog posts, and the numbers.
+      </p>
+      <dl class="facts mono">
+        <div><dt>base</dt><dd>{SITE}{BASE}</dd></div>
+        <div><dt>version</dt><dd>{VERSION}</dd></div>
+        <div><dt>auth</dt><dd>none</dd></div>
+        <div><dt>cors</dt><dd>*</dd></div>
+        <div><dt>files</dt><dd>{fileCount}</dd></div>
+        <div><dt>built</dt><dd><time datetime={s.generated}>{s.generated.slice(0, 16).replace("T", " ")} UTC</time></dd></div>
+      </dl>
+      <div class="hero-links mono">
+        <a class="btn btn-accent" href="/api/openapi.json">openapi.json ↗</a>
+        <a class="btn" href={`${BASE}/index.json`}>index.json ↗</a>
+        <a class="btn" href="#endpoints">endpoints ↓</a>
+      </div>
+    </header>
+
+    <section class="block rise" style="animation-delay: 0.05s">
+      <div class="section-header">
+        <span class="hash" aria-hidden="true">##</span>
+        <h2>Quick start</h2>
+        <span class="rule" aria-hidden="true"></span>
+      </div>
+      <p>
+        These are static files on GitHub Pages, rebuilt with the site on every push
+        and every night, so star counts and pull-request states are never more than
+        a day old. There's no key and nothing to sign up for; the only limits are
+        GitHub Pages' own.
+      </p>
+      {quick.map((q) => (
+        <figure class="snippet">
+          <figcaption class="mono">{q.label}</figcaption>
+          <div class="code-wrap">
+            <pre class="code mono"><code>{q.code}</code></pre>
+            <button class="copy mono" type="button" data-copy={q.code}>copy</button>
+          </div>
+        </figure>
+      ))}
+    </section>
+
+    <section class="block rise" id="endpoints" style="animation-delay: 0.1s">
+      <div class="section-header">
+        <span class="hash" aria-hidden="true">##</span>
+        <h2>Endpoints</h2>
+        <span class="rule" aria-hidden="true"></span>
+      </div>
+      <p>Every endpoint is a <code>GET</code>. Press <strong>try</strong> to fetch one live from this page.</p>
+
+      {groups.map((g) => (
+        <div class="group">
+          <h3 class="group-title mono">{g.name} <span class="group-desc">{g.description}</span></h3>
+          <ul class="endpoints">
+            {g.routes.map((r) => (
+              <li class="ep" data-template={r.path} data-param={r.param ? r.param.name : ""}>
+                <div class="ep-row mono">
+                  <span class="verb">GET</span>
+                  <a class="ep-path" href={r.href}>{r.pre}{r.param && <span class="tpl">{"{" + r.param.name + "}"}</span>}{r.post}</a>
+                  {r.param && (
+                    <select class="ep-param mono" aria-label={r.param.description}>
+                      {r.values.map((v) => <option value={v} selected={v === r.def}>{v}</option>)}
+                    </select>
+                  )}
+                  <button class="try mono" type="button" aria-expanded="false">try ▸</button>
+                </div>
+                <p class="ep-sum">
+                  {r.summary}{r.desc && <span class="ep-desc"> — {r.desc.map((t, i) => (i % 2 ? <code>{t}</code> : t))}</span>}
+                </p>
+                <div class="out" hidden>
+                  <div class="out-head mono">
+                    <span class="out-status"></span>
+                    <a class="out-raw" href={r.href} target="_blank" rel="noopener">raw ↗</a>
+                  </div>
+                  <pre class="out-body mono" tabindex="0"></pre>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </section>
+
+    <section class="block rise" style="animation-delay: 0.15s">
+      <div class="section-header">
+        <span class="hash" aria-hidden="true">##</span>
+        <h2>Response shape</h2>
+        <span class="rule" aria-hidden="true"></span>
+      </div>
+      <p>
+        Each JSON file wraps its payload in an envelope: <code>meta</code> says what
+        you got and when it was built, <code>data</code> is the payload, and list
+        endpoints add <code>meta.count</code>. Badges are the exception, since
+        they're in the shape shields.io expects.
+      </p>
+      <pre class="code mono"><code>{envelope}</code></pre>
+      <ul class="rules">
+        <li>Names are the repos' own spelling and are case-sensitive: <code>/projects/HideDesktopApps.json</code> works, <code>/projects/hidedesktopapps.json</code> doesn't.</li>
+        <li>Times are ISO 8601 in UTC, field names are <code>snake_case</code>, and a missing value is <code>null</code> rather than an absent key.</li>
+        <li>An unknown name gets GitHub Pages' HTML 404 page, not JSON.</li>
+        <li>Every file is checked against <a href="/api/openapi.json">the spec</a> when the site builds. A build that doesn't match doesn't get deployed.</li>
+      </ul>
+    </section>
+
+    <section class="block rise" style="animation-delay: 0.2s">
+      <div class="section-header">
+        <span class="hash" aria-hidden="true">##</span>
+        <h2>Badges</h2>
+        <span class="rule" aria-hidden="true"></span>
+      </div>
+      <p>
+        Each number is also a <a href="https://shields.io/badges/endpoint-badge">shields.io endpoint</a>,
+        so a README badge can follow the site instead of being edited by hand.
+      </p>
+      <ul class="badges">
+        {badges.map((b) => (
+          <li>
+            <img src={b.img} alt={`${b.metric} badge`} loading="lazy" height="20" />
+            <span class="metric mono">{b.metric}</span>
+            <span class="about">{b.about}</span>
+            <button class="copy mono" type="button" data-copy={b.md}>copy markdown</button>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="block rise" style="animation-delay: 0.25s">
+      <div class="section-header">
+        <span class="hash" aria-hidden="true">##</span>
+        <h2>From a terminal</h2>
+        <span class="rule" aria-hidden="true"></span>
+      </div>
+      <figure class="snippet">
+        <div class="code-wrap">
+          <pre class="code mono"><code>curl -s {SITE}{BASE}/card.ansi</code></pre>
+          <button class="copy mono" type="button" data-copy={`curl -s ${SITE}${BASE}/card.ansi`}>copy</button>
+        </div>
+      </figure>
+      <pre class="card-pre mono" aria-label="The card, as a terminal shows it" set:html={cardHtml}></pre>
+      <p class="small">No colour? <code>card.txt</code> is the same card in plain text.</p>
+    </section>
+
+    <section class="block rise" style="animation-delay: 0.3s">
+      <div class="section-header">
+        <span class="hash" aria-hidden="true">##</span>
+        <h2>Versioning</h2>
+        <span class="rule" aria-hidden="true"></span>
+      </div>
+      <p>
+        This is v1. Fields may be added to it, but none will be renamed or removed;
+        a breaking change would ship as <code>/api/v2/</code>, with v1 left where it is.
+      </p>
+    </section>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .api {
+    padding-top: 3.5rem;
+    max-width: 860px;
+  }
+
+  .api-hero {
+    padding-bottom: 1.4rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0.5rem;
+  }
+
+  .prompt {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    margin-bottom: 1.25rem;
+    overflow-wrap: anywhere;
+  }
+
+  .prompt .user { color: var(--accent); }
+  .prompt .at { color: var(--text-faint); }
+  .prompt .host { color: var(--text); }
+  .prompt .path { color: var(--text-faint); margin-right: 0.6em; }
+
+  h1 {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.75rem;
+  }
+
+  .lede {
+    color: var(--text);
+    font-size: 1.08rem;
+    max-width: 62ch;
+  }
+
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin: 1.2rem 0 1.1rem;
+    font-size: 0.76rem;
+  }
+
+  .facts div {
+    display: flex;
+    gap: 0.45rem;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    border-radius: 4px;
+    padding: 0.22rem 0.6rem;
+    max-width: 100%;
+  }
+
+  .facts dt { color: var(--text-faint); }
+  .facts dd { color: var(--text); overflow-wrap: anywhere; }
+
+  .hero-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .btn {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    border: 1px solid var(--border-bright);
+    border-radius: 4px;
+    padding: 0.32rem 0.7rem;
+    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .btn:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-dim);
+    text-decoration: none;
+  }
+
+  .btn-accent { color: var(--accent); border-color: rgba(var(--accent-rgb), 0.4); }
+
+  .block p {
+    color: var(--text-dim);
+    font-size: 0.97rem;
+    line-height: 1.7;
+    max-width: 68ch;
+    margin-bottom: 0.9rem;
+  }
+
+  .block p.small { font-size: 0.85rem; margin-top: 0.6rem; }
+
+  code {
+    font-family: var(--mono);
+    font-size: 0.85em;
+    color: var(--accent);
+  }
+
+  .block p code,
+  .rules code,
+  .ep-desc code {
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 0.05em 0.35em;
+  }
+
+  /* code blocks */
+  .snippet {
+    margin: 0 0 0.9rem;
+  }
+
+  .snippet figcaption {
+    color: var(--text-faint);
+    font-size: 0.74rem;
+    margin-bottom: 0.3rem;
+  }
+
+  pre.code {
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.75rem 0.9rem;
+    padding-right: 4.5rem;
+    overflow-x: auto;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    margin-bottom: 0.9rem;
+  }
+
+  pre.code code { color: var(--text); font-size: 1em; }
+
+  .copy {
+    font-size: 0.7rem;
+    color: var(--text-faint);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.15rem 0.5rem;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .copy:hover { color: var(--accent); border-color: var(--accent); }
+
+  .code-wrap { position: relative; }
+
+  .code-wrap .copy {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+
+  /* dark, thin scrollbars on everything that scrolls sideways */
+  pre.code,
+  .out-body,
+  .card-pre {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-bright) transparent;
+  }
+
+  /* endpoints */
+  .group { margin-top: 1.6rem; }
+
+  .group-title {
+    font-size: 0.9rem;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .group-desc {
+    color: var(--text-faint);
+    font-weight: 400;
+    font-size: 0.8rem;
+    margin-left: 0.4rem;
+  }
+
+  .endpoints {
+    list-style: none;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-card);
+  }
+
+  .ep {
+    padding: 0.7rem 0.9rem;
+  }
+
+  .ep + .ep { border-top: 1px solid var(--border); }
+
+  .ep-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.6rem;
+    font-size: 0.82rem;
+  }
+
+  .verb {
+    font-size: 0.66rem;
+    font-weight: 600;
+    color: var(--accent);
+    border: 1px solid rgba(var(--accent-rgb), 0.4);
+    background: var(--accent-dim);
+    border-radius: 3px;
+    padding: 0.05rem 0.4rem;
+  }
+
+  .ep-path {
+    color: var(--text);
+    overflow-wrap: anywhere;
+  }
+
+  .ep-path .tpl { color: var(--accent); }
+
+  .ep-param {
+    font-size: 0.74rem;
+    color: var(--text);
+    background: var(--bg-raised);
+    border: 1px solid var(--border-bright);
+    border-radius: 4px;
+    padding: 0.1rem 0.3rem;
+    max-width: 100%;
+  }
+
+  .try {
+    margin-left: auto;
+    font-size: 0.74rem;
+    color: var(--accent);
+    background: none;
+    border: 1px solid rgba(var(--accent-rgb), 0.4);
+    border-radius: 4px;
+    padding: 0.18rem 0.6rem;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .try:hover,
+  .try[aria-expanded="true"] { background: var(--accent-dim); }
+
+  .ep-sum {
+    color: var(--text-dim);
+    font-size: 0.86rem;
+    margin: 0.35rem 0 0;
+    line-height: 1.55;
+  }
+
+  .ep-desc { color: var(--text-faint); }
+
+  .out {
+    margin-top: 0.65rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: #080b10;
+    overflow: hidden;
+  }
+
+  .out-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    padding: 0.35rem 0.7rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-faint);
+  }
+
+  .out-status[data-ok="true"] { color: #8fc78a; }
+  .out-status[data-ok="false"] { color: #e8564f; }
+  .out-raw { flex: none; }
+
+  .out-body {
+    max-height: 26rem;
+    overflow: auto;
+    padding: 0.7rem 0.8rem;
+    font-size: 0.76rem;
+    line-height: 1.55;
+    color: var(--text-dim);
+    white-space: pre;
+  }
+
+  .out-body :global(.j-key) { color: var(--accent); }
+  .out-body :global(.j-str) { color: #a8c98f; }
+  .out-body :global(.j-num) { color: #7fb4e8; }
+  .out-body :global(.j-bool),
+  .out-body :global(.j-null) { color: #e0917a; }
+
+  /* conventions */
+  .rules {
+    color: var(--text-dim);
+    font-size: 0.93rem;
+    line-height: 1.7;
+    margin: 0 0 0.5rem 1.1rem;
+    max-width: 68ch;
+  }
+
+  .rules li { margin-bottom: 0.3rem; }
+
+  /* badges */
+  .badges {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .badges li {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.7rem;
+    font-size: 0.84rem;
+    color: var(--text-dim);
+  }
+
+  .badges img { height: 20px; }
+  .badges .metric { color: var(--text); font-size: 0.78rem; min-width: 5.5em; }
+  .badges .about { flex: 1; min-width: 12em; }
+
+  /* the terminal card */
+  .card-pre {
+    background: #080b10;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.9rem 1rem;
+    overflow-x: auto;
+    font-size: 0.76rem;
+    line-height: 1.45;
+    color: #cdd8e3;
+    width: fit-content;
+    max-width: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rise { animation: none; }
+  }
+</style>
+
+<script>
+  import { ansiToHtml, escapeHtml } from "../../lib/ansi.js";
+
+  const highlightJson = (text: string) =>
+    escapeHtml(text).replace(
+      /("(\\u[a-fA-F0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)/g,
+      (m) => {
+        let cls = "num";
+        if (m.startsWith('"')) cls = /:\s*$/.test(m) ? "key" : "str";
+        else if (m === "true" || m === "false") cls = "bool";
+        else if (m === "null") cls = "null";
+        return `<span class="j-${cls}">${m}</span>`;
+      }
+    );
+
+  document.querySelectorAll<HTMLElement>(".ep").forEach((ep) => {
+    const btn = ep.querySelector<HTMLButtonElement>(".try")!;
+    const select = ep.querySelector<HTMLSelectElement>(".ep-param");
+    const out = ep.querySelector<HTMLElement>(".out")!;
+    const status = ep.querySelector<HTMLElement>(".out-status")!;
+    const body = ep.querySelector<HTMLElement>(".out-body")!;
+    const links = ep.querySelectorAll<HTMLAnchorElement>(".ep-path, .out-raw");
+
+    const url = () => {
+      const t = ep.dataset.template!;
+      const p = ep.dataset.param;
+      return p && select ? t.replace(`{${p}}`, select.value) : t;
+    };
+
+    const load = async () => {
+      const u = url();
+      status.textContent = `GET ${u} …`;
+      delete status.dataset.ok;
+      body.textContent = "";
+      const t0 = performance.now();
+      try {
+        const res = await fetch(u, { cache: "no-cache" });
+        const text = await res.text();
+        const ms = Math.round(performance.now() - t0);
+        const type = (res.headers.get("content-type") || "?").split(";")[0];
+        const kb = (new Blob([text]).size / 1024).toFixed(1);
+        status.textContent = `HTTP ${res.status} · ${type} · ${kb} kB · ${ms} ms`;
+        status.dataset.ok = String(res.ok);
+        if (!res.ok) body.textContent = text.slice(0, 400);
+        else if (u.endsWith(".json")) body.innerHTML = highlightJson(JSON.stringify(JSON.parse(text), null, 2));
+        else if (u.endsWith(".ansi")) body.innerHTML = ansiToHtml(text);
+        else body.textContent = text;
+      } catch (e) {
+        status.textContent = `failed: ${(e as Error).message}`;
+        status.dataset.ok = "false";
+      }
+    };
+
+    btn.addEventListener("click", () => {
+      const opening = out.hidden;
+      out.hidden = !opening;
+      btn.setAttribute("aria-expanded", String(opening));
+      btn.textContent = opening ? "hide ▾" : "try ▸";
+      if (opening) load();
+    });
+
+    select?.addEventListener("change", () => {
+      links.forEach((a) => (a.href = url()));
+      if (!out.hidden) load();
+    });
+  });
+
+  document.addEventListener("click", (e) => {
+    const el = (e.target as HTMLElement).closest<HTMLElement>("[data-copy]");
+    if (!el || !navigator.clipboard) return;
+    navigator.clipboard.writeText(el.dataset.copy || "").then(() => {
+      const label = el.textContent;
+      el.textContent = "copied ✓";
+      setTimeout(() => (el.textContent = label), 1200);
+    });
+  });
+</script>
