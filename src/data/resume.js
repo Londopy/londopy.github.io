@@ -12,8 +12,11 @@ export const resume = {
     {
       school: "Cal Poly, San Luis Obispo",
       degree: "B.S. General Engineering",
-      focus: "Field Engineering focus, specializing in XIoT / OT security",
-      minors: "Minors in Computer Science (cybersecurity & AI) and Asian Studies",
+      details: [
+        "Field Engineering focus, specializing in XIoT / OT security",
+        "Intended minor in Asian Studies",
+        "Planned side focus: marine engineering work and research at the Cal Poly Pier",
+      ],
       when: "2026 – present",
     },
   ],

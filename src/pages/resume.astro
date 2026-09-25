@@ -89,7 +89,7 @@ const jsonLd = {
               <span><strong>{e.school}</strong> · {e.degree}</span>
               <span class="meta">{e.when}</span>
             </div>
-            <p class="note">{e.focus}. {e.minors}.</p>
+            <p class="note">{e.details.map((d) => `${d}.`).join(" ")}</p>
           </div>
         ))}
       </section>
