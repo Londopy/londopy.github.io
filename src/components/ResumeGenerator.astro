@@ -4,8 +4,9 @@
 // program, "runs" it against the site's real API (the fetches are real, and
 // so are the numbers in the log), then prints the résumé onto the page.
 //
-// It never gets in anyone's way: skip at any point (button or Esc), it plays
-// once per session (the toolbar's "regenerate" replays it), and the résumé is
+// It never gets in anyone's way: Esc skips it at any point (so do the skip
+// buttons, when SHOW_SKIP is on), it plays once per session (the toolbar's
+// "regenerate" replays it), and the résumé is
 // always in the HTML, only hidden on screen while the show is pending, so
 // printing, readers without JavaScript and crawlers all get it straight away.
 //
@@ -20,6 +21,11 @@ interface Props {
 
 const { code, picked, fallback } = Astro.props;
 const payload = JSON.stringify({ code, picked, fallback }).replace(/</g, "\\u003c");
+
+// The skip buttons ("skip the show →" and "skip ⏭") are hidden for now.
+// Flip to true to bring them back; everything behind them is still wired up,
+// and Esc still skips either way.
+const SHOW_SKIP = false;
 ---
 
 <script is:inline>
@@ -51,12 +57,12 @@ resume.nx   data/
     </p>
     <div class="gen-actions">
       <button class="gen-go mono" id="gen-go" type="button"><span aria-hidden="true">▶</span> generate résumé</button>
-      <button class="gen-skip mono" id="gen-skip" type="button">skip the show →</button>
+      <button class="gen-skip mono" id="gen-skip" type="button" hidden={!SHOW_SKIP}>skip the show →</button>
     </div>
   </div>
 
   <div class="gen-run" id="gen-run" hidden>
-    <button class="gen-skip gen-skip-run mono" id="gen-skip-run" type="button">skip ⏭</button>
+    <button class="gen-skip gen-skip-run mono" id="gen-skip-run" type="button" hidden={!SHOW_SKIP}>skip ⏭</button>
     <pre class="gen-code mono" id="gen-code" aria-hidden="true"></pre>
     <pre class="gen-log mono" id="gen-log" aria-hidden="true"></pre>
   </div>
