@@ -1,19 +1,100 @@
 {
   "meta": {
-    "generated": "2026-09-21",
-    "count": 64,
-    "repos": 55,
-    "merged": 13
+    "generated": "2026-09-25",
+    "count": 73,
+    "repos": 61,
+    "merged": 17
   },
   "pulls": [
     {
+      "repo": "kiy-codes/recall-flashcards",
+      "number": 1,
+      "title": "Fix data-loss, HTML injection and other bugs found in review",
+      "state": "open",
+      "url": "https://github.com/kiy-codes/recall-flashcards/pull/1",
+      "date": "2026-09-23",
+      "repoStars": 0
+    },
+    {
+      "repo": "micro-editor/micro",
+      "number": 4243,
+      "title": "syntax: add Typst",
+      "state": "open",
+      "url": "https://github.com/micro-editor/micro/pull/4243",
+      "date": "2026-09-23",
+      "repoStars": 29638
+    },
+    {
+      "repo": "tldr-pages/tldr",
+      "number": 24227,
+      "title": "nx: edit page",
+      "state": "closed",
+      "url": "https://github.com/tldr-pages/tldr/pull/24227",
+      "date": "2026-09-22",
+      "repoStars": 0
+    },
+    {
+      "repo": "compiler-explorer/compiler-explorer",
+      "number": 9152,
+      "title": "Add the Nexium language",
+      "state": "open",
+      "url": "https://github.com/compiler-explorer/compiler-explorer/pull/9152",
+      "date": "2026-09-22",
+      "repoStars": 0
+    },
+    {
+      "repo": "compiler-explorer/infra",
+      "number": 2373,
+      "title": "Add Nexium 1.2.0",
+      "state": "open",
+      "url": "https://github.com/compiler-explorer/infra/pull/2373",
+      "date": "2026-09-22",
+      "repoStars": 0
+    },
+    {
+      "repo": "ScoopInstaller/Extras",
+      "number": 18797,
+      "title": "hidedesktopapps: Add version 1.2.2",
+      "state": "closed",
+      "url": "https://github.com/ScoopInstaller/Extras/pull/18797",
+      "date": "2026-09-22",
+      "repoStars": 0
+    },
+    {
+      "repo": "microsoft/winget-pkgs",
+      "number": 438892,
+      "title": "New package: Londopy.HideDesktopApps version 1.2.2",
+      "state": "open",
+      "url": "https://github.com/microsoft/winget-pkgs/pull/438892",
+      "date": "2026-09-22",
+      "repoStars": 0
+    },
+    {
+      "repo": "microsoft/winget-pkgs",
+      "number": 438838,
+      "title": "New package: Londopy.Nexium version 1.2.0",
+      "state": "open",
+      "url": "https://github.com/microsoft/winget-pkgs/pull/438838",
+      "date": "2026-09-22",
+      "repoStars": 0
+    },
+    {
+      "repo": "micro-editor/micro",
+      "number": 4240,
+      "title": "highlight: apply a region's rules regardless of its start offset",
+      "state": "closed",
+      "url": "https://github.com/micro-editor/micro/pull/4240",
+      "date": "2026-09-21",
+      "repoStars": 29638
+    },
+    {
       "repo": "firebase/firebaseui-web",
       "number": 1494,
-      "title": "Fix typos in README",
-      "state": "open",
+      "title": "docs: fix typos in README",
+      "state": "merged",
       "url": "https://github.com/firebase/firebaseui-web/pull/1494",
       "date": "2026-09-21",
-      "repoStars": 0
+      "repoStars": 4876
     },
     {
       "repo": "tonikelope/megabasterd",
@@ -58,7 +139,7 @@
       "state": "merged",
       "url": "https://github.com/jlesage/docker-firefox/pull/357",
       "date": "2026-09-21",
-      "repoStars": 2553
+      "repoStars": 2556
     },
     {
       "repo": "eKoopmans/html2pdf.js",
@@ -85,7 +166,7 @@
       "state": "merged",
       "url": "https://github.com/skeeto/w64devkit/pull/419",
       "date": "2026-09-21",
-      "repoStars": 4838
+      "repoStars": 4853
     },
     {
       "repo": "Keyitdev/sddm-astronaut-theme",
@@ -112,7 +193,7 @@
       "state": "merged",
       "url": "https://github.com/dafthack/MailSniper/pull/115",
       "date": "2026-09-21",
-      "repoStars": 3280
+      "repoStars": 3278
     },
     {
       "repo": "Tuhinshubhra/CMSeeK",
@@ -136,10 +217,10 @@
       "repo": "philippe44/AirConnect",
       "number": 594,
       "title": "Fix typos in README",
-      "state": "open",
+      "state": "merged",
       "url": "https://github.com/philippe44/AirConnect/pull/594",
       "date": "2026-09-21",
-      "repoStars": 0
+      "repoStars": 4184
     },
     {
       "repo": "gusmanb/logicanalyzer",
@@ -175,16 +256,16 @@
       "state": "open",
       "url": "https://github.com/micro-editor/micro/pull/4236",
       "date": "2026-09-20",
-      "repoStars": 29612
+      "repoStars": 29638
     },
     {
       "repo": "micro-editor/micro",
       "number": 4235,
       "title": "help/colors: remove references to the removed cmc-paper colorscheme",
-      "state": "open",
+      "state": "merged",
       "url": "https://github.com/micro-editor/micro/pull/4235",
       "date": "2026-09-20",
-      "repoStars": 29612
+      "repoStars": 29638
     },
     {
       "repo": "mukul975/Anthropic-Cybersecurity-Skills",
@@ -283,16 +364,16 @@
       "state": "merged",
       "url": "https://github.com/nukeop/nuclear/pull/2200",
       "date": "2026-09-20",
-      "repoStars": 18483
+      "repoStars": 18512
     },
     {
       "repo": "1jehuang/jcode",
       "number": 1334,
       "title": "Fix typos in README",
-      "state": "open",
+      "state": "merged",
       "url": "https://github.com/1jehuang/jcode/pull/1334",
       "date": "2026-09-20",
-      "repoStars": 0
+      "repoStars": 20110
     },
     {
       "repo": "lyogavin/airllm",
@@ -355,7 +436,7 @@
       "state": "merged",
       "url": "https://github.com/sqlitebrowser/sqlitebrowser/pull/4203",
       "date": "2026-09-19",
-      "repoStars": 24613
+      "repoStars": 24625
     },
     {
       "repo": "pyg-team/pytorch_geometric",
@@ -400,7 +481,7 @@
       "state": "merged",
       "url": "https://github.com/chaitin/SafeLine/pull/1328",
       "date": "2026-09-19",
-      "repoStars": 22648
+      "repoStars": 22673
     },
     {
       "repo": "wandb/openui",
@@ -436,7 +517,7 @@
       "state": "merged",
       "url": "https://github.com/copy/v86/pull/1638",
       "date": "2026-09-19",
-      "repoStars": 23509
+      "repoStars": 23523
     },
     {
       "repo": "slimtoolkit/slim",
@@ -445,7 +526,7 @@
       "state": "merged",
       "url": "https://github.com/slimtoolkit/slim/pull/860",
       "date": "2026-09-19",
-      "repoStars": 23413
+      "repoStars": 23417
     },
     {
       "repo": "sherlock-project/sherlock",
@@ -490,7 +571,7 @@
       "state": "merged",
       "url": "https://github.com/TheCruZ/Simple-Manual-Map-Injector/pull/30",
       "date": "2026-09-19",
-      "repoStars": 520
+      "repoStars": 522
     },
     {
       "repo": "yatli/fvim",
@@ -517,7 +598,7 @@
       "state": "merged",
       "url": "https://github.com/micro-editor/micro/pull/4234",
       "date": "2026-09-19",
-      "repoStars": 29612
+      "repoStars": 29638
     },
     {
       "repo": "emilk/egui",
@@ -535,7 +616,7 @@
       "state": "merged",
       "url": "https://github.com/nim-lang/Nim/pull/26248",
       "date": "2026-09-19",
-      "repoStars": 18240
+      "repoStars": 18245
     },
     {
       "repo": "modular/modular",
@@ -553,7 +634,7 @@
       "state": "merged",
       "url": "https://github.com/elixir-lang/elixir/pull/15915",
       "date": "2026-09-19",
-      "repoStars": 26666
+      "repoStars": 26677
     },
     {
       "repo": "ComposioHQ/awesome-claude-skills",

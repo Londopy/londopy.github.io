@@ -17,6 +17,10 @@
   --topo-line: rgba(var(--accent-rgb), 0.2);
   --topo-line-soft: rgba(var(--accent-rgb), 0.09);
   --amber: #e8b444;
+  /* award medals (fixed, like the star gold — they don't follow the theme) */
+  --gold: #e8b444;
+  --silver: #b8c4d0;
+  --bronze: #d08a4e;
   --mono: "JetBrains Mono Variable", ui-monospace, "Cascadia Code", Consolas, monospace;
   --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --radius: 6px;

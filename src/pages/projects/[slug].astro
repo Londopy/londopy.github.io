@@ -28,6 +28,7 @@ const body = projectDocs[project.name];
   links={project.links}
   pip={pip}
   stars={project.stars}
+  award={project.award}
 >
   {body ? (
     <Fragment set:html={body} />

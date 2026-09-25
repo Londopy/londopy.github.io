@@ -37,6 +37,13 @@ function short(n: number): string {
 const highlights = pulls.filter((p) => p.state === "merged");
 const rest = pulls.filter((p) => p.state !== "merged");
 
+// the tail's label counts what's actually in it, so it can't drift out of date
+// as PRs merge: README / docs / link fixes vs. code changes and package listings
+const isDocFix = (t: string) => /\b(typos?|readme|docs?|links?|dead|broken|page)\b/i.test(t);
+const restDocs = rest.filter((p) => isDocFix(p.title)).length;
+const restOther = rest.length - restDocs;
+const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
+
 const stateLabel: Record<string, string> = {
   merged: "merged",
   open: "open",
@@ -80,7 +87,9 @@ const stateLabel: Record<string, string> = {
 
   {rest.length > 0 && (
     <details class="pr-more">
-      <summary class="mono">plus {rest.length} smaller README &amp; dead-link fixes across egui, sherlock, mint, Ciphey and others</summary>
+      <summary class="mono">
+        plus {rest.length} more, open or closed — {plural(restDocs, "README or docs fix", "README & docs fixes")}{restOther > 0 && `, ${plural(restOther, "code change or package listing", "code changes & package listings")}`}
+      </summary>
       <ul class="pr-list mono">
         {rest.map((p) => (
           <li>

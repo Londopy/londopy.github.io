@@ -13,9 +13,22 @@ interface Props {
   links?: { label: string; url: string }[] | null;
   pip?: string | null;
   stars?: number;
+  award?: {
+    place: string;
+    medal: "gold" | "silver" | "bronze";
+    event: string;
+    track?: string;
+    url?: string;
+  } | null;
 }
 
-const { name, tagline, language, repo, demo, docsUrl, links, pip, stars } = Astro.props;
+const { name, tagline, language, repo, demo, docsUrl, links, pip, stars, award } = Astro.props;
+const MEDALS = { gold: "🥇", silver: "🥈", bronze: "🥉" };
+const medalName = award ? award.medal[0].toUpperCase() + award.medal.slice(1) : "";
+// "3rd place (Bronze), Software Development track, Reverie Hacks 2026"
+const awardText = award
+  ? `${award.place} (${medalName})${award.track ? `, ${award.track} track` : ""}, ${award.event}`
+  : "";
 const isPypi = !!demo && demo.includes("pypi.org");
 const isItch = !!demo && demo.includes("itch.io");
 const demoLabel = isPypi ? "View on PyPI ↗" : isItch ? "Play on itch.io ↗" : "Live demo ↗";
@@ -35,6 +48,7 @@ const jsonLd = {
     alternateName: "Londopy",
     url: "https://github.com/Londopy",
   },
+  ...(award ? { award: awardText } : {}),
 };
 ---
 
@@ -52,6 +66,12 @@ const jsonLd = {
         {stars && stars >= 2 ? <span class="stars mono">★ {stars}</span> : null}
       </div>
       <p class="tagline">{tagline}</p>
+      {award && (
+        <p class="award mono" data-medal={award.medal}>
+          <span aria-hidden="true">{MEDALS[award.medal]}</span> {awardText}
+          {award.url && <Fragment> · <a href={award.url}>watch the closing ceremony ↗</a></Fragment>}
+        </p>
+      )}
       <p class="lang mono">{language}</p>
 
       {pip && (
@@ -126,6 +146,25 @@ const jsonLd = {
     font-size: 0.82rem;
     margin-bottom: 1.1rem;
   }
+
+  .award {
+    --medal: var(--bronze);
+    width: fit-content;
+    max-width: 100%;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--medal);
+    border: 1px solid color-mix(in srgb, var(--medal) 45%, transparent);
+    background: color-mix(in srgb, var(--medal) 9%, transparent);
+    border-radius: 6px;
+    padding: 0.3rem 0.7rem;
+    margin: 0.2rem 0 0.8rem;
+  }
+
+  .award[data-medal="gold"] { --medal: var(--gold); }
+  .award[data-medal="silver"] { --medal: var(--silver); }
+  .award a { color: var(--text-dim); white-space: nowrap; }
+  .award a:hover { color: var(--medal); }
 
   .install {
     display: flex;

@@ -88,7 +88,7 @@ export const projectDocs = {
 
   DiresQ: `
 <h2><span class="hash">##</span> What it is</h2>
-<p><strong>DiresQ</strong> is a disaster-response app with an unusual premise: every other tool maps where the disaster is — DiresQ tracks <em>the people going into it</em>. Built at <strong>Katy Youth Hacks 2026</strong> (theme: Tech for Humanity). I did the backend; my teammate built the frontend.</p>
+<p><strong>DiresQ</strong> is a disaster-response app with an unusual premise: every other tool maps where the disaster is — DiresQ tracks <em>the people going into it</em>. Built at <strong>Katy Youth Hacks 2026</strong> (theme: Tech for Humanity), and it later took <strong>Bronze — 3rd place in the Software Development track at Reverie Hacks 2026</strong>. I did the backend; my teammate built the frontend.</p>
 
 <h2><span class="hash">##</span> The idea</h2>
 <p>When a civilian volunteer self-deploys into a flood or storm, nobody logs that they went, nobody knows where they are, and nobody knows when to start worrying. And because everyone converges on whatever address is loudest online, six responders pile onto one street while the next one over has nobody. DiresQ fixes both: you join a report, check in on a timer, and check out — and every report shows how many people are already on it, so help spreads out instead of piling up.</p>
@@ -276,5 +276,38 @@ artifact python { name = "hasher" }</code></pre>
 <h2><span class="hash">##</span> Getting it</h2>
 <p>Builds are on the <a href="https://github.com/Londopy/HideDesktopApps/releases">releases page</a>, and the repo carries a <strong>Scoop</strong> manifest so it installs and updates as a managed package rather than a zip you have to remember to re-download:</p>
 <pre><code>scoop install https://raw.githubusercontent.com/Londopy/HideDesktopApps/main/scoop/HideDesktopApps.json</code></pre>
+`,
+
+  nxtls: `
+<h2><span class="hash">##</span> What it is</h2>
+<p><strong>nxtls</strong> is cryptography and a TLS 1.3 client written entirely in <a href="/projects/nexium/">Nexium</a>, my own language — no C libraries, no <code>@cImport</code>, and not one <code>unsafe</code> block, so a reviewer can read it end to end. It exists so Nexium programs can verify signatures and speak HTTPS without handing their security to a C library. Its first real user is a Discord helper I wrote for an amateur-radio club, which checks the Ed25519 signature on every request with it and talks to Discord through its TLS client.</p>
+
+<h2><span class="hash">##</span> What's in it</h2>
+<ul>
+<li><strong>Primitives</strong> — SHA-256, SHA-384 and SHA-512, HMAC with a constant-time <code>verify</code>, HKDF with TLS 1.3's <code>expand_label</code>, and X25519 and ChaCha20-Poly1305 in constant time.</li>
+<li><strong>Signature verification</strong> — Ed25519 (strict in the ways libsodium is), ECDSA on P-256 and P-384, and RSA PKCS #1 v1.5 and PSS, on top of a strict DER reader and a small Montgomery bignum.</li>
+<li><strong>X.509</strong> — path building across cross-signed CAs, validity periods, CA constraints and path lengths, key usage, and host names with wildcards.</li>
+<li><strong>TLS 1.3</strong> — a client with ChaCha20-Poly1305 and X25519 that handles HelloRetryRequest, KeyUpdate, and servers that ask for a client certificate. The protocol core is bytes in, bytes out; a separate type runs it over TCP.</li>
+</ul>
+
+<h2><span class="hash">##</span> How it's tested</h2>
+<p>Every module is checked against its published vectors — FIPS 180-4 and RFCs 4231, 5869, 7748, 8032, 8439 and 8448 — and against Python's <code>cryptography</code> package, which a generator script uses as an oracle while it re-derives every constant table from its definition. The X.509 code is judged on 68 chains and 13 malformed certificates by <code>cryptography</code>'s own path validation. The TLS client replays 35 recorded exchanges byte for byte, runs against OpenSSL 3's <code>s_server</code> in twelve configurations — including the ones it must refuse: the wrong host, an expired certificate, TLS 1.2 — and connects live to Discord, GitHub, Google and Cloudflare. CI runs all of it on Linux, Windows and macOS, and fails any module that grows an <code>unsafe</code> block, a mutable global, or a foreign call.</p>
+
+<h2><span class="hash">##</span> The honest part</h2>
+<p>It's new, and nobody who knows TLS has reviewed it yet — the README says so up front, and that review is the next item on the plan. It also won't fall back to a weaker source of randomness: on Windows, where it has no <code>/dev/urandom</code>, <code>tls.connect</code> says so and stops. Until that review happens, treat it as a careful reading of the RFCs, not something to trust with anything that matters.</p>
+`,
+
+  "the-long-fork": `
+<h2><span class="hash">##</span> What it is</h2>
+<p><strong>the-long-fork</strong> is a repo whose only purpose is to be forked — one link at a time, as deep as it'll go. You fork the <em>current tip</em> (never the root), append one line to <code>CHAIN.txt</code>, and pass it on. The goal is the deepest fork-of-a-fork chain on GitHub. The code does nothing; the chain is the project.</p>
+
+<h2><span class="hash">##</span> How a link works</h2>
+<p>Each line reads <code>depth | username | date | prev-hash | cell | note</code>. The hash is the first 12 hex characters of the SHA-256 of the line above, so every link is pinned to the one before it, and the cell lets each link set one character of a shared 64×32 ASCII canvas that fills in as the chain grows. A <a href="https://londopy.github.io/the-long-fork/link/">link helper</a> reads your parent's chain and writes the exact line for you, and a self-check workflow in your fork says whether the link is right before anyone else looks at it.</p>
+
+<h2><span class="hash">##</span> The tracker</h2>
+<p>Twice a day a GitHub Action walks the whole fork network and rebuilds the picture. Two people forking the same tip is allowed — the chain becomes a tree. The <strong>main chain</strong> is the longest path from the root (on a tie, the earlier fork wins), and a side branch that grows longer takes over. If nothing lands for seven days the page says <strong>CHAIN STALLED</strong>, which is the cue to jump in. The tracker publishes <code>STATUS.txt</code>, a live depth badge, and the <a href="https://londopy.github.io/the-long-fork/">site</a>, which always knows where the tip is.</p>
+
+<h2><span class="hash">##</span> Join it</h2>
+<p><a href="https://londopy.github.io/the-long-fork/tip/">Fork the tip</a>, add your line, and commit it as <code>link &lt;depth&gt;: &lt;your-username&gt;</code>. There's no pull request — your fork <em>is</em> your link. One link per human, and don't delete your fork afterwards.</p>
 `,
 };

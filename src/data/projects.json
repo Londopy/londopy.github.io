@@ -10,7 +10,7 @@
       "id": "security",
       "emoji": "🛡️",
       "title": "Security tooling",
-      "blurb": "Assessment tools for authorized use, with the framing to match."
+      "blurb": "Assessment tools for authorized use, with the framing to match — and cryptography built up from the RFCs."
     },
     {
       "id": "medicine",
@@ -58,7 +58,7 @@
       "id": "games",
       "emoji": "🎮",
       "title": "Consumer & games",
-      "blurb": "Tools for the games I play and the apps I live in."
+      "blurb": "Tools for the games I play and the apps I live in — plus a couple of games of my own."
     },
     {
       "id": "audio",
@@ -244,7 +244,14 @@
       "demo": null,
       "page": null,
       "featured": true,
-      "stars": 2
+      "stars": 2,
+      "award": {
+        "place": "3rd place",
+        "medal": "bronze",
+        "event": "Reverie Hacks 2026",
+        "track": "Software Development",
+        "url": "https://youtu.be/MbCTSaONuOM"
+      }
     },
     {
       "cluster": "climbing",
@@ -412,6 +419,22 @@
       "demo": "https://pypi.org/project/deadpoint/",
       "page": null,
       "featured": true
+    },
+    {
+      "cluster": "security",
+      "name": "nxtls",
+      "tagline": "Cryptography and a TLS 1.3 client written entirely in Nexium — SHA-2 through X.509 chain validation, with no C and no unsafe. Checked against the RFC vectors, Python's cryptography and OpenSSL 3; early, and not yet reviewed by a TLS expert.",
+      "language": "Nexium + Python",
+      "tags": [
+        "cryptography",
+        "tls",
+        "nexium"
+      ],
+      "repo": "https://github.com/Londopy/nxtls",
+      "demo": null,
+      "page": null,
+      "featured": false,
+      "stars": 1
     },
     {
       "cluster": "games",
@@ -615,6 +638,28 @@
       "page": "/projects/point-of-origin/",
       "featured": true,
       "stars": 1
+    },
+    {
+      "cluster": "games",
+      "name": "the-long-fork",
+      "tagline": "A repo whose only purpose is to be forked, one link at a time, as deep as it'll go. Every fork appends one hash-chained line and may set one cell of a shared 64×32 canvas; a GitHub Action walks the fork tree twice a day and publishes the chain.",
+      "language": "Python",
+      "tags": [
+        "social-experiment",
+        "github-actions",
+        "hash-chain"
+      ],
+      "repo": "https://github.com/Londopy/the-long-fork",
+      "demo": "https://londopy.github.io/the-long-fork/",
+      "page": null,
+      "featured": false,
+      "stars": 1,
+      "links": [
+        {
+          "label": "fork the tip",
+          "url": "https://londopy.github.io/the-long-fork/tip/"
+        }
+      ]
     }
   ],
   "inProgress": [

@@ -26,6 +26,7 @@ ACCENT = "#e9a13a"          # amber theme accent
 AMBER = "#e8b444"           # star gold
 RED = "#e8564f"
 NEUTRAL = "#3a4a5a"
+MEDAL = {"gold": "#e8b444", "silver": "#b8c4d0", "bronze": "#d08a4e"}
 
 LANG = {
     "Rust": "#dea584", "Python": "#3572a5", "TypeScript": "#3178c6",
@@ -62,6 +63,13 @@ SANS = find_font([
     "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
     "C:/Windows/Fonts/DejaVuSans.ttf",
     "C:/Windows/Fonts/segoeui.ttf",
+])
+# JetBrains Mono has no U+2605 (★), so the star badge would render as tofu;
+# draw it with a mono font that carries the glyph
+SYMBOL = find_font([
+    "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf",
+    "C:/Windows/Fonts/DejaVuSansMono.ttf",
+    "C:/Windows/Fonts/seguisym.ttf",
 ])
 
 PX, PY, PW, PH = 80, 82, 1040, 466
@@ -148,10 +156,24 @@ def project_card(p, out):
         size -= 2
     d.text((130, 212), name, font=fn, fill=TEXT)
 
+    # award (hackathon placing), right-aligned on the prompt line
+    award = p.get("award")
+    if award:
+        fa = ImageFont.truetype(MONO, 20)
+        color = MEDAL.get(award.get("medal"), AMBER)
+        text = f"{award['place']} · {award['event']}"
+        x = PX + PW - 40 - d.textlength(text, fa)
+        d.text((x, 171), text, font=fa, fill=color)
+        cx, cy = x - 20, 187                       # a small medal: ribbon + disc
+        d.polygon([(cx - 8, cy - 17), (cx - 3, cy - 17), (cx + 1, cy - 6), (cx - 4, cy - 6)], fill=DIM)
+        d.polygon([(cx + 3, cy - 17), (cx + 8, cy - 17), (cx + 4, cy - 6), (cx - 1, cy - 6)], fill=FAINT)
+        d.ellipse([cx - 9, cy - 9, cx + 9, cy + 9], fill=color)
+        d.ellipse([cx - 5, cy - 5, cx + 5, cy + 5], outline=PANEL, width=2)
+
     # star badge, top-right of the panel
     stars = p.get("stars") or 0
     if stars >= 2:
-        fs = ImageFont.truetype(MONO, 24)
+        fs = ImageFont.truetype(SYMBOL, 24)
         s = f"\u2605 {stars}"
         d.text((PX + PW - 40 - d.textlength(s, fs), 214), s, font=fs, fill=AMBER)
 

@@ -12,9 +12,23 @@ interface Props {
   pushed?: string | null;
   docsUrl?: string | null;
   links?: { label: string; url: string }[] | null;
+  award?: Award | null;
 }
 
-const { name, tagline, language, tags, repo, demo, page, featured, stars, pushed, docsUrl, links } = Astro.props;
+interface Award {
+  place: string;
+  medal: "gold" | "silver" | "bronze";
+  event: string;
+  track?: string;
+  url?: string;
+}
+
+const { name, tagline, language, tags, repo, demo, page, featured, stars, pushed, docsUrl, links, award } = Astro.props;
+
+const MEDALS = { gold: "🥇", silver: "🥈", bronze: "🥉" };
+const awardTitle = award
+  ? `${award.medal[0].toUpperCase()}${award.medal.slice(1)} — ${award.place}${award.track ? ` in the ${award.track} track` : ""} at ${award.event}`
+  : "";
 
 const LANG_COLORS: Record<string, string> = {
   Rust: "var(--lang-rust)",
@@ -59,6 +73,12 @@ const pipPkg = isPypi ? demo!.split("/project/")[1]?.replace(/\/+$/, "") : null;
     <h3 class="mono"><a href={repo}>{name}</a></h3>
     {stars && stars >= 2 ? <span class="stars mono" title={`${stars} stars on GitHub`}>★ {stars}</span> : null}
   </div>
+
+  {award && (
+    <a class="award mono" data-medal={award.medal} href={award.url ?? repo} title={awardTitle}>
+      <span aria-hidden="true">{MEDALS[award.medal]}</span> {award.place} · {award.event}
+    </a>
+  )}
 
   <p class="tagline">{tagline}</p>
 
@@ -153,6 +173,30 @@ const pipPkg = isPypi ? demo!.split("/project/")[1]?.replace(/\/+$/, "") : null;
     color: var(--text-dim);
     font-size: 0.88rem;
     line-height: 1.55;
+  }
+
+  /* hackathon placing: a medal-coloured pill under the name */
+  .award {
+    --medal: var(--bronze);
+    align-self: flex-start;
+    max-width: 100%;
+    font-size: 0.72rem;
+    color: var(--medal);
+    border: 1px solid color-mix(in srgb, var(--medal) 45%, transparent);
+    background: color-mix(in srgb, var(--medal) 9%, transparent);
+    border-radius: 999px;
+    padding: 0.14rem 0.6rem;
+    margin-top: -0.2rem;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .award[data-medal="gold"] { --medal: var(--gold); }
+  .award[data-medal="silver"] { --medal: var(--silver); }
+
+  .award:hover {
+    border-color: var(--medal);
+    background: color-mix(in srgb, var(--medal) 16%, transparent);
+    text-decoration: none;
   }
 
   .meta {
