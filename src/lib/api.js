@@ -21,6 +21,8 @@ import { getMetaMap, withMeta } from "./stars.js";
 import { getPulls, pullStats } from "./pulls.js";
 import { getPosts, FEED_URL } from "./blog.js";
 import { htmlToText } from "./text.js";
+import { now as NOW } from "../data/now.js";
+import { inlineToHtml, inlineToText } from "./inline.js";
 
 export const SITE = "https://londopy.github.io";
 export const VERSION = "1.0.0";
@@ -230,6 +232,61 @@ function profileDoc() {
   };
 }
 
+// the /now page as data; `stale` once it's gone 60 days without an update
+export const NOW_STALE_DAYS = 60;
+
+export function nowDoc(s) {
+  const age = (Date.parse(s.generated) - Date.parse(`${NOW.updated}T00:00:00Z`)) / 864e5;
+  return {
+    updated: NOW.updated,
+    stale: age > NOW_STALE_DAYS,
+    url: abs("/now/"),
+    sections: NOW.sections.map((sec) => ({
+      title: sec.title,
+      items: sec.items.map((it) => ({
+        text: inlineToText(it),
+        html: inlineToHtml(it).replace(/href="\//g, `href="${SITE}/`),
+      })),
+    })),
+    lately: {
+      latest_post: s.posts[0] ?? null,
+      recent_pushes: s.projects
+        .filter((p) => p.pushed)
+        .sort((a, b) => b.pushed.localeCompare(a.pushed))
+        .slice(0, 4)
+        .map((p) => ({ project: p.name, pushed_at: p.pushed, url: abs(`/projects/${p.name}/`) })),
+    },
+  };
+}
+
+// the site's own pages, for search (the command palette) and discovery
+export const PAGES = [
+  { title: "Projects", path: "/", subtitle: "The full index, grouped by domain", keywords: ["home", "index", "work", "portfolio"] },
+  { title: "About", path: "/about/", subtitle: "The longer version of who's behind the projects", keywords: ["bio", "me", "who"] },
+  { title: "Now", path: "/now/", subtitle: "What I'm focused on this month", keywords: ["current", "doing", "status", "update"] },
+  { title: "Contact", path: "/contact/", subtitle: "Send a message, PGP optional", keywords: ["email", "message", "hire", "pgp", "reach"] },
+  { title: "Blog", path: "/blog/", subtitle: "Notes on security, systems, radio, and building things", keywords: ["posts", "writing", "articles"] },
+  { title: "API", path: "/api/", subtitle: "Everything here as JSON, with an OpenAPI spec", keywords: ["json", "openapi", "developer", "endpoints"] },
+];
+
+function searchIndex(s) {
+  const item = (kind, title, subtitle, path, keywords) => ({ kind, title, subtitle, path, url: abs(path), keywords });
+  return [
+    ...PAGES.map((p) => item("page", p.title, p.subtitle, p.path, p.keywords)),
+    ...s.projects.map((p) =>
+      item("project", p.name, p.tagline, `/projects/${p.name}/`, [
+        ...languagesOf(p),
+        ...(p.tags ?? []),
+        clusterRef(p.cluster).title,
+        ...(p.featured ? ["featured"] : []),
+        ...(p.award ? ["award", p.award.event] : []),
+      ])
+    ),
+    ...s.clusters.map((c) => item("domain", c.title, c.blurb, `/#${c.id}`, [c.id])),
+    ...s.posts.map((p) => item("post", p.title, p.summary, new URL(p.url).pathname, ["blog", "post"])),
+  ];
+}
+
 // shields.io endpoint badges (https://shields.io/badges/endpoint-badge)
 const starTotal = (s) => s.projects.reduce((n, p) => n + (p.stars ?? 0), 0);
 export const BADGES = {
@@ -362,6 +419,24 @@ export const SCHEMAS = {
     repo_stars: int,
   }),
   Post: obj({ title: str, url: uri, published: nullable(dateTime), summary: str }),
+  SearchItem: obj({
+    kind: { type: "string", enum: ["page", "project", "domain", "post"] },
+    title: str,
+    subtitle: str,
+    path: { ...str, description: "Site-relative path, for same-origin links" },
+    url: uri,
+    keywords: arr(str),
+  }),
+  Now: obj({
+    updated: { type: "string", format: "date" },
+    stale: { ...bool, description: `True once the list has gone ${NOW_STALE_DAYS} days without an update` },
+    url: uri,
+    sections: arr(obj({ title: str, items: arr(obj({ text: str, html: str })) })),
+    lately: obj({
+      latest_post: nullable(P("Post")),
+      recent_pushes: arr(obj({ project: str, pushed_at: dateTime, url: uri })),
+    }),
+  }),
   Profile: obj({
     name: str,
     handle: str,
@@ -459,10 +534,24 @@ export const ROUTES = [
     schema: { type: "object" }, raw: true,
   },
   {
+    id: "getSearchIndex", group: "Discovery", path: `${BASE}/search.json`,
+    summary: "Everything searchable, in one small file",
+    description: "Pages, projects, domains and posts with keywords: what the site's command palette (press /) loads.",
+    schema: list("SearchItem"),
+    build: (s) => searchIndex(s),
+  },
+  {
     id: "getProfile", group: "Profile", path: `${BASE}/profile.json`,
     summary: "Name, links, contact methods and PGP key",
     schema: P("Profile"),
     build: () => profileDoc(),
+  },
+  {
+    id: "getNow", group: "Profile", path: `${BASE}/now.json`,
+    summary: "What I'm focused on this month",
+    description: "The /now page as data, with the latest post and pushes.",
+    schema: P("Now"),
+    build: (s) => nowDoc(s),
   },
   {
     id: "getPgpKey", group: "Profile", path: "/pgp.asc",

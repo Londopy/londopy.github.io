@@ -5,6 +5,7 @@ import "@fontsource/ibm-plex-sans/500.css";
 import "../styles/global.css";
 import CursorOrb from "../components/CursorOrb.astro";
 import TopoBackground from "../components/TopoBackground.astro";
+import CommandPalette from "../components/CommandPalette.astro";
 
 interface Props {
   title: string;
@@ -59,5 +60,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <TopoBackground />
     <slot />
     <CursorOrb />
+    <CommandPalette />
   </body>
 </html>

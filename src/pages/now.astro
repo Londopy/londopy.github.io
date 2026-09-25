@@ -1,0 +1,209 @@
+---
+import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import { now } from "../data/now.js";
+import { getSnapshot, nowDoc } from "../lib/api.js";
+import { inlineToHtml } from "../lib/inline.js";
+
+const s = await getSnapshot();
+const doc = nowDoc(s);
+
+const longDate = (iso: string) =>
+  new Date(iso.length === 10 ? `${iso}T12:00:00Z` : iso).toLocaleDateString("en-US", {
+    month: "long", day: "numeric", year: "numeric", timeZone: "UTC",
+  });
+const shortDate = (iso: string) =>
+  new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
+
+const title = "Now — London C.";
+const description =
+  "What London C. is focused on this month: Nexium 1.4's standard library, getting nxtls reviewed, the-long-fork, the blog, and school.";
+const post = doc.lately.latest_post;
+---
+
+<Base title={title} description={description}>
+  <Nav active="now" />
+
+  <main class="container now">
+    <header class="now-hero rise">
+      <p class="prompt mono" aria-hidden="true">
+        <span class="user">londopy</span><span class="at">@</span><span class="host">github</span><span class="path">:~$</span>
+        cat now.md
+      </p>
+      <h1>Now</h1>
+      <p class="lede">What I'm focused on at the moment. Not everything, just this month.</p>
+      <p class="stamp mono">
+        updated <time datetime={now.updated}>{longDate(now.updated)}</time>
+        {doc.stale && <span class="stale"> · it's been a while, so this may be out of date</span>}
+      </p>
+    </header>
+
+    {now.sections.map((sec, i) => (
+      <section class="block rise" style={`animation-delay: ${0.05 * (i + 1)}s`}>
+        <div class="section-header">
+          <span class="hash" aria-hidden="true">##</span>
+          <h2>{sec.title}</h2>
+          <span class="rule" aria-hidden="true"></span>
+        </div>
+        <ul class="items">
+          {sec.items.map((it) => <li set:html={inlineToHtml(it)} />)}
+        </ul>
+      </section>
+    ))}
+
+    <section class="block rise" style={`animation-delay: ${0.05 * (now.sections.length + 1)}s`}>
+      <div class="section-header">
+        <span class="hash" aria-hidden="true">##</span>
+        <h2>Lately</h2>
+        <span class="rule" aria-hidden="true"></span>
+      </div>
+      <p class="auto mono">filled in by the build, from the blog feed and GitHub</p>
+      <ul class="lately mono">
+        {post && (
+          <li>
+            <span class="k">latest post</span>
+            <a href={new URL(post.url).pathname}>{post.title}</a>
+            {post.published && <span class="d">{shortDate(post.published)}</span>}
+          </li>
+        )}
+        {doc.lately.recent_pushes.map((p) => (
+          <li>
+            <span class="k">pushed to</span>
+            <a href={`/projects/${p.project}/`}>{p.project}</a>
+            <span class="d">{shortDate(p.pushed_at)}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <p class="colophon">
+      This is a <a href="https://nownownow.com/about">now page</a>. It's also JSON, at
+      <a href="/api/v1/now.json"><code>/api/v1/now.json</code></a>.
+    </p>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .now {
+    padding-top: 3.5rem;
+    max-width: 760px;
+  }
+
+  .now-hero {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0.5rem;
+  }
+
+  .prompt {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .prompt .user { color: var(--accent); }
+  .prompt .at { color: var(--text-faint); }
+  .prompt .host { color: var(--text); }
+  .prompt .path { color: var(--text-faint); margin-right: 0.6em; }
+
+  h1 {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.75rem;
+  }
+
+  .lede {
+    color: var(--text);
+    font-size: 1.1rem;
+    max-width: 60ch;
+  }
+
+  .stamp {
+    color: var(--text-faint);
+    font-size: 0.78rem;
+    margin-top: 0.8rem;
+  }
+
+  .stamp time { color: var(--text-dim); }
+  .stale { color: var(--accent); }
+
+  .items {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    max-width: 68ch;
+  }
+
+  .items li {
+    position: relative;
+    padding-left: 1.1rem;
+    color: var(--text-dim);
+    font-size: 0.97rem;
+    line-height: 1.7;
+  }
+
+  .items li::before {
+    content: "›";
+    position: absolute;
+    left: 0.1rem;
+    color: var(--accent);
+    font-family: var(--mono);
+  }
+
+  .items li :global(strong) { color: var(--text); font-weight: 600; }
+
+  .items li :global(code) {
+    font-family: var(--mono);
+    font-size: 0.85em;
+    color: var(--accent);
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 0.05em 0.35em;
+  }
+
+  .auto {
+    color: var(--text-faint);
+    font-size: 0.74rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .lately {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-size: 0.84rem;
+  }
+
+  .lately li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.2rem 0.7rem;
+  }
+
+  .lately .k {
+    color: var(--text-faint);
+    min-width: 6.5rem;
+  }
+
+  .lately .d { color: var(--text-faint); font-size: 0.76rem; }
+
+  .colophon {
+    margin-top: 2.5rem;
+    color: var(--text-faint);
+    font-size: 0.85rem;
+  }
+
+  .colophon code { font-family: var(--mono); font-size: 0.9em; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rise { animation: none; }
+  }
+</style>

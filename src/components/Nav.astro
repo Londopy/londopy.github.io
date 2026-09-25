@@ -1,6 +1,6 @@
 ---
 interface Props {
-  active?: "home" | "about" | "contact" | "api";
+  active?: "home" | "about" | "contact" | "api" | "now" | "resume";
 }
 
 const { active = "home" } = Astro.props;
@@ -15,7 +15,7 @@ const { active = "home" } = Astro.props;
       <div class="links">
         <a href="/" class:list={["navlink", { active: active === "home" }]}>projects</a>
         <a href="/blog/" class="navlink">blog</a>
-        <a href="/api/" class:list={["navlink", "nav-api", { active: active === "api" }]}>api</a>
+        <a href="/api/" class:list={["navlink", { active: active === "api" }]}>api</a>
         <a href="/about/" class:list={["navlink", { active: active === "about" }]}>about</a>
         <a href="/contact/" class:list={["navlink", { active: active === "contact" }]}>contact</a>
         <a href="https://github.com/Londopy" class="navlink">github ↗</a>
@@ -26,6 +26,13 @@ const { active = "home" } = Astro.props;
         <button class="ts-dot slate" type="button" data-theme-set="slate" title="Slate blue" aria-label="Slate blue theme"></button>
         <button class="ts-dot terracotta" type="button" data-theme-set="terracotta" title="Terracotta" aria-label="Terracotta theme"></button>
       </div>
+      <button class="palette-btn mono" type="button" data-palette-open aria-label="Search the site" title="Search — press / or Ctrl K">
+        <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true">
+          <circle cx="6.8" cy="6.8" r="4.6" fill="none" stroke="currentColor" stroke-width="1.7"></circle>
+          <path d="M10.4 10.4 14.2 14.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path>
+        </svg>
+        <kbd>/</kbd>
+      </button>
     </div>
   </div>
 </nav>
@@ -122,9 +129,44 @@ const { active = "home" } = Astro.props;
     box-shadow: 0 0 0 2px var(--bg);
   }
 
-  /* small screens: the brand and theme dots share the top row and the links
-     get a row of their own, so nothing runs past the edge of a phone */
-  @media (max-width: 560px) {
+  /* opens the command palette (CommandPalette.astro) */
+  .palette-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    background: none;
+    border: 1px solid var(--border-bright);
+    border-radius: 5px;
+    padding: 0.22rem 0.42rem;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .palette-btn:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .palette-btn kbd {
+    font: inherit;
+    line-height: 1.25;
+    color: var(--text-faint);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 0 0.28rem;
+  }
+
+  /* touch screens have no "/" key to hint at */
+  @media (hover: none) {
+    .palette-btn kbd { display: none; }
+  }
+
+  /* narrower than the one-row nav needs (~740px): the brand, theme dots and
+     search share the top row and the links get a row of their own, so
+     nothing runs past the edge on tablets or phones */
+  @media (max-width: 760px) {
     .inner {
       flex-wrap: wrap;
       height: auto;
@@ -136,20 +178,24 @@ const { active = "home" } = Astro.props;
     .right { display: contents; }
     .theme-switch { margin-left: auto; padding-left: 0; border-left: 0; gap: 0.35rem; }
     .ts-label { display: none; }
+    /* one row of links that scrolls sideways when it can't fit, with a fade
+       on the right edge while there's more to see (set by the script) */
     .links {
       order: 1;
       flex-basis: 100%;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
       gap: 0.1rem;
       margin-left: -0.45rem;
     }
-    .navlink { padding: 0.35rem 0.45rem; }
-  }
-
-  /* on the narrowest phones six links need a third row; the API is in the
-     footer, so it gives way and the nav stays two rows */
-  @media (max-width: 440px) {
-    .nav-api { display: none; }
+    .links::-webkit-scrollbar { display: none; }
+    .links.scrolls:not(.at-end) {
+      -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent);
+      mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent);
+    }
+    .navlink { padding: 0.35rem 0.45rem; flex: none; white-space: nowrap; }
+    .palette-btn { margin-left: 0.5rem; }
   }
 </style>
 
@@ -163,6 +209,8 @@ const { active = "home" } = Astro.props;
         d.classList.toggle("active", (d as HTMLElement).dataset.themeSet === current())
       );
     mark();
+    // the command palette can switch the theme too
+    document.addEventListener("theme:change", mark);
     dots.forEach((d) =>
       d.addEventListener("click", () => {
         const name = (d as HTMLElement).dataset.themeSet || "amber";
@@ -175,5 +223,25 @@ const { active = "home" } = Astro.props;
         mark();
       })
     );
+  })();
+
+  // narrow screens: the link row scrolls sideways. Fade its right edge while
+  // there's more to scroll to, and bring the current page's link into view.
+  (() => {
+    const links = document.querySelector<HTMLElement>(".topnav .links");
+    if (!links) return;
+    const fit = () => {
+      const scrolls = links.scrollWidth > links.clientWidth + 1;
+      links.classList.toggle("scrolls", scrolls);
+      links.classList.toggle("at-end", links.scrollLeft + links.clientWidth >= links.scrollWidth - 2);
+    };
+    const active = links.querySelector<HTMLElement>(".active");
+    if (active && active.offsetLeft + active.offsetWidth > links.clientWidth) {
+      links.scrollLeft = active.offsetLeft - links.clientWidth / 2 + active.offsetWidth / 2;
+    }
+    fit();
+    links.addEventListener("scroll", fit, { passive: true });
+    addEventListener("resize", fit);
+    document.fonts?.ready.then(fit);
   })();
 </script>
