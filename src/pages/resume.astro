@@ -69,16 +69,18 @@ const jsonLd = {
         <div>
           <h1>{profile.name}</h1>
           <p class="r-headline">{resume.headline}</p>
+          {OPEN_TO_WORK && <p class="r-open mono">{OPEN_TO_WORK_TEXT}</p>}
         </div>
         <ul class="r-contact mono">
           <li><a href="https://londopy.github.io/">londopy.github.io</a></li>
+          <li><a href="https://londopy.github.io/blog/">londopy.github.io/blog</a></li>
           <li><a href={profile.links.github}>{bare(profile.links.github)}</a></li>
           <li><a href="https://londopy.github.io/contact/">londopy.github.io/contact</a></li>
           <li>discord {profile.contact.discord}</li>
+          <li>irc {profile.contact.irc.nick} @ {profile.contact.irc.network}</li>
         </ul>
       </header>
 
-      {OPEN_TO_WORK && <p class="r-open mono">{OPEN_TO_WORK_TEXT}</p>}
       <p class="r-summary">{resume.summary}</p>
 
       <section class="r-sec">
@@ -237,7 +239,7 @@ const jsonLd = {
 
   .r-open {
     display: inline-block;
-    margin-top: 1rem;
+    margin-top: 0.75rem;
     font-size: 0.74rem;
     color: var(--accent);
     border: 1px solid rgba(var(--accent-rgb), 0.35);
@@ -360,7 +362,7 @@ const jsonLd = {
 
     h1 { font-size: 20pt; }
     .r-headline { color: #333; font-size: 9.5pt; }
-    .r-contact { font-size: 8pt; line-height: 1.45; }
+    .r-contact { font-size: 8pt; line-height: 1.45; color: #444; }
     .r-contact a, .meta, .meta a, .stack, .note { color: #444; }
     .stars { color: #444; }
 
