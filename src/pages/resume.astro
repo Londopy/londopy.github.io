@@ -16,6 +16,25 @@ const projects = resume.projects.map((r) => {
   return { ...r, p };
 });
 
+// monthly PyPI downloads, from the pepy badges the profile README refreshes
+// nightly; shown for the packages people really install (DOWNLOADS_MIN+)
+const DOWNLOADS_MIN = 200;
+const downloads = new Map<string, number>();
+await Promise.all(
+  projects.map(async ({ p }) => {
+    const pkg = p.demo?.includes("pypi.org") ? p.demo.split("/project/")[1]?.replace(/\/+$/, "") : null;
+    if (!pkg) return;
+    try {
+      const res = await fetch(`https://raw.githubusercontent.com/Londopy/Londopy/main/badges/${pkg}.json`);
+      if (!res.ok) return;
+      const m = String((await res.json()).message ?? "").match(/^([\d.]+)(k?)\/month$/i);
+      if (m) downloads.set(p.name, Math.round(parseFloat(m[1]) * (m[2] ? 1000 : 1)));
+    } catch {
+      /* offline: no count this build */
+    }
+  })
+);
+
 // the most-starred projects my merged pull requests landed in
 const topMerged = [
   ...new Map(
@@ -152,7 +171,7 @@ const jsonLd = {
                 <span class="stack">· {stack}</span>
               </span>
               <span class="meta">
-                <a href={p.repo}>{bare(p.repo)}</a>{p.stars >= 10 && <span class="stars"> · ★ {p.stars}</span>}
+                <a href={p.repo}>{bare(p.repo)}</a>{p.stars >= 10 && <span class="stars"> · ★ {p.stars}</span>}{(downloads.get(p.name) ?? 0) >= DOWNLOADS_MIN && <span class="dl"> · {downloads.get(p.name)}/mo on PyPI</span>}
               </span>
             </div>
             <ul class="pts">{points.map((pt) => <li>{pt}</li>)}</ul>

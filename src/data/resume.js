@@ -82,11 +82,11 @@ export const resume = {
       ],
     },
     {
-      name: "ropesim",
-      what: "Climbing-rope physics engine",
-      stack: "Rust, Python",
+      name: "patchnotes",
+      what: "Changelog parser and CI check",
+      stack: "Python",
       points: [
-        "UIAA / EN 892 impact-force modeling: a damped-spring RK4 integrator in Rust, bound to Python through PyO3 and Maturin, with a CLI and a PySide6 3D GUI.",
+        "Parses, queries and validates Keep a Changelog files in Markdown and YAML, and fails the build when a release note is malformed or missing. Typed, with zero dependencies.",
       ],
     },
   ],
