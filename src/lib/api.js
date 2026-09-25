@@ -264,6 +264,7 @@ export const PAGES = [
   { title: "Projects", path: "/", subtitle: "The full index, grouped by domain", keywords: ["home", "index", "work", "portfolio"] },
   { title: "About", path: "/about/", subtitle: "The longer version of who's behind the projects", keywords: ["bio", "me", "who"] },
   { title: "Now", path: "/now/", subtitle: "What I'm focused on this month", keywords: ["current", "doing", "status", "update"] },
+  { title: "Résumé", path: "/resume/", subtitle: "One page, prints to PDF", keywords: ["resume", "cv", "hire", "internship", "education", "experience"] },
   { title: "Contact", path: "/contact/", subtitle: "Send a message, PGP optional", keywords: ["email", "message", "hire", "pgp", "reach"] },
   { title: "Blog", path: "/blog/", subtitle: "Notes on security, systems, radio, and building things", keywords: ["posts", "writing", "articles"] },
   { title: "API", path: "/api/", subtitle: "Everything here as JSON, with an OpenAPI spec", keywords: ["json", "openapi", "developer", "endpoints"] },

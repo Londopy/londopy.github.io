@@ -221,8 +221,8 @@
 
   // if the index can't be fetched, the main pages still work
   const FALLBACK: Item[] = [
-    ["Projects", "/"], ["About", "/about/"], ["Now", "/now/"], ["Contact", "/contact/"],
-    ["Blog", "/blog/"], ["API", "/api/"],
+    ["Projects", "/"], ["About", "/about/"], ["Now", "/now/"], ["Résumé", "/resume/"],
+    ["Contact", "/contact/"], ["Blog", "/blog/"], ["API", "/api/"],
   ].map(([title, path]) => ({ kind: "page", title, subtitle: "", path, keywords: [] }));
 
   const ORDER: Record<string, number> = { page: 0, project: 1, domain: 2, post: 3, theme: 4 };

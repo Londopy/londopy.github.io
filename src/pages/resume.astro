@@ -1,0 +1,397 @@
+---
+import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import { resume } from "../data/resume.js";
+import { profile, OPEN_TO_WORK, OPEN_TO_WORK_TEXT } from "../data/profile.js";
+import { getSnapshot } from "../lib/api.js";
+
+const s = await getSnapshot();
+
+// the projects the résumé names, with live stars and links from projects.json
+const projects = resume.projects.map((r) => {
+  const p = s.projects.find((q) => q.name === r.name);
+  if (!p) throw new Error(`resume.js lists "${r.name}", which isn't in projects.json`);
+  return { ...r, p };
+});
+
+// the most-starred projects my merged pull requests landed in
+const topMerged = [
+  ...new Map(
+    s.pulls
+      .filter((p) => p.state === "merged")
+      .sort((a, b) => (b.repoStars ?? 0) - (a.repoStars ?? 0))
+      .map((p) => [p.repo, p])
+  ).keys(),
+].slice(0, 6);
+
+const awards = s.projects
+  .filter((p) => p.award)
+  .map((p) => {
+    const a = p.award;
+    const medal = a.medal[0].toUpperCase() + a.medal.slice(1);
+    return `${medal} (${a.place})${a.track ? `, ${a.track} track` : ""}, ${a.event}, for ${p.name}`;
+  });
+
+const bare = (url: string) => url.replace(/^https?:\/\//, "").replace(/\/$/, "");
+const updated = new Date(s.generated).toLocaleDateString("en-US", {
+  month: "long", day: "numeric", year: "numeric", timeZone: "UTC",
+});
+
+const title = "Résumé — London C.";
+const description =
+  "London C.'s résumé: engineering student at Cal Poly heading into OT / XIoT security. Projects, open source, awards and skills, on one printable page.";
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: profile.name,
+  alternateName: profile.handle,
+  url: "https://londopy.github.io/resume/",
+  sameAs: [profile.links.github],
+  affiliation: { "@type": "CollegeOrUniversity", name: "California Polytechnic State University, San Luis Obispo" },
+  hasCredential: profile.certifications.map((name) => ({ "@type": "EducationalOccupationalCredential", name })),
+  award: awards,
+};
+---
+
+<Base title={title} description={description} jsonLd={jsonLd}>
+  <Nav active="resume" />
+
+  <main class="container resume">
+    <div class="toolbar mono">
+      <span class="crumb"><a href="/">~</a>/resume</span>
+      <span class="upd">updated {updated}</span>
+      <button class="btn btn-accent" type="button" id="print-resume">print / save as PDF</button>
+    </div>
+
+    <article class="sheet rise">
+      <header class="r-head">
+        <div>
+          <h1>{profile.name}</h1>
+          <p class="r-headline">{resume.headline}</p>
+        </div>
+        <ul class="r-contact mono">
+          <li><a href="https://londopy.github.io/">londopy.github.io</a></li>
+          <li><a href={profile.links.github}>{bare(profile.links.github)}</a></li>
+          <li><a href="https://londopy.github.io/contact/">londopy.github.io/contact</a></li>
+          <li>discord {profile.contact.discord}</li>
+        </ul>
+      </header>
+
+      {OPEN_TO_WORK && <p class="r-open mono">{OPEN_TO_WORK_TEXT}</p>}
+      <p class="r-summary">{resume.summary}</p>
+
+      <section class="r-sec">
+        <h2>Education</h2>
+        {resume.education.map((e) => (
+          <div class="entry">
+            <div class="row">
+              <span><strong>{e.school}</strong> · {e.degree}</span>
+              <span class="meta">{e.when}</span>
+            </div>
+            <p class="note">{e.focus}. {e.minors}.</p>
+          </div>
+        ))}
+      </section>
+
+      <section class="r-sec">
+        <h2>Experience</h2>
+        {resume.experience.map((x) => (
+          <div class="entry">
+            <div class="row">
+              <span><strong>{x.role}</strong> · {x.org}</span>
+              {x.when && <span class="meta">{x.when}</span>}
+            </div>
+            <ul class="pts">{x.points.map((pt) => <li>{pt}</li>)}</ul>
+          </div>
+        ))}
+      </section>
+
+      <section class="r-sec">
+        <h2>Projects</h2>
+        {projects.map(({ p, what, stack, points }) => (
+          <div class="entry">
+            <div class="row">
+              <span>
+                <a class="pname" href={`/projects/${p.name}/`}><strong>{p.name}</strong></a> · {what}
+                <span class="stack">· {stack}</span>
+              </span>
+              <span class="meta">
+                <a href={p.repo}>{bare(p.repo)}</a>{p.stars >= 10 && <span class="stars"> · ★ {p.stars}</span>}
+              </span>
+            </div>
+            <ul class="pts">{points.map((pt) => <li>{pt}</li>)}</ul>
+          </div>
+        ))}
+      </section>
+
+      <section class="r-sec">
+        <h2>Open source</h2>
+        <p class="para">
+          {s.prStats.count} pull requests to other people's projects, {s.prStats.merged} merged,
+          including {topMerged.join(", ")}. Mostly documentation and link fixes, with a few code changes.
+        </p>
+      </section>
+
+      <section class="r-sec">
+        <h2>Awards &amp; certifications</h2>
+        <ul class="pts">
+          {awards.map((a) => <li>{a}</li>)}
+          <li>{profile.certifications.join(" · ")}</li>
+        </ul>
+      </section>
+
+      <section class="r-sec">
+        <h2>Skills</h2>
+        <dl class="skills">
+          {resume.skills.map(([k, v]) => (
+            <div class="skill"><dt class="mono">{k}</dt><dd>{v}</dd></div>
+          ))}
+        </dl>
+      </section>
+    </article>
+
+    <p class="aside mono">
+      The full index is on the <a href="/">projects page</a>; to get in touch, use the <a href="/contact/">contact form</a>.
+    </p>
+  </main>
+
+  <Footer />
+</Base>
+
+<style>
+  .resume {
+    padding-top: 2.5rem;
+    max-width: 860px;
+  }
+
+  .toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+    color: var(--text-faint);
+  }
+
+  .crumb { color: var(--text-dim); }
+  .upd { flex: 1; }
+
+  .btn {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--accent);
+    background: none;
+    border: 1px solid rgba(var(--accent-rgb), 0.4);
+    border-radius: 4px;
+    padding: 0.32rem 0.75rem;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+
+  .btn:hover { background: var(--accent-dim); border-color: var(--accent); }
+
+  .sheet {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem 2.2rem 2.2rem;
+    color: var(--text-dim);
+    font-size: 0.93rem;
+    line-height: 1.55;
+  }
+
+  .r-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.6rem 2rem;
+  }
+
+  h1 {
+    font-size: clamp(1.7rem, 4vw, 2.2rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    line-height: 1.15;
+  }
+
+  .r-headline {
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+  }
+
+  .r-contact {
+    list-style: none;
+    font-size: 0.78rem;
+    text-align: right;
+    line-height: 1.6;
+  }
+
+  .r-contact a { color: var(--text-dim); }
+  .r-contact a:hover { color: var(--accent); }
+
+  .r-open {
+    display: inline-block;
+    margin-top: 1rem;
+    font-size: 0.74rem;
+    color: var(--accent);
+    border: 1px solid rgba(var(--accent-rgb), 0.35);
+    border-radius: 999px;
+    padding: 0.1rem 0.65rem;
+  }
+
+  .r-summary {
+    margin-top: 0.8rem;
+    color: var(--text);
+    max-width: 70ch;
+  }
+
+  .r-sec { margin-top: 1.4rem; }
+
+  .r-sec h2 {
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.3rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .entry + .entry { margin-top: 0.65rem; }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.1rem 1rem;
+  }
+
+  .row strong { color: var(--text); font-weight: 600; }
+  .pname:hover { text-decoration: none; }
+  .pname:hover strong { color: var(--accent); }
+  .stack { color: var(--text-faint); }
+
+  .meta {
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    color: var(--text-faint);
+  }
+
+  .meta a { color: var(--text-faint); }
+  .meta a:hover { color: var(--accent); }
+  .stars { color: var(--amber); }
+
+  .note { color: var(--text-dim); margin-top: 0.1rem; }
+
+  .pts {
+    margin: 0.2rem 0 0 1.1rem;
+  }
+
+  .pts li { margin-top: 0.12rem; }
+  .pts li::marker { color: var(--text-faint); }
+
+  .para { max-width: 75ch; }
+
+  .skills { display: grid; gap: 0.25rem; }
+
+  .skill {
+    display: grid;
+    grid-template-columns: 7.5rem 1fr;
+    gap: 0.8rem;
+  }
+
+  .skill dt { color: var(--text); font-size: 0.8rem; padding-top: 0.08rem; }
+
+  .aside {
+    margin-top: 1.2rem;
+    font-size: 0.78rem;
+    color: var(--text-faint);
+  }
+
+  @media (max-width: 600px) {
+    .sheet { padding: 1.3rem 1.1rem 1.5rem; }
+    .r-contact { text-align: left; }
+    .skill { grid-template-columns: 1fr; gap: 0; }
+  }
+
+  /* ---------- the printed page: US Letter, black on white, one page ---------- */
+  @media print {
+    @page {
+      size: letter;
+      margin: 0.4in 0.5in;
+    }
+
+    .toolbar,
+    .aside {
+      display: none !important;
+    }
+
+    .resume {
+      padding: 0;
+      max-width: none;
+    }
+
+    .sheet {
+      background: none;
+      border: 0;
+      border-radius: 0;
+      padding: 0;
+      color: #1a1a1a;
+      font-size: 9pt;
+      line-height: 1.34;
+    }
+
+    /* these override the screen colours rule for rule (same specificity,
+       later in the sheet), so nothing prints in the dark theme's pale greys */
+    .sheet a { color: inherit; text-decoration: none; }
+    .row strong,
+    .skill dt,
+    .r-summary,
+    h1 { color: #000; }
+    .para { max-width: none; }
+
+    h1 { font-size: 20pt; }
+    .r-headline { color: #333; font-size: 9.5pt; }
+    .r-contact { font-size: 8pt; line-height: 1.45; }
+    .r-contact a, .meta, .meta a, .stack, .note { color: #444; }
+    .stars { color: #444; }
+
+    .r-open {
+      color: #000;
+      border-color: #888;
+      font-size: 7.8pt;
+      margin-top: 0.5rem;
+    }
+
+    .r-summary { margin-top: 0.45rem; max-width: none; }
+    .r-sec { margin-top: 0.62rem; }
+
+    .r-sec h2 {
+      color: #000;
+      font-size: 8.4pt;
+      border-bottom: 0.6pt solid #999;
+      padding-bottom: 0.15rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .entry + .entry { margin-top: 0.38rem; }
+    .entry { break-inside: avoid; }
+    .meta { font-size: 7.8pt; }
+    .pts { margin-top: 0.08rem; }
+    .pts li { margin-top: 0.04rem; }
+    .skill { grid-template-columns: 6.6rem 1fr; gap: 0.5rem; }
+    .skill dt { color: #000; font-size: 8pt; }
+  }
+</style>
+
+<script>
+  document.getElementById("print-resume")?.addEventListener("click", () => window.print());
+</script>

@@ -98,7 +98,7 @@ export const projectDocs = {
 
 <h2><span class="hash">##</span> How it's built</h2>
 <ul>
-<li><strong>Flask</strong> backend, server-rendered Jinja pages, a JSON API under <code>/api</code>, and SQLite — with 159 tests across every route, permission rule, and the overdue math.</li>
+<li><strong>Flask</strong> backend, server-rendered Jinja pages, a JSON API under <code>/api</code>, and SQLite — with 600+ tests across every route, permission rule, and the overdue math.</li>
 <li>Free-text ETAs like "30 min" are parsed through <a href="https://github.com/Londopy/timefuzz">timefuzz</a> behind a confidence floor — a safety timer set from a bad guess is worse than no timer at all.</li>
 <li>Severity can be set by running <strong>START triage</strong> through <a href="https://pypi.org/project/vitalscore/">vitalscore</a> instead of a guess.</li>
 <li>Staffing is derived from responder votes, with the most cautious signal winning — an optimistic report can never suppress a call for help.</li>

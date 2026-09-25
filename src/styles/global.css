@@ -212,3 +212,31 @@ h1, h2, h3, .mono {
     animation: none;
   }
 }
+
+/* ---------- print: paper wants ink, not chrome ----------
+   Drop the nav, footer, animated contours, cursor glow, intro and search
+   palette, and print on white. Pages with a print layout of their own
+   (the résumé) build on this. */
+@media print {
+  .topnav,
+  footer,
+  .topo,
+  #cursor-orb,
+  #binary-intro,
+  #cmdk {
+    display: none !important;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+  }
+
+  body {
+    color: #111;
+  }
+
+  .rise {
+    animation: none !important;
+  }
+}
