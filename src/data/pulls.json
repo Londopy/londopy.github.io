@@ -1,9 +1,9 @@
 {
   "meta": {
-    "generated": "2026-09-25",
-    "count": 73,
-    "repos": 61,
-    "merged": 17
+    "generated": "2026-09-29",
+    "count": 72,
+    "repos": 60,
+    "merged": 21
   },
   "pulls": [
     {
@@ -127,10 +127,10 @@
       "repo": "zmister2016/MrDoc",
       "number": 207,
       "title": "Fix typos in README",
-      "state": "open",
+      "state": "merged",
       "url": "https://github.com/zmister2016/MrDoc/pull/207",
       "date": "2026-09-21",
-      "repoStars": 0
+      "repoStars": 3239
     },
     {
       "repo": "jlesage/docker-firefox",
@@ -280,10 +280,10 @@
       "repo": "xming521/WeClone",
       "number": 232,
       "title": "Fix LangBot docs link in README",
-      "state": "open",
+      "state": "merged",
       "url": "https://github.com/xming521/WeClone/pull/232",
       "date": "2026-09-20",
-      "repoStars": 0
+      "repoStars": 18272
     },
     {
       "repo": "anthropics/financial-services",
@@ -457,15 +457,6 @@
       "repoStars": 0
     },
     {
-      "repo": "Max-Eee/NeoPass",
-      "number": 85,
-      "title": "Fix typo in README",
-      "state": "open",
-      "url": "https://github.com/Max-Eee/NeoPass/pull/85",
-      "date": "2026-09-19",
-      "repoStars": 0
-    },
-    {
       "repo": "Zeyi-Lin/HivisionIDPhotos",
       "number": 290,
       "title": "Fix heading typo in README",
@@ -505,10 +496,10 @@
       "repo": "syl20bnr/spacemacs",
       "number": 17324,
       "title": "Fix typo in README",
-      "state": "open",
+      "state": "merged",
       "url": "https://github.com/syl20bnr/spacemacs/pull/17324",
       "date": "2026-09-19",
-      "repoStars": 0
+      "repoStars": 24565
     },
     {
       "repo": "copy/v86",
@@ -532,10 +523,10 @@
       "repo": "sherlock-project/sherlock",
       "number": 3143,
       "title": "Fix logo link to point at sherlockproject.xyz",
-      "state": "open",
+      "state": "merged",
       "url": "https://github.com/sherlock-project/sherlock/pull/3143",
       "date": "2026-09-19",
-      "repoStars": 0
+      "repoStars": 93002
     },
     {
       "repo": "deepseek-ai/DeepSeek-V3",

@@ -280,21 +280,21 @@ artifact python { name = "hasher" }</code></pre>
 
   nxtls: `
 <h2><span class="hash">##</span> What it is</h2>
-<p><strong>nxtls</strong> is cryptography and a TLS 1.3 client written entirely in <a href="/projects/nexium/">Nexium</a>, my own language — no C libraries, no <code>@cImport</code>, and not one <code>unsafe</code> block, so a reviewer can read it end to end. It exists so Nexium programs can verify signatures and speak HTTPS without handing their security to a C library. Its first real user is a Discord helper I wrote for an amateur-radio club, which checks the Ed25519 signature on every request with it and talks to Discord through its TLS client.</p>
+<p><strong>nxtls</strong> is cryptography and a TLS 1.3 client written entirely in <a href="/projects/nexium/">Nexium</a>, my own language — no C libraries, no <code>@cImport</code>, and not one <code>unsafe</code> block, so a reviewer can read it end to end. It exists so Nexium programs can verify signatures and speak HTTPS without handing their security to a C library. Its first real user is a Discord helper I wrote for an amateur-radio club, which checks the Ed25519 signature on every request with it and talks to Discord through its TLS client; <a href="/projects/nexium-discord/">nexium-discord</a>, my Discord bot library for Nexium, makes its connections with it too.</p>
 
 <h2><span class="hash">##</span> What's in it</h2>
 <ul>
-<li><strong>Primitives</strong> — SHA-256, SHA-384 and SHA-512, HMAC with a constant-time <code>verify</code>, HKDF with TLS 1.3's <code>expand_label</code>, and X25519 and ChaCha20-Poly1305 in constant time.</li>
+<li><strong>Primitives</strong> — SHA-256, SHA-384 and SHA-512, HMAC with a constant-time <code>verify</code>, HKDF with TLS 1.3's <code>expand_label</code>, X25519 and ChaCha20-Poly1305 in constant time, and secure randomness from the operating system on every platform, Windows included.</li>
 <li><strong>Signature verification</strong> — Ed25519 (strict in the ways libsodium is), ECDSA on P-256 and P-384, and RSA PKCS #1 v1.5 and PSS, on top of a strict DER reader and a small Montgomery bignum.</li>
-<li><strong>X.509</strong> — path building across cross-signed CAs, validity periods, CA constraints and path lengths, key usage, and host names with wildcards.</li>
+<li><strong>X.509</strong> — path building across cross-signed CAs, validity periods, CA constraints and path lengths, key usage, host names with wildcards, and IPv4 and IPv6 addresses.</li>
 <li><strong>TLS 1.3</strong> — a client with ChaCha20-Poly1305 and X25519 that handles HelloRetryRequest, KeyUpdate, and servers that ask for a client certificate. The protocol core is bytes in, bytes out; a separate type runs it over TCP.</li>
 </ul>
 
 <h2><span class="hash">##</span> How it's tested</h2>
-<p>Every module is checked against its published vectors — FIPS 180-4 and RFCs 4231, 5869, 7748, 8032, 8439 and 8448 — and against Python's <code>cryptography</code> package, which a generator script uses as an oracle while it re-derives every constant table from its definition. The X.509 code is judged on 68 chains and 13 malformed certificates by <code>cryptography</code>'s own path validation. The TLS client replays 35 recorded exchanges byte for byte, runs against OpenSSL 3's <code>s_server</code> in twelve configurations — including the ones it must refuse: the wrong host, an expired certificate, TLS 1.2 — and connects live to Discord, GitHub, Google and Cloudflare. CI runs all of it on Linux, Windows and macOS, and fails any module that grows an <code>unsafe</code> block, a mutable global, or a foreign call.</p>
+<p>Every module is checked against its published vectors — FIPS 180-4 and RFCs 4231, 5869, 7748, 8032, 8439 and 8448 — and against Python's <code>cryptography</code> package, which a generator script uses as an oracle while it re-derives every constant table from its definition. The X.509 code is judged on 80 chains and 14 malformed certificates by <code>cryptography</code>'s own path validation. The TLS client replays 36 recorded exchanges byte for byte, runs against OpenSSL 3's <code>s_server</code> in twelve configurations — including the ones it must refuse: the wrong host, an expired certificate, TLS 1.2 — and connects live to Discord, GitHub, Google and Cloudflare, by name and by IP address. CI runs all of it on Linux, Windows and macOS, and fails any module that grows an <code>unsafe</code> block, a mutable global, or a foreign call.</p>
 
 <h2><span class="hash">##</span> The honest part</h2>
-<p>It's new, and nobody who knows TLS has reviewed it yet — the README says so up front, and that review is the next item on the plan. It also won't fall back to a weaker source of randomness: on Windows, where it has no <code>/dev/urandom</code>, <code>tls.connect</code> says so and stops. Until that review happens, treat it as a careful reading of the RFCs, not something to trust with anything that matters.</p>
+<p>It's new, and nobody who knows TLS has reviewed it yet — the README says so up front, and that review is the next item on the plan. It doesn't check certificates for revocation yet: no OCSP, no CRLs. Until that review happens, treat it as a careful reading of the RFCs, not something to trust with anything that matters.</p>
 `,
 
   "the-long-fork": `
@@ -309,5 +309,23 @@ artifact python { name = "hasher" }</code></pre>
 
 <h2><span class="hash">##</span> Join it</h2>
 <p><a href="https://londopy.github.io/the-long-fork/tip/">Fork the tip</a>, add your line, and commit it as <code>link &lt;depth&gt;: &lt;your-username&gt;</code>. There's no pull request — your fork <em>is</em> your link. One link per human, and don't delete your fork afterwards.</p>
+`,
+
+  "nexium-discord": `
+<h2><span class="hash">##</span> What it is</h2>
+<p><strong>nexium-discord</strong> is a Discord bot library for <a href="/projects/nexium/">Nexium</a>, written in Nexium over its standard library's <code>std.http</code> and <code>std.websocket</code>, with TLS from <a href="/projects/nxtls/">nxtls</a>. A bot is a loop over <code>bot.next()</code>: the events it wants come back as values to <code>match</code> on, and everything the gateway needs to stay connected (identifying, heartbeats, resuming a dropped session, reconnecting with growing waits) happens inside. Answers go out through REST calls on the same <code>bot</code>, with Discord's rate limits waited out.</p>
+
+<h2><span class="hash">##</span> What's in it</h2>
+<ul>
+<li><strong>The gateway</strong>: Discord's Gateway protocol (v10) as a state machine with no socket in it, so tests can run whole sessions on made-up clocks: heartbeats, resumes, Reconnect and Invalid Session, a connection that stops acknowledging heartbeats, and the close codes no retry fixes.</li>
+<li><strong>Messages and interactions</strong>: messages built from parts (text, embeds, buttons, select menus, forms) with Discord's limits applied once, when they're built; slash commands with options, subcommands and autocomplete; and the answers to all of them.</li>
+<li><strong>TLS</strong>: nxtls over the system's trusted roots, or the platform's own TLS (SChannel) on Windows, which keeps its roots in a store rather than a file.</li>
+</ul>
+
+<h2><span class="hash">##</span> How it's tested</h2>
+<p>A scripted Discord plays through a transport of its own: a gateway session from Hello to a dispatch, a dropped connection resumed at the URL Discord gave, a refused token, a 429 waited out, slash commands registered. CI runs it on Linux, macOS and Windows, and it has been checked live from Linux and Windows, through both SChannel and nxtls. The gateway, message, interaction and command code come from a bot that has run on them since September 2026.</p>
+
+<h2><span class="hash">##</span> Status</h2>
+<p>0.2.0 covers a bot's everyday: messages, slash commands and their answers, buttons, menus, forms and reactions. Not yet: sharding (for bots in more than 2,500 servers), voice, the gateway's zlib compression, and file uploads. It needs Nexium 1.4 or later, and runs on Linux, macOS, the BSDs and Windows.</p>
 `,
 };

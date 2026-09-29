@@ -54,7 +54,7 @@ export const resume = {
       stack: "Nexium",
       points: [
         "SHA-2 through X.509 path validation and a TLS 1.3 client, with no C and no unsafe code.",
-        "Checked against the RFC test vectors, Python's cryptography and OpenSSL 3 in twelve configurations; replays 35 recorded handshakes byte for byte.",
+        "Checked against the RFC test vectors, Python's cryptography and OpenSSL 3 in twelve configurations; replays 36 recorded handshakes byte for byte.",
       ],
     },
     {

@@ -93,6 +93,22 @@
       ]
     },
     {
+      "cluster": "devtools",
+      "name": "nexium-discord",
+      "tagline": "A Discord bot library for Nexium: the gateway, the REST calls a bot makes, and events to match on. Heartbeats, resumes and rate limits are handled inside; TLS comes from nxtls, or from the system on Windows.",
+      "language": "Nexium",
+      "tags": [
+        "discord",
+        "websocket",
+        "nexium"
+      ],
+      "repo": "https://github.com/Londopy/nexium-discord",
+      "demo": null,
+      "page": null,
+      "featured": false,
+      "stars": 1
+    },
+    {
       "cluster": "audio",
       "name": "gesture-synth",
       "tagline": "A chord instrument you play with your hands in front of a camera. MediaPipe hand-tracking drives a synth; loop it and watch the harmony. A monorepo spanning Rust/WASM, Svelte + Three.js, a Tauri app, a Zig DSP kernel, and a Gleam service.",
@@ -251,7 +267,13 @@
         "event": "Reverie Hacks 2026",
         "track": "Software Development",
         "url": "https://youtu.be/MbCTSaONuOM"
-      }
+      },
+      "links": [
+        {
+          "label": "blog post",
+          "url": "https://londopy.github.io/blog/posts/diresq/"
+        }
+      ]
     },
     {
       "cluster": "climbing",
