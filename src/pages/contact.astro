@@ -15,10 +15,12 @@ const ACCESS_KEY = "3ebb2c5a-06db-4542-a8da-9c65f0d8e18f";
 
 // --- optional features, activated by filling in a single public value ---
 
-// Spam captcha. Paste an hCaptcha *site key* (public) to turn it on, and
-// enable hCaptcha in the Web3Forms dashboard so submissions are validated.
-// Empty = honeypot-only (no captcha shown).
-const HCAPTCHA_SITEKEY = "";
+// Spam captcha. The Web3Forms dashboard has hCaptcha switched on for this
+// form, which makes it mandatory: a message without a token is refused
+// ("hCaptcha Token is mandatory for this form"). This is Web3Forms' own free
+// hCaptcha site key (public). Empty it only after turning hCaptcha off in the
+// dashboard, or every message will be refused.
+const HCAPTCHA_SITEKEY = "50b2fe65-b00b-4b9e-ad62-3ba471098be2";
 
 // Self-hosted-integrity crypto: pinned version + SRI hash.
 const OPENPGP_SRC = "https://cdn.jsdelivr.net/npm/openpgp@5.11.3/dist/openpgp.min.js";
@@ -130,7 +132,7 @@ const jsonLd = {
     </p>
   </main>
 
-  {HCAPTCHA_SITEKEY && <script src="https://js.hcaptcha.com/1/api.js" async defer></script>}
+  {HCAPTCHA_SITEKEY && <script src="https://js.hcaptcha.com/1/api.js?recaptchacompat=off" async defer></script>}
 
   <Footer />
 </Base>
@@ -171,6 +173,13 @@ const jsonLd = {
         return;
       }
 
+      // the form requires the captcha; without a token Web3Forms refuses it
+      if (form.querySelector(".h-captcha") && !data["h-captcha-response"]) {
+        status.textContent = "tick the captcha first, then send.";
+        status.className = "status mono err";
+        return;
+      }
+
       // optional end-to-end encryption. if it fails, send NOTHING.
       if (pgpToggle && pgpToggle.checked && PGP_PUBLIC_KEY) {
         status.textContent = "encrypting…";
@@ -202,16 +211,21 @@ const jsonLd = {
           status.textContent = "message sent — I'll get back to you. thanks!";
           status.className = "status mono ok";
           form.reset();
-          if (window.hcaptcha) try { window.hcaptcha.reset(); } catch (_) {}
         } else {
-          status.textContent = "something went wrong — reach me on GitHub instead.";
+          // Web3Forms says why it refused (a bad key, a blocked domain, spam);
+          // show that rather than a shrug, so a failure can be fixed
+          const why = typeof json.message === "string" && json.message ? ` (${json.message})` : "";
+          status.textContent = `something went wrong${why} — reach me on GitHub instead.`;
           status.className = "status mono err";
+          console.warn("web3forms refused the message:", res.status, json.message);
         }
       } catch {
         status.textContent = "network error — please try again, or reach me on GitHub.";
         status.className = "status mono err";
       } finally {
         if (btn) btn.disabled = false;
+        // a captcha token works once, so a retry needs a fresh one
+        if (window.hcaptcha) try { window.hcaptcha.reset(); } catch (_) {}
       }
     });
   }
