@@ -5,9 +5,9 @@ import Footer from "../components/Footer.astro";
 // open-to-work note + PGP key live in src/data/profile.js (shared with the API)
 import { OPEN_TO_WORK, OPEN_TO_WORK_TEXT, PGP_PUBLIC_KEY, PGP_FINGERPRINT } from "../data/profile.js";
 
-const title = "Contact — London C.";
+const title = "Contact — London Chowdhury";
 const description =
-  "Get in touch with London C. — send a message and it lands in my inbox. No account, no login. Optional PGP end-to-end encryption.";
+  "Get in touch with London Chowdhury — send a message and it lands in my inbox. No account, no login. Optional PGP end-to-end encryption.";
 
 // Public Web3Forms access key. Designed to live in client HTML — it only
 // allows submitting this form and never exposes the destination address.
@@ -29,13 +29,13 @@ const OPENPGP_SRI = "sha384-meIGn/s43odkPR2f+TEg/YjO3USCOe6sc/il0iIBsWuV9K8kfAH/
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "ContactPage",
-  name: "Contact — London C.",
-  url: "https://londopy.github.io/contact/",
+  name: "Contact — London Chowdhury",
+  url: "https://londonchowdhury.com/contact/",
   mainEntity: {
     "@type": "Person",
-    name: "London C.",
+    name: "London Chowdhury",
     alternateName: "Londopy",
-    url: "https://londopy.github.io",
+    url: "https://londonchowdhury.com",
     sameAs: ["https://github.com/Londopy"],
   },
 };
@@ -69,8 +69,8 @@ const jsonLd = {
       method="POST"
     >
       <input type="hidden" name="access_key" value={ACCESS_KEY} />
-      <input type="hidden" name="subject" value="New message from londopy.github.io" />
-      <input type="hidden" name="from_name" value="londopy.github.io" />
+      <input type="hidden" name="subject" value="New message from londonchowdhury.com" />
+      <input type="hidden" name="from_name" value="londonchowdhury.com" />
       <!-- honeypot: real people leave this empty; bots fill it and get dropped -->
       <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
@@ -189,7 +189,7 @@ const jsonLd = {
           const key = await openpgp.readKey({ armoredKey: PGP_PUBLIC_KEY });
           const message = await openpgp.createMessage({ text: String(data.message || "") });
           data.message = await openpgp.encrypt({ message, encryptionKeys: key });
-          data.subject = "[PGP encrypted] New message from londopy.github.io";
+          data.subject = "[PGP encrypted] New message from londonchowdhury.com";
         } catch (err) {
           status.textContent = "couldn't encrypt — nothing was sent. try again, or uncheck encryption.";
           status.className = "status mono err";

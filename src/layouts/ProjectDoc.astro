@@ -32,7 +32,7 @@ const awardText = award
 const isPypi = !!demo && demo.includes("pypi.org");
 const isItch = !!demo && demo.includes("itch.io");
 const demoLabel = isPypi ? "View on PyPI ↗" : isItch ? "Play on itch.io ↗" : "Live demo ↗";
-const title = `${name} — London C.`;
+const title = `${name} — London Chowdhury`;
 const ogImage = `/og/${name}.png`;
 const jsonLd = {
   "@context": "https://schema.org",
@@ -44,7 +44,7 @@ const jsonLd = {
   url: new URL(`/projects/${name}/`, Astro.site).href,
   author: {
     "@type": "Person",
-    name: "London C.",
+    name: "London Chowdhury",
     alternateName: "Londopy",
     url: "https://github.com/Londopy",
   },

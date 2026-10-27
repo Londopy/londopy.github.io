@@ -7,9 +7,9 @@ import { ansiToHtml } from "../../lib/ansi.js";
 
 const s = await getSnapshot();
 
-const title = "API — London C.";
+const title = "API — London Chowdhury";
 const description =
-  "Everything on londopy.github.io as JSON: projects and writeups, domains, languages, awards, pull requests, blog posts and stats. Static, read-only, no key, CORS-open, with an OpenAPI 3.1 spec.";
+  "Everything on londonchowdhury.com as JSON: projects and writeups, domains, languages, awards, pull requests, blog posts and stats. Static, read-only, no key, CORS-open, with an OpenAPI 3.1 spec.";
 
 // what "try" fetches first on a templated route
 const DEFAULTS = { name: "nxtls", id: "security", metric: "catalog" };
@@ -80,7 +80,7 @@ const jsonLd = {
   description: DESCRIPTION,
   url: `${SITE}/api/`,
   documentation: `${SITE}/api/openapi.json`,
-  provider: { "@type": "Person", name: "London C.", alternateName: "Londopy", url: SITE },
+  provider: { "@type": "Person", name: "London Chowdhury", alternateName: "Londopy", url: SITE },
 };
 ---
 
@@ -92,7 +92,7 @@ const jsonLd = {
     <header class="api-hero rise">
       <p class="prompt mono" aria-hidden="true">
         <span class="user">londopy</span><span class="at">@</span><span class="host">github</span><span class="path">:~$</span>
-        curl -s londopy.github.io/api/v1/index.json | jq
+        curl -s londonchowdhury.com/api/v1/index.json | jq
       </p>
       <h1>API</h1>
       <p class="lede">

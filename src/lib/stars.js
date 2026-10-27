@@ -14,7 +14,7 @@ export async function getMetaMap() {
   if (cache) return cache;
   const map = {};
   try {
-    const headers = { "User-Agent": "londopy.github.io", Accept: "application/vnd.github+json" };
+    const headers = { "User-Agent": "londonchowdhury.com", Accept: "application/vnd.github+json" };
     // Optional: set GITHUB_TOKEN in CI for a higher rate limit (not required).
     if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
 

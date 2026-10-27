@@ -197,7 +197,7 @@ artifact python { name = "hasher" }</code></pre>
 <p>Most "send it to my other device" tools route your file through someone's cloud, tie it to a login, or keep a copy. Beam keeps the transfer between the only two machines that should ever see it. It's the quickest way to get a file from a phone to a laptop when you don't want to email it to yourself.</p>
 
 <h2><span class="hash">##</span> Try it</h2>
-<p>Open <a href="https://londopy.github.io/beam/">londopy.github.io/beam</a> on two devices and scan.</p>
+<p>Open <a href="https://londonchowdhury.com/beam/">londonchowdhury.com/beam</a> on two devices and scan.</p>
 `,
 
   "agent-skills": `
@@ -302,13 +302,13 @@ artifact python { name = "hasher" }</code></pre>
 <p><strong>the-long-fork</strong> is a repo whose only purpose is to be forked — one link at a time, as deep as it'll go. You fork the <em>current tip</em> (never the root), append one line to <code>CHAIN.txt</code>, and pass it on. The goal is the deepest fork-of-a-fork chain on GitHub. The code does nothing; the chain is the project.</p>
 
 <h2><span class="hash">##</span> How a link works</h2>
-<p>Each line reads <code>depth | username | date | prev-hash | cell | note</code>. The hash is the first 12 hex characters of the SHA-256 of the line above, so every link is pinned to the one before it, and the cell lets each link set one character of a shared 64×32 ASCII canvas that fills in as the chain grows. A <a href="https://londopy.github.io/the-long-fork/link/">link helper</a> reads your parent's chain and writes the exact line for you, and a self-check workflow in your fork says whether the link is right before anyone else looks at it.</p>
+<p>Each line reads <code>depth | username | date | prev-hash | cell | note</code>. The hash is the first 12 hex characters of the SHA-256 of the line above, so every link is pinned to the one before it, and the cell lets each link set one character of a shared 64×32 ASCII canvas that fills in as the chain grows. A <a href="https://londonchowdhury.com/the-long-fork/link/">link helper</a> reads your parent's chain and writes the exact line for you, and a self-check workflow in your fork says whether the link is right before anyone else looks at it.</p>
 
 <h2><span class="hash">##</span> The tracker</h2>
-<p>Twice a day a GitHub Action walks the whole fork network and rebuilds the picture. Two people forking the same tip is allowed — the chain becomes a tree. The <strong>main chain</strong> is the longest path from the root (on a tie, the earlier fork wins), and a side branch that grows longer takes over. If nothing lands for seven days the page says <strong>CHAIN STALLED</strong>, which is the cue to jump in. The tracker publishes <code>STATUS.txt</code>, a live depth badge, and the <a href="https://londopy.github.io/the-long-fork/">site</a>, which always knows where the tip is.</p>
+<p>Twice a day a GitHub Action walks the whole fork network and rebuilds the picture. Two people forking the same tip is allowed — the chain becomes a tree. The <strong>main chain</strong> is the longest path from the root (on a tie, the earlier fork wins), and a side branch that grows longer takes over. If nothing lands for seven days the page says <strong>CHAIN STALLED</strong>, which is the cue to jump in. The tracker publishes <code>STATUS.txt</code>, a live depth badge, and the <a href="https://londonchowdhury.com/the-long-fork/">site</a>, which always knows where the tip is.</p>
 
 <h2><span class="hash">##</span> Join it</h2>
-<p><a href="https://londopy.github.io/the-long-fork/tip/">Fork the tip</a>, add your line, and commit it as <code>link &lt;depth&gt;: &lt;your-username&gt;</code>. There's no pull request — your fork <em>is</em> your link. One link per human, and don't delete your fork afterwards.</p>
+<p><a href="https://londonchowdhury.com/the-long-fork/tip/">Fork the tip</a>, add your line, and commit it as <code>link &lt;depth&gt;: &lt;your-username&gt;</code>. There's no pull request — your fork <em>is</em> your link. One link per human, and don't delete your fork afterwards.</p>
 `,
 
   "nexium-discord": `

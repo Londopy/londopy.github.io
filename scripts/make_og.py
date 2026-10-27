@@ -188,7 +188,7 @@ def project_card(p, out):
 
     # url footer
     fu = ImageFont.truetype(MONO, 22)
-    u = f"londopy.github.io/projects/{name}"
+    u = f"londonchowdhury.com/projects/{name}"
     d.text((W / 2 - d.textlength(u, fu) / 2, 582), u, font=fu, fill=ACCENT)
 
     img.save(out, optimize=True)
@@ -206,7 +206,7 @@ def main_card(data, out):
         (" ls ./projects --group-by domain", DIM),
     ], fp)
 
-    d.text((126, 218), "London C.", font=ImageFont.truetype(MONO_B, 58), fill=TEXT)
+    d.text((126, 218), "London Chowdhury", font=ImageFont.truetype(MONO_B, 58), fill=TEXT)
 
     ftag = ImageFont.truetype(SANS, 29)
     segments(d, 130, 312, [
@@ -228,7 +228,7 @@ def main_card(data, out):
     ], flang)
 
     fu = ImageFont.truetype(MONO, 22)
-    t = "londopy.github.io"
+    t = "londonchowdhury.com"
     d.text((W / 2 - d.textlength(t, fu) / 2, 582), t, font=fu, fill=ACCENT)
     img.save(out, optimize=True)
 

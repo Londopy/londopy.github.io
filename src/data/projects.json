@@ -84,11 +84,11 @@
       "page": "/projects/nexium/",
       "featured": true,
       "stars": 1,
-      "docsUrl": "https://londopy.github.io/nexium/",
+      "docsUrl": "https://londonchowdhury.com/nexium/",
       "links": [
         {
           "label": "the topo",
-          "url": "https://londopy.github.io/nexium/topo/01-base-camp.html"
+          "url": "https://londonchowdhury.com/nexium/topo/01-base-camp.html"
         }
       ]
     },
@@ -227,7 +227,7 @@
         "decision-support"
       ],
       "repo": "https://github.com/Londopy/Clinical_IQ",
-      "demo": "https://londopy.github.io/Clinical_IQ/",
+      "demo": "https://londonchowdhury.com/Clinical_IQ/",
       "page": null,
       "featured": false
     },
@@ -242,7 +242,7 @@
         "simulation"
       ],
       "repo": "https://github.com/Londopy/akribia",
-      "demo": "https://londopy.github.io/akribia/",
+      "demo": "https://londonchowdhury.com/akribia/",
       "page": null,
       "featured": false
     },
@@ -271,7 +271,7 @@
       "links": [
         {
           "label": "blog post",
-          "url": "https://londopy.github.io/blog/posts/diresq/"
+          "url": "https://londonchowdhury.com/blog/posts/diresq/"
         }
       ]
     },
@@ -533,7 +533,7 @@
         "privacy"
       ],
       "repo": "https://github.com/Londopy/beam",
-      "demo": "https://londopy.github.io/beam/",
+      "demo": "https://londonchowdhury.com/beam/",
       "page": "/projects/beam/",
       "featured": false,
       "stars": 1
@@ -672,14 +672,14 @@
         "hash-chain"
       ],
       "repo": "https://github.com/Londopy/the-long-fork",
-      "demo": "https://londopy.github.io/the-long-fork/",
+      "demo": "https://londonchowdhury.com/the-long-fork/",
       "page": null,
       "featured": false,
       "stars": 1,
       "links": [
         {
           "label": "fork the tip",
-          "url": "https://londopy.github.io/the-long-fork/tip/"
+          "url": "https://londonchowdhury.com/the-long-fork/tip/"
         }
       ]
     }

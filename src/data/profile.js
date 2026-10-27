@@ -26,7 +26,7 @@ AP0XnX7kHqSy+00jF0Qu1FQPglyQaO8S8b98z1IsYxDwAg==
 export const PGP_FINGERPRINT = "F010 53B8 6FE7 D60A 0A1F B790 B11E 02F1 12FA F497";
 
 export const profile = {
-  name: "London C.",
+  name: "London Chowdhury",
   handle: "Londopy",
   headline: "I build tools for climbing, medicine, Windows internals, and myself.",
   summary:
