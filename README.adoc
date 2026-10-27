@@ -1,6 +1,6 @@
-= londonchowdhury.com
+= londopy.github.io
 :toc: macro
 
 Curated showcase of https://github.com/Londopy[@Londopy]'s open-source projects, grouped by domain and filterable by tag or language. Built with https://astro.build[Astro].
 
-🌐 Live at https://londonchowdhury.com[*londonchowdhury.com*]
+🌐 Live at https://londopy.github.io[*londopy.github.io*]

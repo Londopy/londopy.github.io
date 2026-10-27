@@ -6,7 +6,7 @@
 
 import { decodeEntities } from "./text.js";
 
-export const FEED_URL = "https://londonchowdhury.com/blog/index.xml";
+export const FEED_URL = "https://londopy.github.io/blog/index.xml";
 
 let cache = null;
 
@@ -42,7 +42,7 @@ export async function getPosts() {
   if (cache) return cache;
   let result = { ok: false, items: [] };
   try {
-    const res = await fetch(FEED_URL, { headers: { "User-Agent": "londonchowdhury.com" } });
+    const res = await fetch(FEED_URL, { headers: { "User-Agent": "londopy.github.io" } });
     if (res.ok) result = { ok: true, items: parseFeed(await res.text()) };
   } catch {
     /* offline — no posts this build */

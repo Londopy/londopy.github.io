@@ -13,7 +13,7 @@ import { join, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const DIST = fileURLToPath(new URL("../dist/", import.meta.url));
-const SITE = "https://londonchowdhury.com";
+const SITE = "https://londopy.github.io";
 const errors = [];
 const fail = (msg) => errors.push(msg);
 

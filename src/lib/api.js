@@ -24,13 +24,13 @@ import { htmlToText } from "./text.js";
 import { now as NOW } from "../data/now.js";
 import { inlineToHtml, inlineToText } from "./inline.js";
 
-export const SITE = "https://londonchowdhury.com";
+export const SITE = "https://londopy.github.io";
 export const VERSION = "1.0.0";
 export const BASE = "/api/v1";
 export const abs = (path) => SITE + path;
 
 export const DESCRIPTION =
-  "Everything on londonchowdhury.com as JSON: the projects and their writeups, the domains they're grouped by, " +
+  "Everything on londopy.github.io as JSON: the projects and their writeups, the domains they're grouped by, " +
   "languages and tags, awards, pull requests to other people's projects, blog posts, and the numbers. " +
   "Static files, rebuilt with the site on every push and every night; read-only, no key, CORS-open.";
 
@@ -300,7 +300,7 @@ export const BADGES = {
   posts: { about: "blog posts", make: (s) => ({ label: "blog posts", message: String(s.posts.length), color: "d97706" }) },
 };
 
-// a business card for terminals: `curl -s londonchowdhury.com/api/v1/card.ansi`
+// a business card for terminals: `curl -s londopy.github.io/api/v1/card.ansi`
 export function card(s, { ansi = false } = {}) {
   const ACCENT = "38;2;233;161;58";
   const TEXT = "38;2;205;216;227";
@@ -557,7 +557,7 @@ export const ROUTES = [
   {
     id: "getPgpKey", group: "Profile", path: "/pgp.asc",
     summary: "My PGP public key, ASCII-armored",
-    description: "Encrypt to it with `curl -s https://londonchowdhury.com/pgp.asc | gpg --import`.",
+    description: "Encrypt to it with `curl -s https://londopy.github.io/pgp.asc | gpg --import`.",
     type: "application/pgp-keys",
   },
   {
@@ -659,7 +659,7 @@ export const ROUTES = [
   {
     id: "getCardAnsi", group: "Terminal", path: `${BASE}/card.ansi`,
     summary: "The same card, in colour (24-bit ANSI)",
-    description: "`curl -s https://londonchowdhury.com/api/v1/card.ansi`",
+    description: "`curl -s https://londopy.github.io/api/v1/card.ansi`",
     type: "application/octet-stream",
     build: (s) => card(s, { ansi: true }),
   },
@@ -741,7 +741,7 @@ export function openapi(s) {
     info: {
       title: "Londopy API",
       version: VERSION,
-      summary: "London Chowdhury's projects, writeups, pull requests and posts, as JSON.",
+      summary: "London C.'s projects, writeups, pull requests and posts, as JSON.",
       description: DESCRIPTION,
       contact: { name: profile.name, url: abs("/contact/") },
     },

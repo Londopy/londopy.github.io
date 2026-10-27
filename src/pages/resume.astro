@@ -86,15 +86,15 @@ const genFallback = {
   awards: awards.length,
 };
 
-const title = "Résumé — London Chowdhury";
+const title = "Résumé — London C.";
 const description =
-  "London Chowdhury's résumé: engineering student at Cal Poly heading into OT / XIoT security. Projects, open source, awards and skills, on one printable page.";
+  "London C.'s résumé: engineering student at Cal Poly heading into OT / XIoT security. Projects, open source, awards and skills, on one printable page.";
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: profile.name,
   alternateName: profile.handle,
-  url: "https://londonchowdhury.com/resume/",
+  url: "https://londopy.github.io/resume/",
   sameAs: [profile.links.github],
   affiliation: { "@type": "CollegeOrUniversity", name: "California Polytechnic State University, San Luis Obispo" },
   hasCredential: profile.certifications.map((name) => ({ "@type": "EducationalOccupationalCredential", name })),
@@ -124,10 +124,10 @@ const jsonLd = {
           {OPEN_TO_WORK && <p class="r-open mono">{OPEN_TO_WORK_TEXT}</p>}
         </div>
         <ul class="r-contact mono">
-          <li><a href="https://londonchowdhury.com/">londonchowdhury.com</a></li>
-          <li><a href="https://londonchowdhury.com/blog/">londonchowdhury.com/blog</a></li>
+          <li><a href="https://londopy.github.io/">londopy.github.io</a></li>
+          <li><a href="https://londopy.github.io/blog/">londopy.github.io/blog</a></li>
           <li><a href={profile.links.github}>{bare(profile.links.github)}</a></li>
-          <li><a href="https://londonchowdhury.com/contact/">londonchowdhury.com/contact</a></li>
+          <li><a href="https://londopy.github.io/contact/">londopy.github.io/contact</a></li>
           <li>discord {profile.contact.discord}</li>
           <li>irc {profile.contact.irc.nick} @ {profile.contact.irc.network}</li>
         </ul>

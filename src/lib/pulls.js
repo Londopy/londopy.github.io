@@ -35,7 +35,7 @@ export async function getPulls() {
 
   try {
     const headers = {
-      "User-Agent": "londonchowdhury.com",
+      "User-Agent": "londopy.github.io",
       Accept: "application/vnd.github+json",
     };
     if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
