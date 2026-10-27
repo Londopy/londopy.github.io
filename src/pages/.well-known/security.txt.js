@@ -4,7 +4,7 @@
 
 import { PGP_PUBLIC_KEY } from "../../data/profile.js";
 
-const SITE = "https://londopy.github.io";
+const SITE = "https://londo.me";
 const DAYS = 180;
 
 export function GET() {

@@ -14,7 +14,7 @@ export const now = {
         "**[Nexium](/projects/nexium/)** 1.4, *Annapurna: the Sanctuary*, shipped on September 26: a standard library people stop supplementing, twenty-nine modules with HTTPS and websockets among them. Now on 1.5, platforms: 32-bit targets, Linux and Windows on ARM, and WebAssembly.",
         "**[nexium-discord](/projects/nexium-discord/)** is out: a Discord bot library for Nexium, built on 1.4's HTTP and websockets.",
         "**[nxtls](/projects/nxtls/)**, TLS 1.3 written in pure Nexium, now runs on Windows too. Next is the part I can't do myself: a review by someone who knows TLS.",
-        "**[the-long-fork](/projects/the-long-fork/)** is live and waiting on its first link. [Fork the tip](https://londopy.github.io/the-long-fork/tip/) and it's yours.",
+        "**[the-long-fork](/projects/the-long-fork/)** is live and waiting on its first link. [Fork the tip](https://londo.me/the-long-fork/tip/) and it's yours.",
       ],
     },
     {

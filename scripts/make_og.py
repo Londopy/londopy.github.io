@@ -188,7 +188,7 @@ def project_card(p, out):
 
     # url footer
     fu = ImageFont.truetype(MONO, 22)
-    u = f"londopy.github.io/projects/{name}"
+    u = f"londo.me/projects/{name}"
     d.text((W / 2 - d.textlength(u, fu) / 2, 582), u, font=fu, fill=ACCENT)
 
     img.save(out, optimize=True)
@@ -228,7 +228,7 @@ def main_card(data, out):
     ], flang)
 
     fu = ImageFont.truetype(MONO, 22)
-    t = "londopy.github.io"
+    t = "londo.me"
     d.text((W / 2 - d.textlength(t, fu) / 2, 582), t, font=fu, fill=ACCENT)
     img.save(out, optimize=True)
 

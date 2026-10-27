@@ -30,12 +30,12 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "ContactPage",
   name: "Contact — London C.",
-  url: "https://londopy.github.io/contact/",
+  url: "https://londo.me/contact/",
   mainEntity: {
     "@type": "Person",
     name: "London C.",
     alternateName: "Londopy",
-    url: "https://londopy.github.io",
+    url: "https://londo.me",
     sameAs: ["https://github.com/Londopy"],
   },
 };
@@ -69,8 +69,8 @@ const jsonLd = {
       method="POST"
     >
       <input type="hidden" name="access_key" value={ACCESS_KEY} />
-      <input type="hidden" name="subject" value="New message from londopy.github.io" />
-      <input type="hidden" name="from_name" value="londopy.github.io" />
+      <input type="hidden" name="subject" value="New message from londo.me" />
+      <input type="hidden" name="from_name" value="londo.me" />
       <!-- honeypot: real people leave this empty; bots fill it and get dropped -->
       <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
@@ -189,7 +189,7 @@ const jsonLd = {
           const key = await openpgp.readKey({ armoredKey: PGP_PUBLIC_KEY });
           const message = await openpgp.createMessage({ text: String(data.message || "") });
           data.message = await openpgp.encrypt({ message, encryptionKeys: key });
-          data.subject = "[PGP encrypted] New message from londopy.github.io";
+          data.subject = "[PGP encrypted] New message from londo.me";
         } catch (err) {
           status.textContent = "couldn't encrypt — nothing was sent. try again, or uncheck encryption.";
           status.className = "status mono err";

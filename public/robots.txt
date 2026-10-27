@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://londopy.github.io/sitemap-index.xml
-Sitemap: https://londopy.github.io/blog/sitemap.xml
+Sitemap: https://londo.me/sitemap-index.xml
+Sitemap: https://londo.me/blog/sitemap.xml

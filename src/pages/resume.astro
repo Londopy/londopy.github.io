@@ -94,7 +94,7 @@ const jsonLd = {
   "@type": "Person",
   name: profile.name,
   alternateName: profile.handle,
-  url: "https://londopy.github.io/resume/",
+  url: "https://londo.me/resume/",
   sameAs: [profile.links.github],
   affiliation: { "@type": "CollegeOrUniversity", name: "California Polytechnic State University, San Luis Obispo" },
   hasCredential: profile.certifications.map((name) => ({ "@type": "EducationalOccupationalCredential", name })),
@@ -124,10 +124,10 @@ const jsonLd = {
           {OPEN_TO_WORK && <p class="r-open mono">{OPEN_TO_WORK_TEXT}</p>}
         </div>
         <ul class="r-contact mono">
-          <li><a href="https://londopy.github.io/">londopy.github.io</a></li>
-          <li><a href="https://londopy.github.io/blog/">londopy.github.io/blog</a></li>
+          <li><a href="https://londo.me/">londo.me</a></li>
+          <li><a href="https://londo.me/blog/">londo.me/blog</a></li>
           <li><a href={profile.links.github}>{bare(profile.links.github)}</a></li>
-          <li><a href="https://londopy.github.io/contact/">londopy.github.io/contact</a></li>
+          <li><a href="https://londo.me/contact/">londo.me/contact</a></li>
           <li>discord {profile.contact.discord}</li>
           <li>irc {profile.contact.irc.nick} @ {profile.contact.irc.network}</li>
         </ul>
